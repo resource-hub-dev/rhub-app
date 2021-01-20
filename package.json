@@ -1,0 +1,86 @@
+{
+  "name": "dandelion",
+  "version": "1.0.0",
+  "description": "Dandelion | Your favorite React / PatternFly seed",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beaker-project/dandelion.git"
+  },
+  "author": "Beaker Developers <developers@beaker-project.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/beaker-project/beaker-dashboard/issues"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --open --mode development",
+    "build": "webpack --mode production",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
+    "prettier": "prettier --check \"./src/**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "npm run prettier && npm run lint && npm run test"
+    }
+  },
+  "homepage": "https://github.com/beaker-project/beaker-dashboard#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@testing-library/jest-dom": "^5.11.8",
+    "@testing-library/react": "^10.4.5",
+    "@types/jest": "^26.0.8",
+    "@types/react-redux": "^7.1.9",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/redux-mock-store": "^1.0.2",
+    "@types/webpack": "^4.41.25",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
+    "css-loader": "^5.0.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.3.0",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "file-loader": "^6.2.0",
+    "html-loader": "^1.3.2",
+    "html-webpack-plugin": "^4.3.0",
+    "husky": "^4.3.6",
+    "jest": "^25.5.4",
+    "mini-css-extract-plugin": "^1.3.1",
+    "optimize-css-assets-webpack-plugin": "^5.0.4",
+    "prettier": "^2.0.5",
+    "raw-loader": "^4.0.1",
+    "redux-mock-store": "^1.5.4",
+    "redux-saga-test-plan": "^4.0.1",
+    "ts-jest": "^25.5.1",
+    "ts-loader": "^8.0.2",
+    "tsconfig-paths-webpack-plugin": "^3.3.0",
+    "typescript": "^3.9.7",
+    "url-loader": "^4.1.1",
+    "webpack": "^4.44.2",
+    "webpack-bundle-analyzer": "^4.3.0",
+    "webpack-cli": "^4.3.1",
+    "webpack-dev-server": "^3.11.1"
+  },
+  "dependencies": {
+    "@patternfly/react-core": "^4.32.1",
+    "@types/react": "^17.0.0",
+    "@patternfly/react-icons": "^4.7.18",
+    "@types/react-dom": "^17.0.0",
+    "axios": "^0.21.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.2",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.0.5",
+    "redux-saga": "^1.1.3",
+    "typesafe-actions": "^5.1.0"
+  }
+}
