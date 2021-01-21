@@ -7,3 +7,9 @@ build:
 	sleep 5
 	docker run --rm --link rhub-app curlimages/curl -sf rhub-app
 	docker rm -f rhub-app
+
+install:
+	docker-compose run --rm app npm install
+
+start:
+	docker-compose up --force-recreate
