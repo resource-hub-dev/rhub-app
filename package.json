@@ -12,7 +12,7 @@
     "url": "https://github.com/beaker-project/beaker-dashboard/issues"
   },
   "scripts": {
-    "start": "webpack-dev-server --open --mode development",
+    "start": "webpack serve --open --mode development",
     "build": "webpack --mode production",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
     "prettier": "prettier --check \"./src/**/*.{js,jsx,ts,tsx}\"",
