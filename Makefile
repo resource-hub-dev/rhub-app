@@ -10,6 +10,7 @@ build:
 	docker rm -f rhub-app
 
 install:
+	docker-compose build --no-cache --force-rm
 	docker-compose run --rm app npm install
 
 start:
