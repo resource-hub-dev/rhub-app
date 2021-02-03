@@ -4,10 +4,12 @@ networks:
     name: rhub-development
 services:
   app:
-    image: node:14
+    build:
+      context: .
+      target: base
     volumes:
-      - .:/rhub-app:delegated
+      - .:/opt/rhub-app:delegated
     ports:
       - 8080:8080
-    working_dir: /rhub-app
+    # prettier-ignore
     command: ["./node_modules/.bin/webpack", "serve", "--mode", "development", "--host", "0.0.0.0"]
