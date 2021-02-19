@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import localtime from './localtime';
+import cowsay from './cowsay';
 
 export default combineReducers({
-  localtime,
+  cowsay,
 });
