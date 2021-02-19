@@ -10,7 +10,7 @@ import {
   PageSidebar,
 } from '@patternfly/react-core';
 
-import LocalTime from '../localTime/LocalTime';
+import Cowsay from '../cowsay/Cowsay';
 import LandingPage from '../landingPage/LandingPage';
 import PageNotFound from '../pageNotFound/PageNotFound';
 
@@ -37,8 +37,8 @@ const MainScreen: React.FC = () => {
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink exact to="/localtime" activeClassName="pf-m-current">
-            Local Time
+          <NavLink exact to="/cowsay" activeClassName="pf-m-current">
+            Cowsay
           </NavLink>
         </NavItem>
       </NavList>
@@ -58,7 +58,7 @@ const MainScreen: React.FC = () => {
     <Page header={Header} sidebar={Sidebar}>
       <Switch>
         <Route exact path="/" component={LandingPage} />
-        <Route exact path="/localtime" component={LocalTime} />
+        <Route exact path="/cowsay" component={Cowsay} />
         <Route path="*" component={PageNotFound} />
       </Switch>
     </Page>
