@@ -9,6 +9,8 @@ services:
       target: base
     volumes:
       - .:/opt/rhub-app:delegated
+    environment:
+      RHUB_API_URL: http://localhost:8081
     ports:
       - 8080:8080
     # prettier-ignore
