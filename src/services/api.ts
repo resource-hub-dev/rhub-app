@@ -1,7 +1,8 @@
 import axios from 'axios';
+import config from './config';
 
 const api = axios.create({
-  baseURL: 'http://worldtimeapi.org/api/',
+  baseURL: config.apiUrl,
 });
 
 export default api;
