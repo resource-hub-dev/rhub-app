@@ -3,6 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const InterpolateHtmlPlugin = require('interpolate-html-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
@@ -96,10 +97,6 @@ const config = {
     ],
   },
   plugins: [
-    new HtmlWebPackPlugin({
-      template: './src/index.html',
-      filename: './index.html',
-    }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[name].bundle.css',
@@ -128,13 +125,30 @@ const config = {
 };
 
 module.exports = (env, argv) => {
-  if (argv.mode === 'production') {
+  const isProductionMode = argv.mode === 'production';
+
+  config.plugins.push(
+    new HtmlWebPackPlugin({
+      template: './src/index.html',
+      filename: isProductionMode ? './index.template.html' : './index.html',
+    })
+  );
+
+  config.plugins.push(
+    new InterpolateHtmlPlugin({
+      RHUB_API_URL: isProductionMode
+        ? '${RHUB_API_URL}'
+        : process.env.RHUB_API_URL,
+    })
+  );
+
+  if (isProductionMode) {
     config.plugins.push(
       new BundleAnalyzerPlugin({
         analyzerMode: 'static',
         reportFilename: '../report.html',
       }),
-      new OptimizeCSSAssetsPlugin({}),
+      new OptimizeCSSAssetsPlugin({})
     );
   }
 
