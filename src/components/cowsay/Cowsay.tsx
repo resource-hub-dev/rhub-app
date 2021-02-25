@@ -17,7 +17,9 @@ const Cowsay: React.FC = () => {
   useEffect(queryMessage, [dispatch]);
 
   return (
-    <PageSection variant={PageSectionVariants.dark}>{message}</PageSection>
+    <PageSection variant={PageSectionVariants.dark}>
+      <pre>{message}</pre>
+    </PageSection>
   );
 };
 
