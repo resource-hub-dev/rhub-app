@@ -1,5 +1,5 @@
 interface AppConfig {
-  apiUrl: string;
+  apiUrl?: string;
 }
 
 interface AppWindow extends Window {
@@ -10,7 +10,7 @@ declare const window: AppWindow;
 
 // Make sure the variable is set
 window.appConfig = window.appConfig || {
-  apiUrl: '',
+  apiUrl: undefined,
 };
 
 export default window.appConfig;
