@@ -1,19 +1,12 @@
-# https://catalog.redhat.com/software/containers/ubi8/ubi/5c359854d70cc534b3a3784e
-FROM registry.access.redhat.com/ubi8/ubi as base
-RUN dnf module install -y nodejs:14
-WORKDIR /opt/rhub-app
-
-FROM base as build
-COPY . /opt/rhub-app
+# https://catalog.redhat.com/software/containers/ubi8/nodejs-14/5ed7887dd70cc50e69c2fabb
+FROM registry.access.redhat.com/ubi8/nodejs-14 as build
+COPY . .
 RUN npm install && npm run build
 
-# https://catalog.redhat.com/software/containers/ubi8/ubi/5c359854d70cc534b3a3784e
-FROM registry.access.redhat.com/ubi8/ubi
-RUN dnf module install -y nginx:1.18
-RUN dnf install -y gettext
-COPY --from=build /opt/rhub-app/dist /usr/share/nginx/html
-COPY ./containers/nginx.conf /etc/nginx/default.d/rhub-app.conf
-COPY ./containers/nginx-entrypoint /opt/rhub-app-entrypoint
-EXPOSE 80
-ENTRYPOINT ["/opt/rhub-app-entrypoint"]
+# https://catalog.redhat.com/software/containers/ubi8/nginx-118/5f521a6f9dd2d5ca7158e5dc
+FROM registry.access.redhat.com/ubi8/nginx-118
+COPY --from=build /opt/app-root/src/dist .
+COPY ./containers/nginx.conf /opt/app-root/etc/nginx.default.d/nginx.conf
+COPY ./containers/nginx-entrypoint /opt/app-root/entrypoint
+ENTRYPOINT ["/opt/app-root/entrypoint"]
 CMD ["nginx", "-g", "daemon off;"]
