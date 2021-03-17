@@ -5,6 +5,6 @@ set -e
 envsubst ' \
 	$RHUB_API_URL \
 	' \
-	< /usr/share/nginx/html/index.template.html > /usr/share/nginx/html/index.html
+	< /opt/app-root/src/index.template.html > /opt/app-root/src/index.html
 
 exec "$@"

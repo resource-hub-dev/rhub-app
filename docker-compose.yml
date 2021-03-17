@@ -4,13 +4,14 @@ networks:
     name: rhub-development
 services:
   app:
-    build:
-      context: .
-      target: base
+    image: registry.access.redhat.com/ubi8/nodejs-14
     volumes:
-      - .:/opt/rhub-app:delegated
+      - .:/opt/app-root/src:delegated
     environment:
       RHUB_API_URL: http://localhost:8081
+      # don't pollute /opt/app-root/src with home crap
+      HOME: /opt/app-root/home
+      NPM_CONFIG_PREFIX: /opt/app-root/home/.npm-global
     ports:
       - 8080:8080
     # prettier-ignore
