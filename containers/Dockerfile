@@ -8,5 +8,6 @@ FROM registry.access.redhat.com/ubi8/nginx-118
 COPY --from=build /opt/app-root/src/dist .
 COPY ./containers/nginx.conf /opt/app-root/etc/nginx.default.d/nginx.conf
 COPY ./containers/nginx-entrypoint /opt/app-root/entrypoint
+RUN /opt/app-root/entrypoint && chmod g+w ./index.html
 ENTRYPOINT ["/opt/app-root/entrypoint"]
 CMD ["nginx", "-g", "daemon off;"]
