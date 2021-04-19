@@ -1,5 +1,8 @@
 interface AppConfig {
-  apiUrl?: string;
+  apiUrl: string;
+  authUrl: string;
+  keycloakRealm: string;
+  keycloakClient: string;
 }
 
 interface AppWindow extends Window {
@@ -10,7 +13,11 @@ declare const window: AppWindow;
 
 // Make sure the variable is set
 window.appConfig = window.appConfig || {
-  apiUrl: undefined,
+  // window.appConfig || {
+  apiUrl: '',
+  authUrl: '',
+  keycloakRealm: '',
+  keycloakClient: '',
 };
 
 export default window.appConfig;

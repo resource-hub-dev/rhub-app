@@ -1,10 +1,18 @@
 import React from 'react';
 import { connectedRender, fireEvent } from '../../tests/testUtils';
 import MainScreen from './MainScreen';
+import * as mocks from './mocks';
 
 jest.mock('../cowsay/Cowsay', () => () => 'cowsay-mock');
 jest.mock('../landingPage/LandingPage', () => () => 'landing-page-mock');
 
+jest.mock('@react-keycloak/web', () => {
+  const originalModule = jest.requireActual('@react-keycloak/web');
+  return {
+    ...originalModule,
+    useKeycloak: () => mocks.useKeycloak(),
+  };
+});
 describe('<MainScreen />', () => {
   test('should render the Navigation Bar text', async () => {
     const { result } = connectedRender(<MainScreen />);

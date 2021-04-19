@@ -8,7 +8,10 @@ services:
     volumes:
       - .:/opt/app-root/src:delegated
     environment:
-      RHUB_API_URL: http://localhost:8081
+      RHUB_API_URL: http://localhost:8081/v0/
+      RHUB_KEYCLOAK_URL: http://localhost:8082/auth/,
+      KEYCLOAK_REALM: ${SET_REALM}
+      KEYCLOAK_CLIENT: ${SET_CLIENT}
       # don't pollute /opt/app-root/src with home crap
       HOME: /opt/app-root/home
       NPM_CONFIG_PREFIX: /opt/app-root/home/.npm-global

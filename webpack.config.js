@@ -1,7 +1,8 @@
 const path = require('path');
 
 const webpack = require('webpack');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const InterpolateHtmlPlugin = require('interpolate-html-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -36,11 +37,26 @@ const config = {
           path.resolve(__dirname, 'node_modules/patternfly'),
           path.resolve(__dirname, 'node_modules/@patternfly/patternfly'),
           path.resolve(__dirname, 'node_modules/@patternfly/react-styles/css'),
-          path.resolve(__dirname, 'node_modules/@patternfly/react-core/dist/styles/base.css'),
-          path.resolve(__dirname, 'node_modules/@patternfly/react-core/dist/esm/@patternfly/patternfly'),
-          path.resolve(__dirname, 'node_modules/@patternfly/react-core/node_modules/@patternfly/react-styles/css'),
-          path.resolve(__dirname, 'node_modules/@patternfly/react-table/node_modules/@patternfly/react-styles/css'),
-          path.resolve(__dirname,  'node_modules/@patternfly/react-inline-edit-extension/node_modules/@patternfly/react-styles/css'),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/react-core/dist/styles/base.css'
+          ),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/react-core/dist/esm/@patternfly/patternfly'
+          ),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/react-core/node_modules/@patternfly/react-styles/css'
+          ),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/react-table/node_modules/@patternfly/react-styles/css'
+          ),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/react-inline-edit-extension/node_modules/@patternfly/react-styles/css'
+          ),
         ],
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
@@ -48,10 +64,22 @@ const config = {
         test: /\.(svg|ttf|eot|woff|woff2)$/,
         include: [
           path.resolve(__dirname, 'node_modules/patternfly/dist/fonts'),
-          path.resolve(__dirname, 'node_modules/@patternfly/react-core/dist/styles/assets/fonts'),
-          path.resolve(__dirname, 'node_modules/@patternfly/react-core/dist/styles/assets/pficon'),
-          path.resolve(__dirname, 'node_modules/@patternfly/patternfly/assets/fonts'),
-          path.resolve(__dirname, 'node_modules/@patternfly/patternfly/assets/pficon'),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/react-core/dist/styles/assets/fonts'
+          ),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/react-core/dist/styles/assets/pficon'
+          ),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/patternfly/assets/fonts'
+          ),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/patternfly/assets/pficon'
+          ),
         ],
         use: {
           loader: 'file-loader',
@@ -76,12 +104,30 @@ const config = {
         include: [
           path.resolve(__dirname, 'src'),
           path.resolve(__dirname, 'node_modules/patternfly'),
-          path.resolve(__dirname, 'node_modules/@patternfly/patternfly/assets/images'),
-          path.resolve(__dirname, 'node_modules/@patternfly/react-styles/css/assets/images'),
-          path.resolve(__dirname, 'node_modules/@patternfly/react-core/dist/styles/assets/images'),
-          path.resolve(__dirname, 'node_modules/@patternfly/react-core/node_modules/@patternfly/react-styles/css/assets/images'),
-          path.resolve(__dirname, 'node_modules/@patternfly/react-table/node_modules/@patternfly/react-styles/css/assets/images'),
-          path.resolve(__dirname, 'node_modules/@patternfly/react-inline-edit-extension/node_modules/@patternfly/react-styles/css/assets/images'),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/patternfly/assets/images'
+          ),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/react-styles/css/assets/images'
+          ),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/react-core/dist/styles/assets/images'
+          ),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/react-core/node_modules/@patternfly/react-styles/css/assets/images'
+          ),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/react-table/node_modules/@patternfly/react-styles/css/assets/images'
+          ),
+          path.resolve(
+            __dirname,
+            'node_modules/@patternfly/react-inline-edit-extension/node_modules/@patternfly/react-styles/css/assets/images'
+          ),
         ],
         use: [
           {
@@ -114,6 +160,12 @@ const config = {
     cacheWithContext: false,
   },
   devServer: {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers':
+        'X-Requested-With, content-type, Authorization',
+    },
     historyApiFallback: true,
     watchOptions: {
       ignored: [
@@ -139,6 +191,15 @@ module.exports = (env, argv) => {
       RHUB_API_URL: isProductionMode
         ? '${RHUB_API_URL}'
         : process.env.RHUB_API_URL,
+      RHUB_KEYCLOAK_URL: isProductionMode
+        ? '${RHUB_KEYCLOAK_URL}'
+        : process.env.RHUB_KEYCLOAK_URL,
+      KEYCLOAK_REALM: isProductionMode
+        ? '${KEYCLOAK_REALM}'
+        : process.env.KEYCLOAK_REALM,
+      KEYCLOAK_CLIENT: isProductionMode
+        ? '${KEYCLOAK_CLIENT}'
+        : process.env.KEYCLOAK_CLIENT,
     })
   );
 
