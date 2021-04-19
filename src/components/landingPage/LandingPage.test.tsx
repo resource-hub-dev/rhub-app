@@ -1,10 +1,13 @@
 import React from 'react';
-import { render } from '../../tests/testUtils';
+import { connectedRender } from '../../tests/testUtils';
 import LandingPage from './LandingPage';
+import * as mocks from './mocks';
 
 describe('<LandingPage />', () => {
   test('renders', async () => {
-    const { getByText } = render(<LandingPage />);
-    expect(getByText(/Welcome to the Resource Hub!/)).toBeInTheDocument();
+    const { result } = connectedRender(<LandingPage />, mocks.initialState);
+    expect(
+      result.getByText(/Welcome to the Resource Hub!/)
+    ).toBeInTheDocument();
   });
 });
