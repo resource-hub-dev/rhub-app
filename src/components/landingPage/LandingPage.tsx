@@ -12,7 +12,7 @@ const LandingPage: React.FC = () => {
   return (
     <PageSection variant={PageSectionVariants.light}>
       <Title headingLevel="h1" size="lg">
-        Welcome to Dandelion
+        Welcome to the Resource Hub!
       </Title>
       <br />
       Config:
