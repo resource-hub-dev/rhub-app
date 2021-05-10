@@ -1,30 +1,119 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-
+import React, { useState } from 'react';
 import {
-  PageSection,
-  PageSectionVariants,
+  BackgroundImage,
+  Button,
+  Card,
+  ExpandableSection,
+  Grid,
+  GridItem,
   Title,
 } from '@patternfly/react-core';
+import {
+  ArrowRightIcon,
+  CatalogIcon,
+  ClusterIcon,
+  ExternalLinkAltIcon,
+  TachometerAltIcon,
+} from '@patternfly/react-icons';
+import { useKeycloak } from '@react-keycloak/web';
 
-import config from '../../services/config';
-import { AppState } from '../../store';
+import './LandingPage.css';
 
 const LandingPage: React.FC = () => {
-  const token = useSelector((state: AppState) => state.user.current.token);
-  const loggedIn = useSelector((state: AppState) => state.user.loggedIn);
+  const [expanded, setExpanded] = useState(true);
+  const { keycloak, initialized } = useKeycloak();
+  const images = {
+    xs: '/assets/images/pfbg_576.jpg',
+    xs2x: '/assets/images/pfbg_576@2x.jpg',
+    sm: '/assets/images/pfbg_768.jpg',
+    sm2x: '/assets/images/pfbg_768@2x.jpg',
+    lg: '/assets/images/pfbg_1200.jpg',
+  };
+
+  const welcomeSection = (
+    <GridItem rowSpan={8} className="welcome-section">
+      <BackgroundImage src={images} />
+      <div className="welcome-text">
+        <Title headingLevel="h1" size="4xl">
+          Welcome to the Resource Hub
+        </Title>
+        {!keycloak.authenticated && initialized && (
+          <Button
+            className="welcome-login-btn"
+            onClick={() => keycloak.login()}
+          >
+            Log In To Your Account
+          </Button>
+        )}
+      </div>
+    </GridItem>
+  );
+  const infoSection = (
+    <GridItem rowSpan={4}>
+      <Card className="info-section">
+        <ExpandableSection
+          toggleText="Getting Started"
+          onToggle={(isExpanded: boolean) => setExpanded(isExpanded)}
+          isExpanded={expanded}
+        >
+          <Grid>
+            <GridItem className="grid-card" span={4}>
+              <div className="info-title-box quick-start">
+                <TachometerAltIcon className="info-title-icon quick-start" />
+                Quick Starts
+              </div>
+              <div>Get started with our documentations</div>
+              {/* TODO: Add links to Documentations in the future */}
+              <Button variant="link" className="info-link">
+                View All Documentation <ArrowRightIcon />
+              </Button>
+            </GridItem>
+            <GridItem className="grid-card" span={4}>
+              <div className="info-title-box quick-cluster">
+                <ClusterIcon className="info-title-icon quick-cluster" />
+                Quick Cluster
+              </div>
+              <div>
+                Quick Cluster provides quick, ready-to-use clusters with Red Hat
+                products preinstalled
+              </div>
+            </GridItem>
+            <GridItem className="grid-card last-card" span={4}>
+              <div className="info-title-box learning-resources">
+                <CatalogIcon className="info-title-icon learning-resources" />
+                Learning Resources
+              </div>
+              <div>Getting started with documentation</div>
+              <div>
+                <Button variant="link" className="info-link">
+                  See our release history
+                </Button>
+              </div>
+              <div>
+                <Button variant="link" className="info-link">
+                  OpenShift 4.7: How to Install <ExternalLinkAltIcon />
+                </Button>
+              </div>
+              <div>
+                <Button variant="link" className="info-link">
+                  See resource <ArrowRightIcon />
+                </Button>
+              </div>
+            </GridItem>
+          </Grid>
+        </ExpandableSection>
+      </Card>
+    </GridItem>
+  );
 
   return (
-    <PageSection variant={PageSectionVariants.light}>
-      <Title headingLevel="h1" size="lg">
-        Welcome to the Resource Hub!
-      </Title>
+    <>
+      <Grid className="welcome-page">
+        {welcomeSection}
+        {infoSection}
+      </Grid>
       <br />
-      Config:
-      <pre>{JSON.stringify(config, null, 4)}</pre>
-      <div>The user is {loggedIn ? '' : 'NOT'} authenticated</div>
-      {token}
-    </PageSection>
+    </>
   );
 };
 

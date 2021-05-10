@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Switch, Route } from 'react-router-dom';
 import {
+  Button,
   Nav,
   NavItem,
   NavList,
@@ -36,11 +37,24 @@ const MainScreen: React.FC = () => {
     }
   }, [dispatch, keycloak.token, keycloak.authenticated, keycloak.tokenParsed]);
 
+  const Toolbar = (
+    <PageHeaderTools>
+      <Button variant="link">Guide</Button>
+      <Button variant="link">Contact</Button>
+      <Button variant="link">Report Issue</Button>
+      {keycloak.authenticated && initialized && (
+        <Button variant="secondary" onClick={() => keycloak.logout()}>
+          Log Out
+        </Button>
+      )}
+    </PageHeaderTools>
+  );
+
   const Header = (
     <PageHeader
-      logo="Logo"
-      headerTools={<PageHeaderTools>Toolbar | Avatar</PageHeaderTools>}
-      showNavToggle
+      logo="Resource Hub"
+      headerTools={Toolbar}
+      showNavToggle={keycloak.authenticated}
       isNavOpen={isNavOpen}
       onNavToggle={onNavToggle}
     />
@@ -48,11 +62,6 @@ const MainScreen: React.FC = () => {
   const Navigation = (
     <Nav id="nav-primary-simple" theme="dark">
       <NavList id="nav-list-simple">
-        <NavItem>
-          <NavLink exact to="/" activeClassName="pf-m-current">
-            Start
-          </NavLink>
-        </NavItem>
         <NavItem>
           <NavLink exact to="/cowsay" activeClassName="pf-m-current">
             Cowsay
@@ -75,7 +84,7 @@ const MainScreen: React.FC = () => {
   }
 
   return (
-    <Page header={Header} sidebar={Sidebar}>
+    <Page header={Header} sidebar={keycloak.authenticated && Sidebar}>
       <Switch>
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/cowsay" component={Cowsay} />

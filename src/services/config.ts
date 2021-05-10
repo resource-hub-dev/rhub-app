@@ -13,7 +13,6 @@ declare const window: AppWindow;
 
 // Make sure the variable is set
 window.appConfig = window.appConfig || {
-  // window.appConfig || {
   apiUrl: '',
   authUrl: '',
   keycloakRealm: '',
