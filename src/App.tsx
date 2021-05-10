@@ -14,13 +14,7 @@ const App: React.FC = () => {
   const Loading = () => <div>Loading...</div>;
 
   return (
-    <ReactKeycloakProvider
-      authClient={keycloak}
-      initOptions={{
-        onLoad: 'login-required',
-      }}
-      LoadingComponent={<Loading />}
-    >
+    <ReactKeycloakProvider authClient={keycloak} LoadingComponent={<Loading />}>
       <Provider store={store}>
         <Router>
           <MainScreen />
