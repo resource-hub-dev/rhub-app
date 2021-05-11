@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { call, put, select } from 'redux-saga/effects';
 import { AnyAction } from 'redux';
 
