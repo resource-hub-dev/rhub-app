@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { action } from 'typesafe-actions';
 import { UserTypes, UserData } from './types';
 
