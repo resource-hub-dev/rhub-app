@@ -2,6 +2,9 @@
 
 Front end application to serve as an interface to the Resource Hub API.
 
+## Contributing
+If you want to contribute to our project, you are more then welcome - just check our [contributing guide](.github/CONTRIBUTING.md).
+
 ## Running it in a container:
 
 To run the Web Interface in your favorite container environment, use the provided Dockerfile. We recommend `podman`.
