@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import reducer, { INITIAL_STATE } from '.';
 import * as actions from './actions';
 import mocks from './mocks';
