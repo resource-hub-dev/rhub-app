@@ -1,11 +1,12 @@
-/* eslint-disable import/prefer-default-export */
-export const useKeycloak = () => {
+export const unauthenticated = () => {
   const token = 'A random string that is non zero length';
   const userProfile = {
     username: 'test',
     email: 'test@testdomain.com',
     firstName: 'Test',
     lastName: 'User',
+    name: 'Test User',
+    sub: '0012-232344abc-122',
   };
   const realmAccess = { roles: ['admin', 'auditor', 'user'] };
   let authenticated = false;
@@ -34,6 +35,17 @@ export const useKeycloak = () => {
     realmAccess,
     refreshToken: token,
     token,
+    tokenParsed: userProfile,
   };
   return { initialized: true, keycloak: authClient };
+};
+
+export const authenticated = () => {
+  return {
+    initialized: true,
+    keycloak: {
+      ...unauthenticated().keycloak,
+      authenticated: true,
+    },
+  };
 };
