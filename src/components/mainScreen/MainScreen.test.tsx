@@ -15,22 +15,9 @@ describe('<MainScreen />', () => {
   useKeycloakMock.useKeycloak.mockImplementation(() =>
     keycloakMock.authenticated()
   );
-  test('should render the Navigation Bar text', async () => {
+  test('should render the Top Nav text', async () => {
     const { result } = connectedRender(<MainScreen />);
-    const text = result.getByText('Cowsay');
+    const text = result.getByText('Resource Hub');
     expect(text).toBeInTheDocument();
-  });
-  test('should hide the Navigation Bar', async () => {
-    const { result } = connectedRender(<MainScreen />);
-    fireEvent.click(result.getByLabelText('Global navigation'));
-    const sideBar = result.getByTestId('sidebar');
-    expect(sideBar).toHaveClass('pf-m-collapsed');
-    expect(sideBar).not.toHaveClass('pf-m-expanded');
-  });
-  test('should render the proper components through navigation', async () => {
-    const { result } = connectedRender(<MainScreen />);
-    expect(result.getByText(/landing-page-mock/)).toBeInTheDocument();
-    fireEvent.click(result.getByText('Cowsay'));
-    expect(result.getByText(/cowsay-mock/)).toBeInTheDocument();
   });
 });
