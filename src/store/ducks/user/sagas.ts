@@ -1,20 +1,39 @@
-import { call, put, select } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { AnyAction } from 'redux';
 
 import api from '../../../services/api';
-import { AppState } from '../..';
-import { loadSuccess, loadFailure } from './actions';
+import {
+  loadSuccess,
+  loadFailure,
+  loginSuccess,
+  loginFailure,
+  updateTokenSuccess,
+  updateTokenFailure,
+} from './actions';
+import { UserTypes } from './types';
 
-const getToken = (state: AppState) => state.user.current.token;
+function* login(action: AnyAction) {
+  try {
+    yield put(loginSuccess(action.payload));
+    api.defaults.headers.Authorization = `Bearer ${action.payload.token}`;
+  } catch (err) {
+    yield put(loginFailure());
+  }
+}
 
-export default function* load(action: AnyAction) {
+function* tokenUpdate(action: AnyAction) {
+  try {
+    yield put(updateTokenSuccess(action.payload));
+    api.defaults.headers.Authorization = `Bearer ${action.payload}`;
+  } catch (err) {
+    yield put(updateTokenFailure());
+  }
+}
+
+function* load(action: AnyAction) {
   const { parameters } = action.payload;
   try {
-    const token: string = yield select(getToken);
     const response: { [key: string]: any } = yield call(api.get, 'auth/user', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
       params: parameters,
     });
     yield put(loadSuccess(response.data));
@@ -22,3 +41,11 @@ export default function* load(action: AnyAction) {
     yield put(loadFailure());
   }
 }
+
+const userSagas = [
+  takeLatest(UserTypes.LOAD_REQUEST, load),
+  takeLatest(UserTypes.TOKEN_UPDATE, tokenUpdate),
+  takeLatest(UserTypes.LOGIN_REQUEST, login),
+];
+
+export default userSagas;
