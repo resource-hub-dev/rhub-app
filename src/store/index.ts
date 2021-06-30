@@ -7,10 +7,12 @@ import { UserState } from './ducks/user/types';
 
 import rootReducer from './ducks/rootReducer';
 import rootSaga from './ducks/rootSaga';
+import { LabPolicyState } from './ducks/lab/policy/types';
 
 export interface AppState {
   cowsay: CowsayState;
   user: UserState;
+  labPolicy: LabPolicyState;
 }
 
 const sagaMiddleware = createSagaMiddleware();
