@@ -31,10 +31,31 @@ const reducer: Reducer<UserState> = (state = INITIAL_STATE, action) => {
     case UserTypes.LOGIN_REQUEST:
       return {
         ...state,
+        loading: true,
+        error: false,
+      };
+    case UserTypes.LOGIN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
         current: modelMapper(action.payload),
         loggedIn: true,
+      };
+    case UserTypes.TOKEN_UPDATE:
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case UserTypes.TOKEN_UPDATE_SUCCESS:
+      return {
+        ...state,
         loading: false,
         error: false,
+        current: {
+          ...state.current,
+          token: action.payload,
+        },
       };
     case UserTypes.LOAD_REQUEST:
       return { ...state, loading: true };
@@ -46,6 +67,8 @@ const reducer: Reducer<UserState> = (state = INITIAL_STATE, action) => {
         data: action.payload.reduce(modelReducer, {}),
       };
     case UserTypes.LOAD_FAILURE:
+    case UserTypes.TOKEN_UPDATE_FAILURE:
+    case UserTypes.LOGIN_FAILURE:
       return { ...state, error: true };
     default:
       return state;

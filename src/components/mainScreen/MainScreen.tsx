@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch } from 'react-redux';
-import { loginRequest } from '../../store/ducks/user/actions';
+import { loginRequest, updateToken } from '../../store/ducks/user/actions';
 
 import PageWrapper from './PageWrapper';
 import Cowsay from '../cowsay/Cowsay';
@@ -19,6 +19,18 @@ const MainScreen: React.FC = () => {
   const { keycloak, initialized } = useKeycloak();
 
   const dispatch = useDispatch();
+  keycloak.onTokenExpired = () => {
+    keycloak
+      .updateToken(5)
+      .then((refreshed) => {
+        if (refreshed) {
+          dispatch(updateToken(keycloak.token));
+        }
+      })
+      .catch(() => {
+        keycloak.logout();
+      });
+  };
   useEffect(() => {
     if (keycloak.authenticated) {
       const userProfile: any = keycloak.tokenParsed; // type is any because Keycloak defines this very loosely
