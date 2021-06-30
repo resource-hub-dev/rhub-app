@@ -11,9 +11,9 @@ describe('user reducer', () => {
     expect(
       reducer(INITIAL_STATE, actions.loginRequest(mocks.responseAPI))
     ).toEqual({
-      current: mocks.loadedUser,
-      loggedIn: true,
-      loading: false,
+      current: mocks.emptyUser,
+      loggedIn: false,
+      loading: true,
       error: false,
       data: {},
     });
