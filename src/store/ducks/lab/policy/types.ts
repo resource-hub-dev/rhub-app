@@ -45,8 +45,16 @@ export interface LabPolicyModel {
   };
 }
 
+export interface Error {
+  detail: string;
+  status: number;
+  title: string;
+  type: string;
+}
+
 export interface LabPolicyState {
   readonly data: { [key: number]: LabPolicyModel };
   readonly loading: boolean;
+  readonly errMsg: Error | {};
   readonly error: boolean;
 }
