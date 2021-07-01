@@ -55,7 +55,6 @@ function* remove(action: AnyAction) {
     yield call(api.delete, `/policies/${policyId}`);
     yield put(deleteSuccess(policyId));
   } catch (err) {
-    console.log(err.response);
     yield put(deleteFailure(err.response.data));
   }
 }
