@@ -37,6 +37,7 @@ export const INITIAL_STATE: LabPolicyState = {
   data: {},
   loading: false,
   error: false,
+  errMsg: {},
 };
 
 const reducer: Reducer<LabPolicyState> = (state = INITIAL_STATE, action) => {
@@ -46,6 +47,7 @@ const reducer: Reducer<LabPolicyState> = (state = INITIAL_STATE, action) => {
         ...state,
         loading: true,
         error: false,
+        errMsg: {},
       };
     case LabPolicyTypes.CREATE_REQUEST:
     case LabPolicyTypes.DELETE_REQUEST:
@@ -54,6 +56,7 @@ const reducer: Reducer<LabPolicyState> = (state = INITIAL_STATE, action) => {
         ...state,
         loading: true,
         error: false,
+        errMsg: {},
       };
     case LabPolicyTypes.LOAD_SUCCESS: {
       if (action.payload.policyId === 'all') {
@@ -89,6 +92,7 @@ const reducer: Reducer<LabPolicyState> = (state = INITIAL_STATE, action) => {
     case LabPolicyTypes.UPDATE_FAILURE:
       return {
         ...state,
+        errMsg: action.payload,
         loading: false,
         error: true,
       };

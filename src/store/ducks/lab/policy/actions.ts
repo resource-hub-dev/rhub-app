@@ -1,5 +1,5 @@
 import { action } from 'typesafe-actions';
-import { LabPolicyTypes, LabPolicyData } from './types';
+import { LabPolicyTypes, LabPolicyData, Error } from './types';
 
 export const loadRequest = (
   policyId: number | 'all',
@@ -15,21 +15,24 @@ export const loadSuccess = (
   data: LabPolicyData | LabPolicyData[]
 ) => action(LabPolicyTypes.LOAD_SUCCESS, { policyId, data });
 
-export const loadFailure = () => action(LabPolicyTypes.LOAD_FAILURE);
+export const loadFailure = (err: Error) =>
+  action(LabPolicyTypes.LOAD_FAILURE, err);
 
 export const createRequest = (payload: LabPolicyData) =>
   action(LabPolicyTypes.CREATE_REQUEST, payload);
 
 export const createSuccess = () => action(LabPolicyTypes.CREATE_SUCCESS);
 
-export const createFailure = () => action(LabPolicyTypes.CREATE_FAILURE);
+export const createFailure = (err: Error) =>
+  action(LabPolicyTypes.CREATE_FAILURE, err);
 
 export const updateRequest = (policyId: number, data: LabPolicyData) =>
   action(LabPolicyTypes.UPDATE_REQUEST, { policyId, data });
 
 export const updateSuccess = () => action(LabPolicyTypes.UPDATE_SUCCESS);
 
-export const updateFailure = () => action(LabPolicyTypes.UPDATE_FAILURE);
+export const updateFailure = (err: Error) =>
+  action(LabPolicyTypes.UPDATE_FAILURE, err);
 
 export const deleteRequest = (policyId: number) =>
   action(LabPolicyTypes.DELETE_REQUEST, { policyId });
@@ -37,4 +40,5 @@ export const deleteRequest = (policyId: number) =>
 export const deleteSuccess = (policyId: number) =>
   action(LabPolicyTypes.DELETE_SUCCESS, { policyId });
 
-export const deleteFailure = () => action(LabPolicyTypes.DELETE_FAILURE);
+export const deleteFailure = (err: Error) =>
+  action(LabPolicyTypes.DELETE_FAILURE, err);
