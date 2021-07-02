@@ -117,8 +117,8 @@ const PageWrapper: React.FC<Props> = (props: Props) => {
       groupId="lab_owner-1"
     >
       <NavItem
-        preventDefault
-        to="admin"
+        // preventDefault
+        to="/admin_policy"
         groupId="lab_owner-1"
         itemId="admin-1"
         isActive={activeItem === 'admin-1'}

@@ -6,6 +6,7 @@ import { loginRequest, updateToken } from '../../store/ducks/user/actions';
 
 import PageWrapper from './PageWrapper';
 import Cowsay from '../cowsay/Cowsay';
+import Policies from '../policies/Policies';
 import LandingPage from '../landingPage/LandingPage';
 import PageNotFound from '../pageNotFound/PageNotFound';
 import { UserData } from '../../store/ducks/user/types';
@@ -109,7 +110,7 @@ const MainScreen: React.FC = () => {
         {generatePage({ component: <Cowsay />, isAdmin: true })}
       </Route>
       <Route exact path="/admin_policy">
-        {generatePage({ component: <Cowsay />, isAdmin: true })}
+        {generatePage({ component: <Policies />, isAdmin: true })}
       </Route>
       <Route path="*" component={PageNotFound} />
     </Switch>
