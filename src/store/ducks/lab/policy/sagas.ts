@@ -40,9 +40,7 @@ function* create(action: AnyAction) {
 function* update(action: AnyAction) {
   const { policyId, data } = action.payload;
   try {
-    yield call(api.patch, `/policies/${policyId}`, {
-      data,
-    });
+    yield call(api.patch, `/policies/${policyId}`, data);
     yield put(updateSuccess());
   } catch (err) {
     yield put(updateFailure(err.response.data));
