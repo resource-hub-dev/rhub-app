@@ -23,9 +23,9 @@ const labPolicyDataToState = (
       constraint: {
         schedAvail: item.constraint?.sched_avail || null,
         servAvail: item.constraint?.serv_avail || null,
-        consumption: item.constraint?.consumption || null,
+        limit: item.constraint?.limit || null,
         density: item.constraint?.density || null,
-        attribute: item.constraint?.attribute || null,
+        tag: item.constraint?.tag || null,
         cost: item.constraint?.cost || null,
         location: item.constraint?.location || null,
       },

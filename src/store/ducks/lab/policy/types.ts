@@ -22,9 +22,9 @@ export interface LabPolicyData {
   constraint: {
     sched_avail: string;
     serv_avail: string;
-    consumption: string;
+    limit: string;
     density: string;
-    attribute: string;
+    tag: string;
     cost: string;
     location: string;
   };
@@ -37,9 +37,9 @@ export interface LabPolicyModel {
   constraint: {
     schedAvail: string;
     servAvail: string;
-    consumption: string;
+    limit: string;
     density: string;
-    attribute: string;
+    tag: string;
     cost: string;
     location: string;
   };
