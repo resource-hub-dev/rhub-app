@@ -35,8 +35,8 @@ export interface LabPolicyModel {
   name: string;
   department: string;
   constraint: {
-    schedAvail: string;
-    servAvail: string;
+    sched_avail: string;
+    serv_avail: string;
     limit: string;
     density: string;
     tag: string;

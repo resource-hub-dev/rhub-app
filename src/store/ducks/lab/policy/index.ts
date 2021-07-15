@@ -21,8 +21,8 @@ const labPolicyDataToState = (
       name: item.name,
       department: item.department,
       constraint: {
-        schedAvail: item.constraint?.sched_avail || null,
-        servAvail: item.constraint?.serv_avail || null,
+        sched_avail: item.constraint?.sched_avail || null,
+        serv_avail: item.constraint?.serv_avail || null,
         limit: item.constraint?.limit || null,
         density: item.constraint?.density || null,
         tag: item.constraint?.tag || null,
@@ -84,6 +84,8 @@ const reducer: Reducer<LabPolicyState> = (state = INITIAL_STATE, action) => {
       delete data[policyId];
       return {
         ...state,
+        loading: false,
+        error: false,
         data,
       };
     case LabPolicyTypes.LOAD_FAILURE:

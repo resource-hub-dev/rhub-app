@@ -61,11 +61,15 @@ const Policies: React.FC = () => {
   const [policyId, setPolicyId] = useState<number | undefined>(undefined);
   const [captureError, setCaptureError] = useState<boolean>(false);
 
-  const currentPolicy = policyView[Number(policyId)];
-  const policyList = Object.values(policyView);
-
   const [page, setPage] = useState<number>(1);
   const [perPage, setPerPage] = useState<number>(10);
+
+  const currentPolicy = policyView[Number(policyId)];
+  const policyList = Object.values(policyView);
+  const policyPaginated = policyList.slice(
+    page * perPage - perPage,
+    page * perPage
+  );
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -95,7 +99,6 @@ const Policies: React.FC = () => {
         setValidated('error');
       }
     }
-    dispatch(loadRequest('all'));
   };
 
   const editPolicy = (): void => {
@@ -103,7 +106,6 @@ const Policies: React.FC = () => {
       try {
         setCaptureError(true);
         dispatch(updateRequest(Number(policyId), JSON.parse(editedValue)));
-        dispatch(loadRequest('all'));
       } catch (e) {
         if (e.name === 'SyntaxError') {
           setCaptureError(false);
@@ -118,7 +120,6 @@ const Policies: React.FC = () => {
     if (policyId) {
       setCaptureError(true);
       dispatch(deleteRequest(policyId));
-      dispatch(loadRequest('all'));
     }
   };
 
@@ -175,6 +176,9 @@ const Policies: React.FC = () => {
   };
 
   const errorCallback = React.useCallback(() => {
+    if (policyPaginated.length === 0 && page > 1) {
+      setPage(page - 1);
+    }
     if (captureError) {
       if (loading === false) {
         if (error === true) {
@@ -188,14 +192,24 @@ const Policies: React.FC = () => {
           if (isModalOpen) {
             handleModalToggle();
           }
-
+          dispatch(loadRequest('all'));
           setIsExpanded(false);
           setPolicyId(undefined);
         }
         setCaptureError(false);
       }
     }
-  }, [captureError, errMsg, error, handleModalToggle, isModalOpen, loading]);
+  }, [
+    captureError,
+    errMsg,
+    error,
+    handleModalToggle,
+    isModalOpen,
+    loading,
+    dispatch,
+    page,
+    policyPaginated,
+  ]);
 
   const setError = (): void => {
     errorCallback();
@@ -269,29 +283,27 @@ const Policies: React.FC = () => {
         selectedDataListItemId={String(policyId)}
         onSelectDataListItem={onSelectDataListItem}
       >
-        {policyList
-          .slice(page * perPage - perPage, page * perPage)
-          .map((d: any) => (
-            <DataListItem
-              aria-label={`data-list-item-${String(d.id)}-in-card`}
-              id={String(d.id)}
-            >
-              <DataListItemRow>
-                <DataListItemCells
-                  dataListCells={[
-                    <DataListCell>
-                      <div>{d.name}</div>
-                      <div>{d.department}</div>
-                    </DataListCell>,
-                  ]}
-                />
-              </DataListItemRow>
-            </DataListItem>
-          ))}
+        {policyPaginated.map((d: any) => (
+          <DataListItem
+            aria-label={`data-list-item-${String(d.id)}-in-card`}
+            id={String(d.id)}
+          >
+            <DataListItemRow>
+              <DataListItemCells
+                dataListCells={[
+                  <DataListCell>
+                    <div>{d.name}</div>
+                    <div>{d.department}</div>
+                  </DataListCell>,
+                ]}
+              />
+            </DataListItemRow>
+          </DataListItem>
+        ))}
       </DataList>
     </>
   );
-  if (loading && !currentPolicy) {
+  if (loading && !currentPolicy && !captureError) {
     return (
       <div>
         <h3>Loading...</h3>
