@@ -4,6 +4,9 @@ set -ex
 
 envsubst ' \
 	$RHUB_API_URL \
+	$RHUB_KEYCLOAK_URL \
+	$KEYCLOAK_REALM \
+	$KEYCLOAK_CLIENT \
 	' \
 	< /opt/app-root/src/index.template.html > /opt/app-root/src/index.html
 
