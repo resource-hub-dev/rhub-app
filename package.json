@@ -70,6 +70,7 @@
   "dependencies": {
     "@patternfly/react-core": "^4.32.1",
     "@patternfly/react-icons": "^4.7.18",
+    "@patternfly/react-table": "^4.29.58",
     "@react-keycloak/web": "^3.4.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
