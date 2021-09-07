@@ -102,7 +102,6 @@ const MainScreen: React.FC = () => {
       <Route exact path="/">
         {generatePage({ component: <LandingPage />, isPublic: true })}
       </Route>
-      <Route exact path="/cowsay" component={Cowsay} />
       <Route exact path="/resources">
         {generatePage({ component: <Cowsay />, isUser: true })}
       </Route>
