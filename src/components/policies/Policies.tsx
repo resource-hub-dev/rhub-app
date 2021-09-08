@@ -45,9 +45,9 @@ import {
   createRequest,
   deleteRequest,
   updateRequest,
-} from '../../store/ducks/lab/policy/actions';
+} from '@ducks/lab/policy/actions';
 
-import { AppState } from '../../store';
+import { AppState } from '@store';
 
 const Policies: React.FC = () => {
   const dispatch = useDispatch();

@@ -1,11 +1,13 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 import * as matchers from 'redux-saga-test-plan/matchers';
-import api from '../../../services/api';
+
+import api from '@services/api';
+import { AppState } from '@store';
+
 import rootSaga from '../rootSaga';
 import * as actions from './actions';
 import * as mocks from './mocks';
-import { AppState } from '../..';
 
 describe('user saga', () => {
   test('loads users information to the store', () => {

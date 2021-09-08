@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { PageSection, PageSectionVariants } from '@patternfly/react-core';
 
-import { loadRequest } from '../../store/ducks/cowsay/actions';
-import { AppState } from '../../store';
+import { loadRequest } from '@ducks/cowsay/actions';
+import { AppState } from '@store';
 
 const Cowsay: React.FC = () => {
   const dispatch = useDispatch();

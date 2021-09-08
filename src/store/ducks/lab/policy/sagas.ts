@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { AnyAction } from 'redux';
 
-import api from '../../../../services/api';
+import api from '@services/api';
 import {
   loadSuccess,
   loadFailure,

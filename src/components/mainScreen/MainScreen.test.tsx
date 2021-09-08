@@ -1,9 +1,10 @@
 import React from 'react';
 import * as keycloakpackage from '@react-keycloak/web';
 
+import * as keycloakMock from '@services/mocks';
+
 import { connectedRender, fireEvent } from '../../tests/testUtils';
 import MainScreen from './MainScreen';
-import * as keycloakMock from '../../services/mocks';
 
 jest.mock('../cowsay/Cowsay', () => () => 'cowsay-mock');
 jest.mock('../landingPage/LandingPage', () => () => 'landing-page-mock');

@@ -6,6 +6,26 @@
     "allowJs": true,
     "jsx": "react",
     "baseUrl": "./",
+    "paths": {
+      "@mocks/*": [
+        "__mocks__/*"
+      ],
+      "@tests/*": [
+        "__tests__/*"
+      ],
+      "@ducks/*": [
+        "src/store/ducks/*"
+      ],
+      "@store": [
+        "src/store/index"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@services/*": [
+        "src/services/*"
+      ],
+    },
     "sourceMap": true,
     "outDir": "dist",
     "removeComments": true,

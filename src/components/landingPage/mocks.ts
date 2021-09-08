@@ -1,4 +1,4 @@
-import { UserState } from '../../store/ducks/user/types';
+import { UserState } from '@ducks/user/types';
 
 export const initialState: ExampleState = {
   user: {

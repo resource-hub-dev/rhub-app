@@ -1,7 +1,8 @@
 import React from 'react';
+
+import { CowsayTypes } from '@ducks/cowsay/types';
 import { connectedRender } from '../../tests/testUtils';
 import Cowsay from './Cowsay';
-import { CowsayTypes } from '../../store/ducks/cowsay/types';
 
 const cowsayState = {
   cowsay: {
