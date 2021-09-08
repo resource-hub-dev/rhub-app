@@ -1,8 +1,10 @@
 import React from 'react';
 import * as keycloakpackage from '@react-keycloak/web';
+
+import * as keycloakMock from '@services/mocks';
+
 import { connectedRender } from '../../tests/testUtils';
 import * as mocks from './mocks';
-import * as keycloakMock from '../../services/mocks';
 import LandingPage from './LandingPage';
 
 // let's mock it another way

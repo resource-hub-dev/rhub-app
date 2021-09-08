@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch } from 'react-redux';
-import { loginRequest, updateToken } from '../../store/ducks/user/actions';
+
+import { loginRequest, updateToken } from '@ducks/user/actions';
+import { UserData } from '@ducks/user/types';
 
 import PageWrapper from './PageWrapper';
 import Cowsay from '../cowsay/Cowsay';
 import Policies from '../policies/Policies';
 import LandingPage from '../landingPage/LandingPage';
 import PageNotFound from '../pageNotFound/PageNotFound';
-import { UserData } from '../../store/ducks/user/types';
 
 const MainScreen: React.FC = () => {
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);

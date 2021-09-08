@@ -1,7 +1,7 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 import * as matchers from 'redux-saga-test-plan/matchers';
-import api from '../../../services/api';
+import api from '@services/api';
 import load from './sagas';
 import * as actions from './actions';
 import mocks from './mocks';
