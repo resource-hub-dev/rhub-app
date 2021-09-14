@@ -1,7 +1,7 @@
 {
-  "name": "dandelion",
+  "name": "rhub-app",
   "version": "1.0.0",
-  "description": "Dandelion | Your favorite React / PatternFly seed",
+  "description": "Resource Hub UI",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/beaker-project/dandelion.git"
@@ -85,5 +85,8 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-saga": "^1.1.3",
     "typesafe-actions": "^5.1.0"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
   }
 }
