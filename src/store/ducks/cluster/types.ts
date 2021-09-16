@@ -23,21 +23,6 @@ export enum ClusterTypes {
   UPDATE_FAILURE = '@cluster/UPDATE_FAILURE',
 }
 
-// // Data Types - Returned by the API
-// export interface ClusterData {
-//   id: number;
-//   user_id: number;
-//   created: string;
-//   template_id: number;
-//   region_id: number;
-//   status: string;
-//   group_id: number | null;
-//   name: string;
-//   description: string;
-//   reservation_expiration: string | null;
-//   lifespan_expiration: string | null;
-// }
-
 // Model Types
 export interface Cluster {
   id: number;
@@ -51,6 +36,12 @@ export interface Cluster {
   description: string;
   reservation_expiration: string | null;
   lifespan_expiration: string | null;
+  templateName: string;
+  groupName: string | null;
+  regionName: string;
+  userName: string;
+  userEmail: string;
+  statusName: string;
 }
 
 export interface CluserHost {

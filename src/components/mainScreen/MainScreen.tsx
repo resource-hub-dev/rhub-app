@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { loginRequest, updateToken } from '@ducks/user/actions';
 import { UserData } from '@ducks/user/types';
+import ClusterDetails from '@components/clusterDetails/ClusterDetails';
 
 import PageWrapper from './PageWrapper';
 import Cowsay from '../cowsay/Cowsay';
@@ -103,6 +104,10 @@ const MainScreen: React.FC = () => {
       <Route exact path="/">
         {generatePage({ component: <LandingPage />, isPublic: true })}
       </Route>
+      <Route exact path="/clusters/:clusterId">
+        {generatePage({ component: <ClusterDetails />, isPublic: true })}
+      </Route>
+      <Route exact path="/cowsay" component={Cowsay} />
       <Route exact path="/resources">
         {generatePage({ component: <Cowsay />, isUser: true })}
       </Route>

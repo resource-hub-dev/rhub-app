@@ -22,7 +22,7 @@ import {
 } from '@patternfly/react-core';
 import { SearchIcon } from '@patternfly/react-icons';
 
-interface RowPair {
+export interface RowPair {
   // interface for rows: parent-child pairs
   // example row:
   // {
