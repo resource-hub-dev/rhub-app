@@ -69,6 +69,7 @@
     "webpack-dev-server": "^3.11.1"
   },
   "dependencies": {
+    "@patternfly/react-charts": "^6.15.20",
     "@patternfly/react-core": "^4.32.1",
     "@patternfly/react-icons": "^4.7.18",
     "@patternfly/react-table": "^4.29.58",
