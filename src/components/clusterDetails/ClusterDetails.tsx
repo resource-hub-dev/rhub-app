@@ -192,7 +192,7 @@ const ClusterDetails: React.FC = () => {
                     // user.isAdmin ||
                     reservation_expiration !== null && clusterAccess
                   }
-                  showLifespanBtn={keycloak.hasRealmRole("rhub-admin")}
+                  showLifespanBtn={keycloak.hasRealmRole('rhub-admin')}
                 />
               </GridItem>
               <GridItem span={4} rowSpan={8} className="ql-card-layout">

@@ -44,7 +44,7 @@ const MainScreen: React.FC = () => {
         token: keycloak.token!,
       };
       dispatch(loginRequest(user));
-    };
+    }
   }, [dispatch, keycloak.token, keycloak.authenticated, keycloak.tokenParsed]);
 
   const onSideNavToggle = (): void => setIsSideNavOpen(!isSideNavOpen);
@@ -107,7 +107,11 @@ const MainScreen: React.FC = () => {
       <PublicRoute exact path="/login">
         {generatePage({ component: <Login />, isPublic: true })}
       </PublicRoute>
-      <PrivateRoute roles={[]} exact path="/resources/quickcluster/cluster/:clusterId">
+      <PrivateRoute
+        roles={[]}
+        exact
+        path="/resources/quickcluster/cluster/:clusterId"
+      >
         {generatePage({ component: <ClusterDetails />, isPublic: true })}
       </PrivateRoute>
       <Route exact path="/cowsay" component={Cowsay} />
@@ -117,11 +121,7 @@ const MainScreen: React.FC = () => {
       <Route exact path="/admin">
         {generatePage({ component: <Cowsay />, isAdmin: true })}
       </Route>
-      <PrivateRoute
-        roles={['policy-owner']}
-        exact
-        path="/admin_policy"
-      >
+      <PrivateRoute roles={['policy-owner']} exact path="/admin_policy">
         {generatePage({ component: <Policies />, isAdmin: true })}
       </PrivateRoute>
       <Route path="*" component={PageNotFound} />
