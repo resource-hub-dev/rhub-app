@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable  import/prefer-default-export */
+/* eslint-disable react/jsx-props-no-spreading, import/prefer-default-export, no-nested-ternary, react/jsx-curly-newline  */
 
 import { StrikethroughIconConfig } from '@patternfly/react-icons';
 import { useKeycloak } from '@react-keycloak/web';
@@ -16,14 +15,13 @@ export const Login: React.FC = () => {
   const { keycloak } = useKeycloak();
 
   keycloak.login();
-  return (<></>);
+  return <></>;
 };
 
 export const PublicRoute: React.FC<Props & Record<string, any>> = ({
   children,
-  isAuthenticated,
   ...rest
-}) => {
+}: Props) => {
   const { keycloak } = useKeycloak();
   return (
     <Route
@@ -69,7 +67,9 @@ export const PrivateRoute: React.FC<Props & Record<string, any>> = ({
         children
       ) : !keycloak.authenticated ? (
         <Redirect to={{ pathname: '/login' }} />
-      ): <Redirect to={{ pathname: '/' }} />}
+      ) : (
+        <Redirect to={{ pathname: '/' }} />
+      )}
     </Route>
   );
 };
