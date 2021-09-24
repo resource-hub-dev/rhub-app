@@ -15,6 +15,8 @@ function* load(action: AnyAction): any {
   try {
     const response = yield call(api.get, queryString, { params: parameters });
     yield put(actions.loadSuccess(clusterId, response.data));
+    yield put(actions.loadHostRequest(clusterId));
+    yield put(actions.loadEventRequest(clusterId));
   } catch (err) {
     yield put(actions.loadFailure());
   }
@@ -24,7 +26,7 @@ function* loadHost(action: AnyAction): any {
   try {
     const clusterId = action.payload;
     const response = yield call(api.get, `lab/cluster/${clusterId}/hosts`);
-    yield put(actions.loadHostSuccess(response.data));
+    yield put(actions.loadHostSuccess(clusterId, response.data));
   } catch (err) {
     yield put(actions.loadHostFailure());
   }
@@ -46,7 +48,7 @@ function* loadClusterEvents(action: AnyAction): any {
     const response = yield call(api.get, `lab/cluster/${clusterId}/events`, {
       params: parameters,
     });
-    yield put(actions.loadStdoutSuccess(response.data));
+    yield put(actions.loadEventSuccess(response.data));
   } catch (err) {
     yield put(actions.loadEventFailure());
   }

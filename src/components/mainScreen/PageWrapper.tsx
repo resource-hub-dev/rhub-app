@@ -95,18 +95,18 @@ const PageWrapper: React.FC<Props> = (props: Props) => {
   );
   const devNavs = (
     <NavExpandable
-      title="Link1"
+      title="QuickCluster"
       isActive={activeGroup === 'dev_itm-1'}
       groupId="dev_itm-1"
     >
       <NavItem
         preventDefault
-        to="dev"
+        to="/resources/quickcluster/shared"
         groupId="dev_itm-1"
         itemId="dev_subitm-1"
         isActive={activeItem === 'dev_subitm-1'}
       >
-        Dev Link 1
+        Shared Clusters
       </NavItem>
     </NavExpandable>
   );

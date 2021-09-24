@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { loginRequest, updateToken } from '@ducks/user/actions';
 import { UserData } from '@ducks/user/types';
-import ClusterDetails from '@components/clusterDetails/ClusterDetails';
+import { Login, PrivateRoute, PublicRoute } from './CustomRoutes';
 
 import PageWrapper from './PageWrapper';
 import Cowsay from '../cowsay/Cowsay';
@@ -18,7 +18,6 @@ const MainScreen: React.FC = () => {
   const [topNavActive, setTopNavActive] = useState<string | number>(0);
   const [activeGroup, setActiveGroup] = useState<number | string>('');
   const [activeItem, setActiveItem] = useState<number | string>('');
-
   const { keycloak, initialized } = useKeycloak();
 
   const dispatch = useDispatch();
@@ -44,7 +43,7 @@ const MainScreen: React.FC = () => {
         token: keycloak.token!,
       };
       dispatch(loginRequest(user));
-    }
+    };
   }, [dispatch, keycloak.token, keycloak.authenticated, keycloak.tokenParsed]);
 
   const onSideNavToggle = (): void => setIsSideNavOpen(!isSideNavOpen);
@@ -104,9 +103,9 @@ const MainScreen: React.FC = () => {
       <Route exact path="/">
         {generatePage({ component: <LandingPage />, isPublic: true })}
       </Route>
-      <Route exact path="/clusters/:clusterId">
-        {generatePage({ component: <ClusterDetails />, isPublic: true })}
-      </Route>
+      <PublicRoute exact path="/login">
+        {generatePage({ component: <Login />, isPublic: true })}
+      </PublicRoute>
       <Route exact path="/cowsay" component={Cowsay} />
       <Route exact path="/resources">
         {generatePage({ component: <Cowsay />, isUser: true })}
@@ -114,9 +113,13 @@ const MainScreen: React.FC = () => {
       <Route exact path="/admin">
         {generatePage({ component: <Cowsay />, isAdmin: true })}
       </Route>
-      <Route exact path="/admin_policy">
+      <PrivateRoute
+        roles={['policy-owner']}
+        exact
+        path="/admin_policy"
+      >
         {generatePage({ component: <Policies />, isAdmin: true })}
-      </Route>
+      </PrivateRoute>
       <Route path="*" component={PageNotFound} />
     </Switch>
   );
