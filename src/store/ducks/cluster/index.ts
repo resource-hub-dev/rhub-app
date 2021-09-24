@@ -2,26 +2,32 @@
 /* eslint-disable no-case-declarations */
 import { Reducer } from 'redux';
 
-import { Cluster, ClusterState, ClusterTypes, ClusterEvent } from './types';
+import {
+  ClusterData,
+  ClusterState,
+  ClusterTypes,
+  ClusterEventData,
+  ClusterEventType,
+} from './types';
 
 export const INITIAL_STATE: ClusterState = {
   data: {},
   stdOutput: null,
   events: [],
-  hosts: [],
   loading: false,
   error: false,
 };
 
-const clusterDataToState = (data = {}, item: Cluster) => ({
+const clusterDataToState = (data = {}, item: ClusterData) => ({
   ...data,
   [item.id]: {
     id: item.id,
     name: item.name,
     description: item.description,
-    group_id: item.group_id,
-    region_id: item.region_id,
-    user_id: item.user_id,
+    group_name: item.group_name,
+    region_name: item.region_name,
+    user_name: item.user_name,
+    hosts: [],
     status: item.status,
     created: new Date(Date.parse(item.created)),
     reservation_expiration: item.reservation_expiration
@@ -33,8 +39,35 @@ const clusterDataToState = (data = {}, item: Cluster) => ({
   },
 });
 
+const clusterEventDataToState = (item: ClusterEventData) => {
+  let status: string | undefined = '';
+  switch (item.type) {
+    case ClusterEventType.TOWER_JOB: {
+      status = item.status;
+      break;
+    }
+    case ClusterEventType.LIFESPAN_CHANGE: {
+      status = 'Lifespan Extended';
+      break;
+    }
+    default: {
+      status = 'Reservation Extended';
+      break;
+    }
+  }
+  return {
+    id: item.id,
+    date: item.date,
+    cluster_id: item.cluster_id,
+    tower_id: item.tower_id,
+    tower_job_id: item.tower_job_id,
+    status,
+    user_id: item.user_id,
+  };
+};
+
 const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
-  let newEvents: ClusterEvent[] = [];
+  let newEvents: ClusterEventData[] = [];
   switch (action.type) {
     case ClusterTypes.LOAD_REQUEST:
       return { ...state, loading: true, data: {} };
@@ -64,15 +97,24 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loading: false,
-        event: newEvents,
+        events: newEvents.map(clusterEventDataToState),
       };
     }
-    case ClusterTypes.LOAD_HOST_SUCCESS:
+    case ClusterTypes.LOAD_HOST_SUCCESS: {
+      const { clusterId, hosts } = action.payload;
       return {
         ...state,
         loading: false,
-        hosts: action.payload,
+        data: {
+          ...state.data,
+          [clusterId]: {
+            ...state.data[clusterId],
+            hosts,
+          },
+        },
       };
+    }
+
     case ClusterTypes.LOAD_STDOUT_SUCCESS:
       return {
         ...state,

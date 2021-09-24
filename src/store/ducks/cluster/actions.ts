@@ -5,8 +5,8 @@ import {
   Cluster,
   ClusterCreateData,
   ClusterUpdateData,
-  CluserHost,
-  ClusterEvent,
+  ClusterHost,
+  ClusterEventData,
 } from './types';
 
 export const deleteRequest = (
@@ -67,12 +67,10 @@ export const createClusterSuccess = () => action(ClusterTypes.CREATE_SUCCESS);
 export const createClusterFailure = () => action(ClusterTypes.CREATE_FAILURE);
 
 export const loadHostRequest = (clusterId: number) =>
-  action(ClusterTypes.LOAD_HOST_SUCCESS, {
-    clusterId,
-  });
+  action(ClusterTypes.LOAD_HOST_REQUEST, clusterId);
 
-export const loadHostSuccess = (payload: CluserHost[]) =>
-  action(ClusterTypes.LOAD_HOST_SUCCESS, payload);
+export const loadHostSuccess = (clusterId: number, hosts: ClusterHost[]) =>
+  action(ClusterTypes.LOAD_HOST_SUCCESS, { clusterId, hosts });
 
 export const loadHostFailure = () => action(ClusterTypes.LOAD_HOST_FAILURE);
 
@@ -97,7 +95,7 @@ export const loadEventRequest = (
     parameters: parameters || {},
   });
 
-export const loadEventSuccess = (payload: ClusterEvent[]) =>
+export const loadEventSuccess = (payload: ClusterEventData[]) =>
   action(ClusterTypes.LOAD_EVENTS_SUCCESS, payload);
 
 export const loadEventFailure = () => action(ClusterTypes.LOAD_EVENTS_FAILURE);

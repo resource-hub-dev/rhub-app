@@ -22,9 +22,8 @@ export enum ClusterTypes {
   UPDATE_SUCCESS = '@cluster/UPDATE_SUCCESS',
   UPDATE_FAILURE = '@cluster/UPDATE_FAILURE',
 }
-
-// Model Types
-export interface Cluster {
+// Data Tyoes
+export interface ClusterData {
   id: number;
   user_id: number;
   created: string;
@@ -37,19 +36,9 @@ export interface Cluster {
   reservation_expiration: string | null;
   lifespan_expiration: string | null;
   templateName: string;
-  groupName: string | null;
-  regionName: string;
-  userName: string;
-  userEmail: string;
-  statusName: string;
-}
-
-export interface CluserHost {
-  // Tower types
-  id: string;
-  cluster_id: string;
-  fqdn: string;
-  ipaddr: string[];
+  group_name: string | null;
+  region_name: string;
+  user_name: string;
 }
 
 export enum ClusterEventType {
@@ -58,7 +47,7 @@ export enum ClusterEventType {
   LIFESPAN_CHANGE = 'lifespan_change',
 }
 
-export interface ClusterEvent {
+export interface ClusterEventData {
   id: string;
   date: string;
   user_id: string;
@@ -72,6 +61,44 @@ export interface ClusterEvent {
   status?: string;
   old_value?: string;
   new_value?: string;
+}
+// Model Types
+export interface Cluster {
+  id: number;
+  created: string;
+  template_id: number;
+  hosts: ClusterHost[];
+  status: string;
+  name: string;
+  description: string;
+  reservation_expiration: Date | null;
+  lifespan_expiration: Date | null;
+  templateName: string;
+  group_name: string | null;
+  region_name: string;
+  user_name: string;
+}
+
+export interface ClusterHost {
+  // Tower types
+  id: string;
+  cluster_id: string;
+  fqdn: string;
+  ipaddr: string[];
+  num_vcpus: number;
+  ram_mb: number;
+  num_volumes: number;
+  volumes_gb: number;
+}
+
+export interface ClusterEvent {
+  id: string;
+  date: string;
+  cluster_id: string;
+  tower_id?: number | null;
+  tower_job_id?: number | null;
+  status?: string | null;
+  user_id: string;
 }
 
 export interface ClusterCreateData {
@@ -92,7 +119,7 @@ export interface ClusterUpdateData {
 export interface ClusterState {
   readonly data: { [key: number]: Cluster };
   readonly stdOutput: string | null;
-  readonly hosts: CluserHost[];
+  // readonly hosts: ClusterHost[];
   readonly events: ClusterEvent[];
   readonly loading: boolean;
   readonly error: boolean;
