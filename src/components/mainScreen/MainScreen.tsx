@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { loginRequest, updateToken } from '@ducks/user/actions';
 import { UserData } from '@ducks/user/types';
+import ClusterDetails from '@components/clusterDetails/ClusterDetails';
 import { Login, PrivateRoute, PublicRoute } from './CustomRoutes';
 
 import PageWrapper from './PageWrapper';
@@ -106,6 +107,9 @@ const MainScreen: React.FC = () => {
       <PublicRoute exact path="/login">
         {generatePage({ component: <Login />, isPublic: true })}
       </PublicRoute>
+      <PrivateRoute roles={[]} exact path="/resources/quickcluster/cluster/:clusterId">
+        {generatePage({ component: <ClusterDetails />, isPublic: true })}
+      </PrivateRoute>
       <Route exact path="/cowsay" component={Cowsay} />
       <Route exact path="/resources">
         {generatePage({ component: <Cowsay />, isUser: true })}

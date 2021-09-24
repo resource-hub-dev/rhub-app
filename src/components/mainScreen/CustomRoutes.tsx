@@ -52,7 +52,7 @@ export const PrivateRoute: React.FC<Props & Record<string, any>> = ({
   const { keycloak } = useKeycloak();
 
   const isAuthorized = (roleList: string[]) => {
-    if (roleList.length === 0 || !roles) return true;
+    if (roleList.length === 0) return true;
     if (keycloak && roleList) {
       return roleList.some((r) => {
         const realm = keycloak.hasRealmRole(r);
