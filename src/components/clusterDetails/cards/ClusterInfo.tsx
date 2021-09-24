@@ -1,19 +1,72 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Button, Card, CardTitle, CardBody } from '@patternfly/react-core';
+import {
+  Button,
+  Card,
+  CardTitle,
+  CardBody,
+  Title,
+} from '@patternfly/react-core';
 
 import '../ClusterDetails.css';
+import { ClusterHost } from '@ducks/cluster/types';
+import DataTable, { RowPair } from '@components/dataTable/DataTable';
+import { IRow } from '@patternfly/react-table';
+import { useDispatch } from 'react-redux';
+
+/**
+ * TODO:
+ *  1. Replace QLB references with RHUB
+ */
 
 export interface Props {
   description: string;
+  hosts: ClusterHost[];
 }
 
-const ClusterInfo: React.FC<Props> = ({ description }: Props) => {
+const ClusterInfo: React.FC<Props> = ({ description, hosts }: Props) => {
+  const dispatch = useDispatch();
+
   const markup = { __html: description };
+
+  const [rowPairs, setRowPairs] = useState<RowPair[]>([]);
+
+  useEffect(() => {
+    if (hosts && hosts.length !== 0) {
+      const newRows: RowPair[] = [];
+      hosts.forEach((item) => {
+        const row: IRow = [
+          item.ipaddr,
+          item.num_vcpus || '',
+          item.ram_mb / 1024 || '',
+          item.num_volumes,
+          item.volumes_gb,
+        ];
+        newRows.push({ parent: row, child: null });
+      });
+      setRowPairs(newRows);
+    }
+  }, [hosts, dispatch]);
+
   return (
     <Card>
       <CardTitle>Cluster Information</CardTitle>
       <CardBody>
+        {rowPairs.length && (
+          <>
+            <Title headingLevel="h4">Nodes</Title>
+            <DataTable
+              columns={[
+                'Host',
+                'vCPUs',
+                'RAM(GB)',
+                'Volume Count',
+                'Storage(GB)',
+              ]}
+              rowPairs={rowPairs}
+            />
+          </>
+        )}
         <div dangerouslySetInnerHTML={markup} /> {/* eslint-disable-line */}
         <div>
           If SSH access to hosts in your cluster is needed, please download this

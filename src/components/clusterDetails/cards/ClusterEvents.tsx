@@ -9,14 +9,13 @@ import { ClusterEvent } from '@ducks/cluster/types';
 
 import DataTable, { RowPair } from '@components/dataTable/DataTable';
 
-
 /**
  * TODO: Edit the link to something more meaningful
  */
 
 export interface Props {
   /** The events array */
-  events?: ClusterEvent[];
+  events: ClusterEvent[];
 }
 
 const ClusterEvents: React.FC<Props> = ({ events }: Props) => {
@@ -28,7 +27,7 @@ const ClusterEvents: React.FC<Props> = ({ events }: Props) => {
   const [isLoaded, setIsloaded] = useState(false);
 
   useEffect(() => {
-    if (events !== null && events !== [] && events !== undefined) {
+    if (events !== null && events.length !== 0 && events !== undefined) {
       setIsloaded(true);
       const newRows: RowPair[] = [];
       events.forEach((item) => {
@@ -36,15 +35,13 @@ const ClusterEvents: React.FC<Props> = ({ events }: Props) => {
           new Date(item.date).toLocaleString(),
           item.user_id || '',
           item.status || '',
-          item.tower_job_id
-            ? {
-                title: (
-                  <Link to={`/clusters/events/${item.id}/towerstdout`}>
-                    {item.tower_job_id.toString()}
-                  </Link>
-                ),
-              }
-            : '',
+          item.tower_job_id ? (
+            <Link to={`/clusters/events/${item.id}/towerstdout`}>
+              {item.tower_job_id.toString()}
+            </Link>
+          ) : (
+            ''
+          ),
         ];
         newRows.push({ parent: row, child: null });
       });
@@ -57,7 +54,7 @@ const ClusterEvents: React.FC<Props> = ({ events }: Props) => {
       <Card>
         <CardTitle>Cluster Events </CardTitle>
         <CardBody>
-          <DataTable columns={columns} rowPairs={rows} />
+          {events.length && <DataTable columns={columns} rowPairs={rows} />}
         </CardBody>
       </Card>
     );
