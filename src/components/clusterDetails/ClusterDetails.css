@@ -1,0 +1,25 @@
+.btn-delete {
+    float: right;
+}
+
+.cluster-details-btn {
+    margin-top: 5px;
+}
+
+.ql-card-layout article{
+    height: 100%;
+}
+
+.expired-text {
+    color: #C9190B;
+}
+
+.charts-card-body {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.rhub-chart {
+    min-width: 80%; 
+}
