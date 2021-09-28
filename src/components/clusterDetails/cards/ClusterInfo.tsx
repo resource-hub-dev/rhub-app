@@ -9,7 +9,7 @@ import {
 } from '@patternfly/react-core';
 
 import '../ClusterDetails.css';
-import { ClusterHost } from '@ducks/cluster/types';
+import { ClusterHost } from '@ducks/lab/cluster/types';
 import DataTable, { RowPair } from '@components/dataTable/DataTable';
 import { IRow } from '@patternfly/react-table';
 import { useDispatch } from 'react-redux';

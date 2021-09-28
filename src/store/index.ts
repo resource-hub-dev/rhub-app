@@ -8,7 +8,7 @@ import { UserState } from './ducks/user/types';
 import rootReducer from './ducks/rootReducer';
 import rootSaga from './ducks/rootSaga';
 import { LabPolicyState } from './ducks/lab/policy/types';
-import { ClusterState } from './ducks/cluster/types';
+import { ClusterState } from './ducks/lab/cluster/types';
 
 export interface AppState {
   cowsay: CowsayState;

@@ -17,8 +17,8 @@ import { useKeycloak } from '@react-keycloak/web';
 
 import { AppState } from '@store';
 
-import { loadRequest, deleteRequest } from '@ducks/cluster/actions';
-import { ClusterHost } from '@ducks/cluster/types';
+import { loadRequest, deleteRequest } from '@ducks/lab/cluster/actions';
+import { ClusterHost } from '@ducks/lab/cluster/types';
 import ClusterLifespan from './cards/ClusterLifespan';
 import OverView from './cards/OverView';
 import ClusterInfo from './cards/ClusterInfo';
