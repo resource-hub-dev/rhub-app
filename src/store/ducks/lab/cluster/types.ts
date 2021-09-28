@@ -1,3 +1,5 @@
+import { Quota } from '../types';
+
 // Action Types
 export enum ClusterTypes {
   DELETE_REQUEST = '@cluster/DELETE_REQUEST',
@@ -31,7 +33,7 @@ export interface ClusterData {
   region_id: number;
   status: string;
   hosts?: ClusterHost[];
-  quota?: Record<string,any>;
+  quota?: Quota;
   group_id: number | null;
   name: string;
   description: string;
@@ -70,6 +72,7 @@ export interface Cluster {
   created: string;
   template_id: number;
   hosts: ClusterHost[];
+  quota: Quota;
   status: string;
   name: string;
   description: string;
