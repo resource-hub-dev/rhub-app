@@ -27,7 +27,8 @@ const clusterDataToState = (data = {}, item: ClusterData) => ({
     group_name: item.group_name,
     region_name: item.region_name,
     user_name: item.user_name,
-    hosts: [],
+    hosts: item.hosts? item.hosts :[],
+    quota: item.quota,
     status: item.status,
     created: new Date(Date.parse(item.created)),
     reservation_expiration: item.reservation_expiration

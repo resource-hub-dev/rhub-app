@@ -95,6 +95,7 @@ const ClusterDetails: React.FC = () => {
     reservation_expiration,
     lifespan_expiration,
     hosts,
+    quota,
   } = cluster;
 
   // only shows all information if a cluster is not deleted
@@ -201,9 +202,9 @@ const ClusterDetails: React.FC = () => {
                   ram_mb={ram_mb}
                   volumes_gb={volumes_gb}
                   num_volumes={num_volumes}
-                  cpuQuota={40}
-                  ramQuotaMb={17000}
-                  volumesMaxGb={120}
+                  cpuQuota={quota.num_vcpus}
+                  ramQuotaMb={quota.ram_mb}
+                  volumesMaxGb={quota.volumes_gb}
                 />
               </GridItem>
               <GridItem span={8}>

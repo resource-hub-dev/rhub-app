@@ -50,7 +50,7 @@ const UtilizationCard: React.FC<Props> = ({
         />
         <UtilizationChart
           title="Storage"
-          used={volumes_gb * num_volumes}
+          used={volumes_gb}
           total={volumesMaxGb}
           unit="GBs"
           height="250px"
