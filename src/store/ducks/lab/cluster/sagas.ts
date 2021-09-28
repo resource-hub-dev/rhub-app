@@ -15,8 +15,10 @@ function* load(action: AnyAction): any {
   try {
     const response = yield call(api.get, queryString, { params: parameters });
     yield put(actions.loadSuccess(clusterId, response.data));
-    yield put(actions.loadHostRequest(clusterId));
-    yield put(actions.loadEventRequest(clusterId));
+    if (clusterId !== 'all') {
+      yield put(actions.loadEventRequest(clusterId));
+      yield put(actions.loadHostRequest(clusterId));
+    }
   } catch (err) {
     yield put(actions.loadFailure());
   }

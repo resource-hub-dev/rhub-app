@@ -30,6 +30,8 @@ export interface ClusterData {
   template_id: number;
   region_id: number;
   status: string;
+  hosts?: ClusterHost[];
+  quota?: Record<string,any>;
   group_id: number | null;
   name: string;
   description: string;

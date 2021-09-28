@@ -13,6 +13,7 @@ import Cowsay from '../cowsay/Cowsay';
 import Policies from '../policies/Policies';
 import LandingPage from '../landingPage/LandingPage';
 import PageNotFound from '../pageNotFound/PageNotFound';
+import SharedClusters from '@components/clusters/SharedClusters';
 
 const MainScreen: React.FC = () => {
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
@@ -110,9 +111,16 @@ const MainScreen: React.FC = () => {
       <PrivateRoute
         roles={[]}
         exact
-        path="/resources/quickcluster/cluster/:clusterId"
+        path="/resources/quickcluster/clusters/:clusterId"
       >
         {generatePage({ component: <ClusterDetails />, isPublic: true })}
+      </PrivateRoute>
+      <PrivateRoute
+        roles={[]}
+        exact
+        path="/resources/quickcluster/shared"
+      >
+        {generatePage({ component: <SharedClusters />, isPublic: true })}
       </PrivateRoute>
       <Route exact path="/cowsay" component={Cowsay} />
       <Route exact path="/resources">

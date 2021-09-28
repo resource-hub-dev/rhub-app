@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardTitle, CardBody, Spinner } from '@patternfly/react-core';
 import { IRow } from '@patternfly/react-table';
 
-import { ClusterEvent } from '@ducks/cluster/types';
+import { ClusterEvent } from '@ducks/lab/cluster/types';
 
 import DataTable, { RowPair } from '@components/dataTable/DataTable';
 
