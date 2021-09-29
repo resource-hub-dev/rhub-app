@@ -1,0 +1,13 @@
+.charts-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.no-cluster-card-body {
+    text-align: center;
+    margin: auto;
+}
+
+.shared-clusters-info {
+    padding-bottom: 10px;
+}
