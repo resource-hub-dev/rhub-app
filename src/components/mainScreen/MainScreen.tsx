@@ -1,19 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, NavLink } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch } from 'react-redux';
+import {
+  Button,
+  Nav,
+  NavItem,
+  NavList,
+  Page,
+  PageHeader,
+  PageHeaderTools,
+  PageSidebar,
+} from '@patternfly/react-core';
 
 import { loginRequest, updateToken } from '@ducks/user/actions';
 import { UserData } from '@ducks/user/types';
 import ClusterDetails from '@components/clusterDetails/ClusterDetails';
+import SharedClusters from '@components/clusters/SharedClusters';
+
 import { Login, PrivateRoute, PublicRoute } from './CustomRoutes';
 
-import PageWrapper from './PageWrapper';
 import Cowsay from '../cowsay/Cowsay';
 import Policies from '../policies/Policies';
 import LandingPage from '../landingPage/LandingPage';
 import PageNotFound from '../pageNotFound/PageNotFound';
-import SharedClusters from '@components/clusters/SharedClusters';
+import { AdminNav, UserNav } from './Navigation';
 
 const MainScreen: React.FC = () => {
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
@@ -54,7 +65,9 @@ const MainScreen: React.FC = () => {
     itemId: number | string;
     to: string;
     event: React.FormEvent<HTMLInputElement>;
-  }) => setTopNavActive(selectedItem.itemId);
+  }) => {
+    setTopNavActive(selectedItem.itemId);
+  };
   const onSideNavSelect = (result: {
     groupId: number | string;
     itemId: number | string;
@@ -69,71 +82,107 @@ const MainScreen: React.FC = () => {
     return <h3>Loading ... !!!</h3>;
   }
 
-  // Generic function to generate component with all the handlers ready
-  interface GenericProps {
-    component: React.ReactNode;
-    isPublic?: boolean;
-    isUser?: boolean;
-    isAdmin?: boolean;
-  }
-  const generatePage = ({
-    component,
-    isPublic,
-    isUser,
-    isAdmin,
-  }: GenericProps) => {
-    return (
-      <PageWrapper
-        isPublic={isPublic}
-        isUser={isUser}
-        isAdmin={isAdmin}
-        isSideNavOpen={isSideNavOpen}
-        topNavActive={topNavActive}
-        activeGroup={activeGroup}
-        activeItem={activeItem}
-        onSideNavToggle={onSideNavToggle}
-        onTopNavSelect={onTopNavSelect}
-        onSideNavSelect={onSideNavSelect}
-      >
-        {component}
-      </PageWrapper>
-    );
-  };
+  const Toolbar = (
+    <PageHeaderTools>
+      <Button variant="link">Guide</Button>
+      <Button variant="link">Contact</Button>
+      <Button variant="link">Report Issue</Button>
+      {keycloak.authenticated && initialized && (
+        <Button variant="secondary" onClick={() => keycloak.logout()}>
+          Log Out
+        </Button>
+      )}
+    </PageHeaderTools>
+  );
 
+  const topNav = (
+    <Nav onSelect={onTopNavSelect} variant="horizontal">
+      <NavList>
+        <NavItem key={1} itemId={1} isActive={topNavActive === 1}>
+          <NavLink exact to="/resources">
+            Resources
+          </NavLink>
+        </NavItem>
+
+        <NavItem key={2} itemId={2} isActive={topNavActive === 2}>
+          <NavLink exact to="/admin">
+            Admin
+          </NavLink>
+        </NavItem>
+      </NavList>
+    </Nav>
+  );
+  const Header = (
+    <PageHeader
+      logo="Resource Hub"
+      logoProps={{
+        href: '/',
+      }}
+      topNav={keycloak.authenticated && topNav}
+      headerTools={Toolbar}
+      showNavToggle={keycloak.authenticated}
+      isNavOpen={isSideNavOpen}
+      onNavToggle={onSideNavToggle}
+    />
+  );
+
+  const Navigation = (
+    <Nav onSelect={onSideNavSelect} theme="dark">
+      <NavList>
+        {topNavActive === 2 ? (
+          <AdminNav
+            activeGroup={`${activeGroup}`}
+            activeItem={`${activeItem}`}
+          />
+        ) : (
+          <UserNav
+            activeGroup={`${activeGroup}`}
+            activeItem={`${activeItem}`}
+          />
+        )}
+      </NavList>
+    </Nav>
+  );
+  const Sidebar = (
+    <PageSidebar
+      nav={Navigation}
+      isNavOpen={isSideNavOpen}
+      theme="dark"
+      data-testid="sidebar"
+    />
+  );
   return (
-    <Switch>
-      <Route exact path="/">
-        {generatePage({ component: <LandingPage />, isPublic: true })}
-      </Route>
-      <PublicRoute exact path="/login">
-        {generatePage({ component: <Login />, isPublic: true })}
-      </PublicRoute>
-      <PrivateRoute
-        roles={[]}
-        exact
-        path="/resources/quickcluster/clusters/:clusterId"
-      >
-        {generatePage({ component: <ClusterDetails />, isPublic: true })}
-      </PrivateRoute>
-      <PrivateRoute
-        roles={[]}
-        exact
-        path="/resources/quickcluster/shared"
-      >
-        {generatePage({ component: <SharedClusters />, isPublic: true })}
-      </PrivateRoute>
-      <Route exact path="/cowsay" component={Cowsay} />
-      <Route exact path="/resources">
-        {generatePage({ component: <Cowsay />, isUser: true })}
-      </Route>
-      <Route exact path="/admin">
-        {generatePage({ component: <Cowsay />, isAdmin: true })}
-      </Route>
-      <PrivateRoute roles={['policy-owner']} exact path="/admin_policy">
-        {generatePage({ component: <Policies />, isAdmin: true })}
-      </PrivateRoute>
-      <Route path="*" component={PageNotFound} />
-    </Switch>
+    <Page header={Header} sidebar={keycloak.authenticated && Sidebar}>
+      <Switch>
+        <Route exact path="/">
+          <LandingPage />
+        </Route>
+        <PublicRoute exact path="/login">
+          <Login />
+        </PublicRoute>
+        <PrivateRoute
+          roles={[]}
+          exact
+          path="/resources/quickcluster/clusters/:clusterId"
+        >
+          <ClusterDetails />
+        </PrivateRoute>
+        <PrivateRoute roles={[]} exact path="/resources/quickcluster/shared">
+          <SharedClusters />
+        </PrivateRoute>
+        <Route exact path="/cowsay" component={Cowsay} />
+        <PrivateRoute roles={[]} exact path="/resources">
+          <Cowsay />
+        </PrivateRoute>
+        <PrivateRoute roles={['policy-owner']} exact path="/admin">
+          <Cowsay />
+        </PrivateRoute>
+        <PrivateRoute roles={['policy-owner']} exact path="/admin_policy">
+          <Policies />
+        </PrivateRoute>
+        <Route path="*" component={PageNotFound} />
+      </Switch>
+    </Page>
   );
 };
 
