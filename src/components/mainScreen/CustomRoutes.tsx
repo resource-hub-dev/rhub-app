@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading, import/prefer-default-export, no-nested-ternary, react/jsx-curly-newline  */
 
-import { StrikethroughIconConfig } from '@patternfly/react-icons';
 import { useKeycloak } from '@react-keycloak/web';
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
