@@ -17,7 +17,6 @@ const UtilizationCard: React.FC<Props> = ({
   num_vcpus,
   ram_mb,
   volumes_gb,
-  num_volumes,
   cpuQuota,
   ramQuotaMb,
   volumesMaxGb,
