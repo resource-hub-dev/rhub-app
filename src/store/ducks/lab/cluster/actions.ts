@@ -7,6 +7,7 @@ import {
   ClusterUpdateData,
   ClusterHost,
   ClusterEventData,
+  ClusterData,
 } from './types';
 
 export const deleteRequest = (
@@ -41,13 +42,14 @@ export const loadSuccess = (
 
 export const loadFailure = () => action(ClusterTypes.LOAD_FAILURE);
 
-export const updaterequest = (clusterId: number, data: ClusterUpdateData) =>
+export const updateRequest = (clusterId: number, data: ClusterUpdateData) =>
   action(ClusterTypes.UPDATE_REQUEST, {
     clusterId,
     data,
   });
 
-export const updateSuccess = () => action(ClusterTypes.UPDATE_SUCCESS);
+export const updateSuccess = (cluster: ClusterData) =>
+  action(ClusterTypes.UPDATE_SUCCESS, cluster);
 
 export const updateFailure = () => action(ClusterTypes.UPDATE_FAILURE);
 
