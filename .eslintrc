@@ -36,6 +36,7 @@
         "react/require-default-props": [0],
         "no-restricted-syntax": [0],
         "@typescript-eslint/camelcase": [0],
+        "no-else-return": [0],
         "import/extensions": [
             "error",
             "ignorePackages",
