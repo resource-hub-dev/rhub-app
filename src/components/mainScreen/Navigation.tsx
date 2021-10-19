@@ -55,6 +55,20 @@ export const UserNav: React.FC<NavProps> = ({
           Shared Clusters
         </NavLink>
       </NavItem>
+      <NavItem
+        groupId="dev_itm-2"
+        itemId="dev_subitm-2"
+        key="dev_subitm-2"
+        isActive={activeItem === 'dev_subitm-2'}
+      >
+        <NavLink
+          exact
+          to="/resources/quickcluster/clusters"
+          activeClassName="pf-m-current"
+        >
+          My Clusters
+        </NavLink>
+      </NavItem>
     </NavExpandable>
   );
 };
