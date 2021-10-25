@@ -19,7 +19,7 @@ const SharedClusters: React.FC = () => {
 
   const token = useSelector((state: AppState) => state.user.current.token);
   useEffect(() => {
-    dispatch(loadClusters('all', { user_name: 'sharedclusters' }));
+    dispatch(loadClusters('all', { 'filter[shared]': 'true' }));
   }, [dispatch, token]);
 
   const info = (
