@@ -127,8 +127,15 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
       return { ...state, loading: false, error: true };
     case ClusterTypes.UPDATE_REQUEST:
       return { ...state, loading: true };
-    case ClusterTypes.UPDATE_SUCCESS:
-      return { ...state, loading: false, error: false };
+    case ClusterTypes.UPDATE_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        data: clusterDataToState(state.data, action.payload),
+      };
+    }
+
     case ClusterTypes.UPDATE_FAILURE:
       return { ...state, loading: false, error: true };
     case ClusterTypes.DELETE_REQUEST:

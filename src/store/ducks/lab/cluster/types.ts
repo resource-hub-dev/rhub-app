@@ -20,7 +20,7 @@ export enum ClusterTypes {
   CREATE_REQUEST = '@cluster/CREATE_REQUEST',
   CREATE_SUCCESS = '@cluster/CREATE_SUCCESS',
   CREATE_FAILURE = '@cluster/CREATE_FAILURE',
-  UPDATE_REQUEST = '@cluster/UPDATE_EQUEST',
+  UPDATE_REQUEST = '@cluster/UPDATE_REQUEST',
   UPDATE_SUCCESS = '@cluster/UPDATE_SUCCESS',
   UPDATE_FAILURE = '@cluster/UPDATE_FAILURE',
 }
@@ -116,8 +116,8 @@ export interface ClusterCreateData {
 }
 
 export interface ClusterUpdateData {
-  reservation_expiration?: string;
-  lifespan_expiration?: string;
+  reservation_expiration?: string | null;
+  lifespan_expiration?: string | null;
 }
 
 //  State Type
