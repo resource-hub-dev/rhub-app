@@ -21,7 +21,8 @@ function* load(action: AnyAction) {
     const response: { [key: string]: any } = yield call(api.get, queryString, {
       params: parameters,
     });
-    yield put(loadSuccess(policyId, response.data));
+    const data = policyId === 'all' ? response.data.data : response.data;
+    yield put(loadSuccess(policyId, data));
   } catch (err) {
     yield put(loadFailure(err.response.data));
   }
