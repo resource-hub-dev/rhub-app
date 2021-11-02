@@ -14,11 +14,11 @@ function* load(action: AnyAction): any {
   }`;
   try {
     const response = yield call(api.get, queryString, { params: parameters });
-    yield put(actions.loadSuccess(clusterId, response.data));
     if (clusterId !== 'all') {
+      yield put(actions.loadSuccess(clusterId, response.data));
       yield put(actions.loadEventRequest(clusterId));
       yield put(actions.loadHostRequest(clusterId));
-    }
+    } else yield put(actions.loadSuccess(clusterId, response.data.data));
   } catch (err) {
     yield put(actions.loadFailure());
   }
@@ -60,8 +60,8 @@ function* update(action: AnyAction) {
   // mainly handles reservation changes
   try {
     const { clusterId, data } = action.payload;
-    yield call(api.patch, `lab/cluster/${clusterId}`, data);
-    yield put(actions.updateSuccess());
+    const response = yield call(api.patch, `lab/cluster/${clusterId}`, data);
+    yield put(actions.updateSuccess(response.data));
   } catch (err) {
     yield put(actions.updateFailure());
   }
