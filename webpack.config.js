@@ -81,6 +81,7 @@ const config = {
             'node_modules/@patternfly/patternfly/assets/pficon'
           ),
         ],
+        exclude: [path.resolve(__dirname, 'assets/images')],
         use: {
           loader: 'file-loader',
           options: {
@@ -92,12 +93,14 @@ const config = {
       },
       {
         test: /\.svg$/,
-        include: (input) =>
-          input.indexOf('fonts') === -1 && input.indexOf('pficon') === -1,
-        use: {
-          loader: 'raw-loader',
-          options: {},
-        },
+        use: [
+          {
+            loader: 'svg-url-loader',
+            options: {
+              limit: 10000,
+            },
+          },
+        ],
       },
       {
         test: /\.(jpg|jpeg|png|gif)$/i,
