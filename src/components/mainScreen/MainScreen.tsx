@@ -18,6 +18,7 @@ import { UserData } from '@ducks/user/types';
 import ClusterDetails from '@components/clusterDetails/ClusterDetails';
 import SharedClusters from '@components/clusters/SharedClusters';
 import MyClusters from '@components/clusters/MyClusters';
+import ResourcesDashboard from '@components/ResourcesDashboard/ResourcesDashboard';
 
 import { Login, PrivateRoute, PublicRoute } from './CustomRoutes';
 
@@ -176,7 +177,7 @@ const MainScreen: React.FC = () => {
         </PrivateRoute>
         <Route exact path="/cowsay" component={Cowsay} />
         <PrivateRoute roles={[]} exact path="/resources">
-          <Cowsay />
+          <ResourcesDashboard />
         </PrivateRoute>
         <PrivateRoute roles={['policy-owner']} exact path="/admin">
           <Cowsay />
