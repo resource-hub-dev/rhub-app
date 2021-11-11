@@ -44,7 +44,8 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.jsx",
-    "**/*.js"
+    "**/*.js",
+    "./custom.d.ts"
   ],
   "exclude": ["node_modules"]
 }
