@@ -5,6 +5,7 @@ import userSagas from './user/sagas';
 import { CowsayTypes } from './cowsay/types';
 import labPolicySagas from './lab/policy/sagas';
 import clusterSagas from './lab/cluster/sagas';
+import labRegionSagas from './lab/region/sagas';
 
 export default function* rootSaga(): Generator {
   return yield all([
@@ -12,5 +13,6 @@ export default function* rootSaga(): Generator {
     ...userSagas,
     ...labPolicySagas,
     ...clusterSagas,
+    ...labRegionSagas,
   ]);
 }
