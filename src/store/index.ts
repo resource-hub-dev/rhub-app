@@ -10,6 +10,7 @@ import rootSaga from './ducks/rootSaga';
 import { LabPolicyState } from './ducks/lab/policy/types';
 import { ClusterState } from './ducks/lab/cluster/types';
 import { LabRegionState } from './ducks/lab/region/types';
+import { LabProductState } from './ducks/lab/product/types';
 
 export interface AppState {
   cowsay: CowsayState;
@@ -17,6 +18,7 @@ export interface AppState {
   labPolicy: LabPolicyState;
   cluster: ClusterState;
   labRegion: LabRegionState;
+  labProduct: LabProductState;
 }
 
 const sagaMiddleware = createSagaMiddleware();

@@ -19,6 +19,10 @@ export interface LabProductParams {
   variable: string;
   required: boolean;
   type: string;
+  max?: number;
+  min?: number;
+  maxLength?: number;
+  minLength?: number;
   default: number | boolean | string | null;
 }
 

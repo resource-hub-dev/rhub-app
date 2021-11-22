@@ -1,10 +1,10 @@
-import {
-  Button,
-  Wizard,
-  WizardContextConsumer,
-  WizardFooter,
-} from '@patternfly/react-core';
-import React, { useState } from 'react';
+import { Wizard } from '@patternfly/react-core';
+import { AppState } from '@store';
+import { loadRequest as loadProducts } from '@ducks/lab/product/actions';
+
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Products from './steps/Products';
 
 interface Props {
   isInfoValid: boolean;
@@ -21,60 +21,46 @@ const QuickClusterWizard: React.FC<Props> = ({
   onFinish,
   onClose,
 }: Props) => {
-  const [stepIdReached, setStepIdReached] = useState(1);
+  const dispatch = useDispatch();
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [values, setValues] = useState<Record<string, any>>({});
+  const token = useSelector((state: AppState) => state.user.current.token);
+  const products = useSelector((state: AppState) => state.labProduct.data);
+  const isLoading = useSelector((state: AppState) => state.labProduct.loading);
 
-  const CustomFooter = (
-    <WizardFooter>
-      <WizardContextConsumer>
-        {({ activeStep, onNext, onBack }) => {
-          if (activeStep.name !== 'Review') {
-            return (
-              <>
-                <Button
-                  variant="primary"
-                  // type="submit"
-                  onClick={() => {
-                    setStepIdReached(2);
-                    return onNext();
-                  }}
-                  isDisabled={!isInfoValid}
-                >
-                  Next
-                </Button>
-                <Button variant="link" onClick={onClose}>
-                  Cancel
-                </Button>
-              </>
-            );
-          }
-          // Final step buttons
-          return (
-            <>
-              <Button onClick={onFinish} isDisabled={!isInfoValid || isErr}>
-                Finish
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  setStepIdReached(stepIdReached - 1);
-                  return onBack();
-                }}
-              >
-                Back
-              </Button>
-              <Button variant="link" onClick={onClose}>
-                Cancel
-              </Button>
-            </>
-          );
-        }}
-      </WizardContextConsumer>
-    </WizardFooter>
-  );
+  useEffect(() => {
+    dispatch(loadProducts('all'));
+  }, [dispatch, token]);
+
   const title = 'Create a QuickCluster';
   const steps = [
-    { name: 'Region', component: <p>Step 1 content</p> },
-    { name: 'Product', componowent: <p>Step 2 content</p> },
+    {
+      name: 'Product',
+      enableNext: isFormValid,
+      component: (
+        <Products
+          products={products}
+          handleProdSel={(
+            valid: boolean,
+            value: {
+              [key: string]: any;
+            }
+          ) => {
+            setIsFormValid(valid);
+            Object.keys(value).forEach((key: string) => {
+              const updatedValues = { ...values };
+              updatedValues.product = value[key];
+              setValues(updatedValues);
+            });
+          }}
+        />
+      ),
+    },
+    {
+      name: 'Region',
+      component: <p>Step 2 content</p>,
+      enableNext: isFormValid,
+    },
     { name: 'Cluster Configuration', component: <p>Step 3 content</p> },
     { name: 'Advanced Option', component: <p>Step 4 content</p> },
     {
@@ -83,10 +69,12 @@ const QuickClusterWizard: React.FC<Props> = ({
       nextButtonText: 'Finish',
     },
   ];
+  if (isLoading) {
+    return <>Loading....</>;
+  }
   return (
     <Wizard
       title={title}
-      footer={CustomFooter}
       description="Simple Wizard Description"
       steps={steps}
       onClose={onClose}
