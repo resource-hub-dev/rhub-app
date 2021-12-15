@@ -24,7 +24,7 @@ function* load(action: AnyAction) {
     const data = policyId === 'all' ? response.data.data : response.data;
     yield put(loadSuccess(policyId, data));
   } catch (err) {
-    yield put(loadFailure(err.response.data));
+    yield put(loadFailure((err as any).response.data));
   }
 }
 
@@ -34,7 +34,7 @@ function* create(action: AnyAction) {
     yield call(api.post, '/policies', body);
     yield put(createSuccess());
   } catch (err) {
-    yield put(createFailure(err.response.data));
+    yield put(createFailure((err as any).response.data));
   }
 }
 
@@ -44,7 +44,7 @@ function* update(action: AnyAction) {
     yield call(api.patch, `/policies/${policyId}`, data);
     yield put(updateSuccess());
   } catch (err) {
-    yield put(updateFailure(err.response.data));
+    yield put(updateFailure((err as any).response.data));
   }
 }
 
@@ -54,7 +54,7 @@ function* remove(action: AnyAction) {
     yield call(api.delete, `/policies/${policyId}`);
     yield put(deleteSuccess(policyId));
   } catch (err) {
-    yield put(deleteFailure(err.response.data));
+    yield put(deleteFailure((err as any).response.data));
   }
 }
 

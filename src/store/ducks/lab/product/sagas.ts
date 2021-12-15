@@ -26,7 +26,7 @@ function* load(action: AnyAction) {
     const data = productId === 'all' ? response.data.data : response.data;
     yield put(loadSuccess(productId, data));
   } catch (err) {
-    yield put(loadFailure(err.response.data));
+    yield put(loadFailure((err as any).response.data));
   }
 }
 
@@ -36,7 +36,7 @@ function* create(action: AnyAction) {
     yield call(api.post, '/lab/product', body);
     yield put(createSuccess());
   } catch (err) {
-    yield put(createFailure(err.response.data));
+    yield put(createFailure((err as any).response.data));
   }
 }
 
@@ -46,7 +46,7 @@ function* update(action: AnyAction) {
     yield call(api.patch, `/lab/product/${productId}`, data);
     yield put(updateSuccess());
   } catch (err) {
-    yield put(updateFailure(err.response.data));
+    yield put(updateFailure((err as any).response.data));
   }
 }
 
@@ -56,7 +56,7 @@ function* remove(action: AnyAction) {
     yield call(api.delete, `/lab/product/${productId}`);
     yield put(deleteSuccess(productId));
   } catch (err) {
-    yield put(deleteFailure(err.response.data));
+    yield put(deleteFailure((err as any).response.data));
   }
 }
 

@@ -60,7 +60,11 @@ function* update(action: AnyAction) {
   // mainly handles reservation changes
   try {
     const { clusterId, data } = action.payload;
-    const response = yield call(api.patch, `lab/cluster/${clusterId}`, data);
+    const response: Record<string, any> = yield call(
+      api.patch,
+      `lab/cluster/${clusterId}`,
+      data
+    );
     yield put(actions.updateSuccess(response.data));
   } catch (err) {
     yield put(actions.updateFailure());
