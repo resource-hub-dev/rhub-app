@@ -1,3 +1,10 @@
+# For Mac Developer
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# General
+.vscode
 .cache
 .env
 .idea

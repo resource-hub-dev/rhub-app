@@ -37,6 +37,7 @@
         "no-restricted-syntax": [0],
         "@typescript-eslint/camelcase": [0],
         "no-else-return": [0],
+        "react/jsx-props-no-spreading": [0],
         "import/extensions": [
             "error",
             "ignorePackages",
