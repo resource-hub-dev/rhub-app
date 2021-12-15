@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Breadcrumb,
-  BreadcrumbItem,
   Button,
   Card,
   DataList,
@@ -27,12 +25,10 @@ import {
   Form,
   FormGroup,
   Modal,
-  Page,
   PageSection,
   PageSectionVariants,
   Pagination,
   PaginationVariant,
-  SkipToContent,
   Spinner,
   Text,
   TextArea,
@@ -93,7 +89,7 @@ const Policies: React.FC = () => {
     try {
       dispatch(createRequest(JSON.parse(createValue)));
     } catch (e) {
-      if (e.name === 'SyntaxError') {
+      if ((e as any).name === 'SyntaxError') {
         setCaptureError(false);
         setHelperText('Invalid JSON');
         setValidated('error');
@@ -107,7 +103,7 @@ const Policies: React.FC = () => {
         setCaptureError(true);
         dispatch(updateRequest(Number(policyId), JSON.parse(editedValue)));
       } catch (e) {
-        if (e.name === 'SyntaxError') {
+        if ((e as any).name === 'SyntaxError') {
           setCaptureError(false);
           setHelperText('Invalid JSON');
           setValidated('error');
