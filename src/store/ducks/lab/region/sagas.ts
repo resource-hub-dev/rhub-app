@@ -41,7 +41,6 @@ function* load_product_regions(action: AnyAction) {
       api.get,
       `lab/product/${productId}/regions`
     );
-    console.log(response);
     yield put(loadProductRegionsSuccess(response.data));
   } catch (err) {
     yield put(loadFailure((err as any).response.data));

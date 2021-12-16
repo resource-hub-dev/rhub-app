@@ -74,7 +74,6 @@ const reducer: Reducer<LabRegionState> = (state = INITIAL_STATE, action) => {
       };
     }
     case LabRegionTypes.LOAD_PRODUCT_REGIONS_SUCCESS: {
-      console.log(action.payload.data);
       return {
         ...state,
         product_regions: action.payload.data,
