@@ -192,7 +192,6 @@ const ClusterView: React.FC<Props> = ({ clusterViewType }: Props) => {
         )}{' '}
       </CardBody>
       <QuickClusterWizard
-        isInfoValid
         isOpen={activeModal === 'create-modal'}
         isErr={false}
         onFinish={() => null}
