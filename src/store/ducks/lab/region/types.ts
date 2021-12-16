@@ -4,6 +4,8 @@ export enum LabRegionTypes {
   LOAD_REQUEST = '@lab/region/LOAD_REQUEST',
   LOAD_SUCCESS = '@lab/region/LOAD_SUCCESS',
   LOAD_FAILURE = '@lab/region/LOAD_FAILURE',
+  LOAD_PRODUCT_REGIONS_REQUEST = '@lab/region/LOAD_PRODUCT_REGIONS_REQUEST',
+  LOAD_PRODUCT_REGIONS_SUCCESS = '@lab/region/LOAD_PRODUCT_REGIONS_SUCCESS',
   CREATE_REQUEST = '@lab/region/CREATE_REQUEST',
   CREATE_SUCCESS = '@lab/region/CREATE_SUCCESS',
   CREATE_FAILURE = '@lab/region/CREATE_FAILURE',
@@ -34,6 +36,13 @@ export interface LabRegionData {
   dns_server: DnsServer;
   vault_server: string;
   download_server: string;
+}
+
+// Type for /lab/products/{id}/regions
+export interface RegionsWithProduct {
+  product_id: number;
+  enabled: boolean;
+  region: LabRegionData;
 }
 
 export interface LabRegionCreate {
@@ -97,6 +106,7 @@ interface DnsServer {
 
 export interface LabRegionState {
   data: { [key: number]: LabRegionData };
+  product_regions: RegionsWithProduct[];
   loading: boolean;
   errMsg: Error | {};
   error: boolean;
