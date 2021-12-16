@@ -4,6 +4,7 @@ import {
   LabRegionData,
   LabRegionCreate,
   LabRegionUpdate,
+  RegionsWithProduct,
 } from './types';
 import { Error } from '../types';
 
@@ -20,6 +21,14 @@ export const loadSuccess = (
   regionId: number,
   data: LabRegionData | LabRegionData[]
 ) => action(LabRegionTypes.LOAD_SUCCESS, { regionId, data });
+
+export const loadProductRegionsRequest = (productId: number) =>
+  action(LabRegionTypes.LOAD_PRODUCT_REGIONS_REQUEST, {
+    productId,
+  });
+
+export const loadProductRegionsSuccess = (data: RegionsWithProduct[]) =>
+  action(LabRegionTypes.LOAD_PRODUCT_REGIONS_SUCCESS, { data });
 
 export const loadFailure = (err: Error) =>
   action(LabRegionTypes.LOAD_FAILURE, err);

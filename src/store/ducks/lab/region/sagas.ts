@@ -11,6 +11,7 @@ import {
   updateFailure,
   deleteSuccess,
   deleteFailure,
+  loadProductRegionsSuccess,
 } from './actions';
 import { LabRegionTypes } from './types';
 
@@ -29,7 +30,21 @@ function* load(action: AnyAction) {
       )
     );
   } catch (err) {
-    yield put(loadFailure(err.response.data));
+    yield put(loadFailure((err as any).response.data));
+  }
+}
+
+function* load_product_regions(action: AnyAction) {
+  const { productId } = action.payload;
+  try {
+    const response: { [key: string]: any } = yield call(
+      api.get,
+      `lab/product/${productId}/regions`
+    );
+    console.log(response);
+    yield put(loadProductRegionsSuccess(response.data));
+  } catch (err) {
+    yield put(loadFailure((err as any).response.data));
   }
 }
 
@@ -40,7 +55,7 @@ function* create(action: AnyAction) {
     yield call(api.post, '/lab/region', body);
     yield put(createSuccess());
   } catch (err) {
-    yield put(createFailure(err.response.data));
+    yield put(createFailure((err as any).response.data));
   }
 }
 
@@ -51,7 +66,7 @@ function* update(action: AnyAction) {
     yield call(api.patch, `/lab/region/${regionId}`, data);
     yield put(updateSuccess());
   } catch (err) {
-    yield put(updateFailure(err.response.data));
+    yield put(updateFailure((err as any).response.data));
   }
 }
 
@@ -62,7 +77,7 @@ function* remove(action: AnyAction) {
     yield call(api.delete, `/lab/region/${regionId}`);
     yield put(deleteSuccess(regionId));
   } catch (err) {
-    yield put(deleteFailure(err.response.data));
+    yield put(deleteFailure((err as any).response.data));
   }
 }
 
@@ -71,6 +86,7 @@ const labRegionSagas = [
   takeLatest(LabRegionTypes.CREATE_REQUEST, create),
   takeLatest(LabRegionTypes.UPDATE_REQUEST, update),
   takeLatest(LabRegionTypes.DELETE_REQUEST, remove),
+  takeLatest(LabRegionTypes.LOAD_PRODUCT_REGIONS_REQUEST, load_product_regions),
 ];
 
 export default labRegionSagas;

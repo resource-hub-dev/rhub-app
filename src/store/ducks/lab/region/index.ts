@@ -6,6 +6,7 @@ import { LabRegionTypes, LabRegionData, LabRegionState } from './types';
 
 export const INITIAL_STATE: LabRegionState = {
   data: {},
+  product_regions: [],
   loading: false,
   error: false,
   errMsg: {},
@@ -43,6 +44,7 @@ const labRegionDataToState = (
 const reducer: Reducer<LabRegionState> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case LabRegionTypes.LOAD_REQUEST:
+    case LabRegionTypes.LOAD_PRODUCT_REGIONS_REQUEST:
     case LabRegionTypes.CREATE_REQUEST:
     case LabRegionTypes.UPDATE_REQUEST:
     case LabRegionTypes.DELETE_REQUEST:
@@ -69,6 +71,16 @@ const reducer: Reducer<LabRegionState> = (state = INITIAL_STATE, action) => {
         loading: false,
         error: false,
         data: labRegionDataToState(state.data, action.payload.data),
+      };
+    }
+    case LabRegionTypes.LOAD_PRODUCT_REGIONS_SUCCESS: {
+      console.log(action.payload.data);
+      return {
+        ...state,
+        product_regions: action.payload.data,
+        loading: false,
+        error: false,
+        errMsg: {},
       };
     }
     case LabRegionTypes.CREATE_SUCCESS:
