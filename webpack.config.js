@@ -170,6 +170,8 @@ const config = {
         'X-Requested-With, content-type, Authorization',
     },
     historyApiFallback: true,
+    host: "0.0.0.0",
+    port: 3000,
     watchOptions: {
       ignored: [
         path.resolve(__dirname, 'dist'),

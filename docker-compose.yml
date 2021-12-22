@@ -3,19 +3,18 @@ networks:
   default:
     name: rhub-development
 services:
-  app:
-    image: registry.access.redhat.com/ubi8/nodejs-14
+  rhub-app:
+    image: quay.io/resource-hub-dev/rhub-app:${RHUB_FRONTEND_IMAGE_TAG:-dev}
     volumes:
+      - /opt/app-root/src/node_modules/
       - .:/opt/app-root/src:delegated
     environment:
-      RHUB_API_URL: http://localhost:8081/v0/
-      RHUB_KEYCLOAK_URL: http://localhost:8082/auth/,
-      KEYCLOAK_REALM: ${SET_REALM}
-      KEYCLOAK_CLIENT: ${SET_CLIENT}
+      RHUB_API_URL: ${RHUB_API_URL:-http://localhost:8081/v0/}
+      RHUB_KEYCLOAK_URL: ${RHUB_KEYCLOAK_URL:-http://localhost:8080/auth/}
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM:-rhub}
+      KEYCLOAK_CLIENT: ${KEYCLOAK_CLIENT:-rhub-app}
       # don't pollute /opt/app-root/src with home crap
       HOME: /opt/app-root/home
       NPM_CONFIG_PREFIX: /opt/app-root/home/.npm-global
     ports:
-      - 8080:8080
-    # prettier-ignore
-    command: ["./node_modules/.bin/webpack", "serve", "--mode", "development", "--host", "0.0.0.0"]
+      - 3000:3000

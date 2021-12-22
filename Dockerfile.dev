@@ -1,0 +1,6 @@
+FROM registry.access.redhat.com/ubi8/nodejs-14
+# Keep the cache for node packages...
+COPY package*.json ./
+RUN npm install
+COPY . .
+CMD ["npm", "run", "start"]
