@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable no-case-declarations */
 import { Reducer } from 'redux';
 
@@ -70,16 +69,30 @@ const clusterEventDataToState = (item: ClusterEventData) => {
 const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
   let newEvents: ClusterEventData[] = [];
   switch (action.type) {
-    case ClusterTypes.LOAD_REQUEST:
+    case ClusterTypes.LOAD_REQUEST: {
+      const { nameCheck } = action.payload;
+      if (nameCheck) {
+        return { ...state, loading: true, data: {}, clusterExists: undefined };
+      }
       return { ...state, loading: true, data: {} };
+    }
     case ClusterTypes.LOAD_STDOUT_REQUEST:
       return { ...state, stdOutput: null, loading: true };
     case ClusterTypes.LOAD_EVENTS_REQUEST:
     case ClusterTypes.LOAD_HOST_REQUEST:
       return { ...state, loading: true };
-    case ClusterTypes.LOAD_SUCCESS:
+    case ClusterTypes.LOAD_SUCCESS: {
+      const { nameCheck } = action.payload;
       if (action.payload.clusterId === 'all') {
         const clusters = action.payload.data;
+        if (nameCheck) {
+          const clusterExists = clusters.length > 0;
+          return {
+            ...state,
+            loading: false,
+            clusterExists,
+          };
+        }
         return {
           ...state,
           loading: false,
@@ -93,6 +106,7 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
         error: false,
         data: clusterDataToState(state.data, action.payload.data),
       };
+    }
     case ClusterTypes.LOAD_EVENTS_SUCCESS: {
       newEvents = newEvents.concat(action.payload);
       return {
