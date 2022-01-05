@@ -37,7 +37,20 @@
         "no-restricted-syntax": [0],
         "@typescript-eslint/camelcase": [0],
         "no-else-return": [0],
+        "no-use-before-define": [0],
+        "camelcase": [0],
+        "@typescript-eslint/explicit-module-boundary-types": [0],
+        "no-shadow": [0],
         "react/jsx-props-no-spreading": [0],
+        "@typescript-eslint/ban-types": [
+            "error",
+            {
+              "extendDefaults": true,
+              "types": {
+                "{}": false
+              }
+            }
+          ],
         "import/extensions": [
             "error",
             "ignorePackages",
