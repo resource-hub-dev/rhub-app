@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { AnyAction } from 'redux';
 
@@ -8,7 +7,7 @@ import * as actions from './actions';
 import { ClusterTypes } from './types';
 
 function* load(action: AnyAction): any {
-  const { clusterId, parameters } = action.payload;
+  const { clusterId, parameters, nameCheck } = action.payload;
   const queryString = `lab/cluster${
     clusterId === 'all' ? '' : `/${clusterId}`
   }`;
@@ -18,7 +17,8 @@ function* load(action: AnyAction): any {
       yield put(actions.loadSuccess(clusterId, response.data));
       yield put(actions.loadEventRequest(clusterId));
       yield put(actions.loadHostRequest(clusterId));
-    } else yield put(actions.loadSuccess(clusterId, response.data.data));
+    } else
+      yield put(actions.loadSuccess(clusterId, response.data.data, nameCheck));
   } catch (err) {
     yield put(actions.loadFailure());
   }

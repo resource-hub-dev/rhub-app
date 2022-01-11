@@ -13,22 +13,16 @@ import { loadRequest as loadProducts } from '@ducks/lab/product/actions';
 import Products from './steps/Products';
 import Region from './steps/Regions';
 import { addWizardValues } from './helpers';
+import ClusterConfiguration from './steps/ClusterConfiguration';
 
-interface Props {
-  isErr: boolean;
-  isOpen: boolean;
-  onFinish: () => void;
-  onClose: () => void;
-}
+type WizardContext = [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 
-const QuickClusterWizard: React.FC<Props> = ({
-  isErr,
-  isOpen,
-  onFinish,
-  onClose,
-}: Props) => {
+export const wizardValidContext = React.createContext<WizardContext>([
+  false,
+  () => null,
+]);
   const dispatch = useDispatch();
-  const [isFormValid, setIsFormValid] = useState(false);
+  const [isWizardValid, setIsWizardValid] = useState(false);
   const [stepIdReached, setStepIdReached] = useState(1);
   const [values, setValues] = useState<Record<string, any>>({});
 
@@ -42,11 +36,13 @@ const QuickClusterWizard: React.FC<Props> = ({
 
   const title = 'Create a QuickCluster';
   const addWizardValuesWrapper = (newValues: { [key: string]: any }) => {
-    setIsFormValid(true);
+    setIsWizardValid(true);
     addWizardValues(values, newValues, setValues);
   };
 
-  const resetValidator = () => setIsFormValid(false);
+  const onSubmit = (data: any) => {
+    addWizardValuesWrapper(data);
+  };
 
   const CustomFooter = (
     <WizardFooter>
@@ -58,12 +54,20 @@ const QuickClusterWizard: React.FC<Props> = ({
                 <Button
                   variant="primary"
                   type="submit"
+                  form={activeStep.id === 3 ? 'form-id' : ''}
                   onClick={() => {
                     setStepIdReached(stepIdReached + 1);
                     resetValidator();
+                    if (activeStep.id === 3 || activeStep.id === 4) {
+                      const form = document.getElementById(
+                        `step-${activeStep.id}-form`
+                      );
+                      if (form !== null)
+                        form.dispatchEvent(new Event('submit'));
+                    }
                     return onNext();
                   }}
-                  isDisabled={!isFormValid}
+                  isDisabled={!isWizardValid}
                 >
                   Next
                 </Button>
@@ -87,7 +91,7 @@ const QuickClusterWizard: React.FC<Props> = ({
           // Final step buttons
           return (
             <>
-              <Button onClick={onFinish} isDisabled={!isFormValid || isErr}>
+              <Button onClick={onFinish} isDisabled={!isWizardValid}>
                 Finish
               </Button>
               <Button
@@ -134,7 +138,13 @@ const QuickClusterWizard: React.FC<Props> = ({
     {
       id: 3,
       name: 'Cluster Configuration',
-      component: <p>Step 3 content</p>,
+      component: (
+        <ClusterConfiguration
+          regionId={values.region_id}
+          productId={values.product_id}
+          onSubmit={onSubmit}
+        />
+      ),
       canJumpTo: stepIdReached >= 3,
     },
     {
@@ -155,7 +165,8 @@ const QuickClusterWizard: React.FC<Props> = ({
     return <>Loading....</>;
   }
   return (
-    <Wizard
+    <wizardValidContext.Provider value={[isWizardValid, setIsWizardValid]}>
+      <Wizard
       title={title}
       footer={CustomFooter}
       description="Simple Wizard Description"
@@ -163,6 +174,7 @@ const QuickClusterWizard: React.FC<Props> = ({
       onClose={onClose}
       isOpen={isOpen}
     />
+    </wizardValidContext.Provider>
   );
 };
 

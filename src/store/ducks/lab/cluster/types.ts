@@ -124,7 +124,7 @@ export interface ClusterUpdateData {
 export interface ClusterState {
   readonly data: { [key: number]: Cluster };
   readonly stdOutput: string | null;
-  // readonly hosts: ClusterHost[];
+  readonly clusterExists?: boolean;
   readonly events: ClusterEvent[];
   readonly loading: boolean;
   readonly error: boolean;

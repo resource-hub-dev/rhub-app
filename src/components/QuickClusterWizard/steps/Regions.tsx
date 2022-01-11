@@ -43,7 +43,7 @@ const Region: React.FC<Props> = ({ productId, addWizardValues }: Props) => {
   const onSelect = (checked: boolean, e: FormEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
     setSelected(Number(value));
-    addWizardValues({ product_id: Number(value) });
+    addWizardValues({ region_id: Number(value) });
   };
 
   // Group RHUB Regions based on their locations
