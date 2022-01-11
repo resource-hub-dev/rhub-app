@@ -1,0 +1,236 @@
+import React, { ReactElement, useContext, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { useForm, Controller } from 'react-hook-form';
+import {
+  Form,
+  FormGroup,
+  FormSelect,
+  FormSelectOption,
+  TextInput,
+  Tooltip,
+} from '@patternfly/react-core';
+import { AppState } from '@store';
+import { LabProductParams } from '@ducks/lab/product/types';
+import { ExclamationCircleIcon } from '@patternfly/react-icons';
+import { Quota } from '@ducks/lab/types';
+import { loadRequest as checkNameExists } from '@ducks/lab/cluster/actions';
+
+import { genDefaultValues, genGraphValues } from '../helpers';
+import { wizardValidContext } from '../QuickClusterWizard';
+
+interface Props {
+  /** ID of Selected Product in the Wizard */
+  productId: number;
+  /** Handles dynamic values for Utilization Charts in Step 3 */
+  updateUsage?: (requiredResources: Quota) => void;
+  /** Parameters from Product Region */
+  parameters: LabProductParams[];
+  /** Handles data once user hits submit */
+  onSubmit: (data: any) => void;
+  /** Determines which step the user is on */
+  stepId: number;
+}
+
+const Questionnaire: React.FC<Props> = ({
+  productId,
+  updateUsage,
+  parameters,
+  onSubmit,
+  stepId,
+}: Props) => {
+  const dispatch = useDispatch();
+  const [, setIsWizardValid] = useContext(wizardValidContext);
+  // Step 3 includes parameters that are not in advanced step
+  const product = useSelector(
+    (state: AppState) => state.labProduct.data[productId]
+  );
+  const clusterExists = useSelector(
+    (state: AppState) => state.cluster.clusterExists
+  );
+
+  const defaultValues = genDefaultValues(parameters);
+
+  const components: ReactElement[] = [];
+  const {
+    handleSubmit,
+    control,
+    register,
+    setValue,
+    setError,
+    formState: { errors, isValid, isDirty },
+  } = useForm({
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
+    defaultValues,
+  });
+
+  // const setNameExistError = () => {
+  //   if (clusterExists !== undefined && clusterExists === false) {
+  //     updateValid(v, clusterExists);
+  //   } else {
+  //     updateValid(v, false);
+  //   }
+  // }
+  useEffect(() => {
+    if (!isDirty && stepId === 4) setIsWizardValid(true);
+    else setIsWizardValid(isValid && isDirty);
+  }, [isValid, isDirty, stepId, setIsWizardValid]);
+
+  useEffect(() => {
+    if (clusterExists !== undefined) {
+      if (clusterExists === true) {
+        setError('name', {
+          type: 'value',
+          message: 'A cluster with this name exists. Please choose another',
+        });
+      } else setIsWizardValid(isValid);
+    }
+  }, [clusterExists, isValid, setError, setIsWizardValid]);
+
+  if (parameters) {
+    for (const question of parameters) {
+      const key = question.variable;
+      if (question.type === 'string' && !question.enum) {
+        const minLength = question.minLength || 0;
+        const maxLength = question.maxLength || 20;
+        components.push(
+          <Tooltip key={key} content={<div>{question.description}</div>}>
+            <FormGroup
+              label={question.name}
+              fieldId={key}
+              helperTextInvalid={errors[key] && errors[key].message}
+              isRequired={question.required}
+              helperTextInvalidIcon={<ExclamationCircleIcon />}
+              validated={errors[key] ? 'error' : 'default'}
+            >
+              <TextInput
+                {...register(key, {
+                  minLength: {
+                    value: minLength,
+                    message: `Minimum ${question.minLength} characters required`,
+                  },
+                  maxLength: {
+                    value: maxLength,
+                    message: `Maximum ${question.maxLength} characters allowed`,
+                  },
+                })}
+                name={key}
+                onBlur={(e) => {
+                  const { value } = e.target;
+                  if (
+                    value.length >= minLength &&
+                    value.length <= maxLength &&
+                    key === 'name'
+                  ) {
+                    dispatch(
+                      checkNameExists('all', { 'filter[name]': value }, true)
+                    );
+                  }
+                  setValue(key, value, { shouldValidate: true });
+                }}
+                key={`${key}-input`}
+                validated={errors[key] ? 'error' : 'default'}
+                isRequired={question.required}
+                aria-label={key}
+                onChange={() => undefined}
+              />
+            </FormGroup>
+          </Tooltip>
+        );
+      }
+      // For Integer field
+      if (question.type === 'integer' && !question.enum) {
+        const isNodesNum =
+          key.indexOf('_nodes') !== -1 && key.indexOf('num') !== -1;
+        components.push(
+          <Tooltip key={key} content={<div>{question.description}</div>}>
+            <FormGroup
+              label={question.name}
+              fieldId={key}
+              helperTextInvalid={errors[key] && errors[key].message}
+              isRequired={question.required}
+              helperTextInvalidIcon={<ExclamationCircleIcon />}
+              validated={errors[key] ? 'error' : 'default'}
+            >
+              <TextInput
+                {...register(key, {
+                  min: question.min && {
+                    value: question.min,
+                    message: `Minimum ${question.min} required`,
+                  },
+                  max: question.max && {
+                    value: question.max,
+                    message: `Maximum ${question.max} allowed`,
+                  },
+                })}
+                name={key}
+                key={`${key}-input`}
+                validated={errors[key] ? 'error' : 'default'}
+                isRequired={question.required}
+                aria-label={key}
+                type="number"
+                onBlur={(event) => {
+                  if (isNodesNum && updateUsage) {
+                    // fire graph update if it's a node number variable (e.g. Master node, Infra node)
+                    const usage = genGraphValues(
+                      key,
+                      product.name,
+                      Number(event.target.value)
+                    );
+                    updateUsage(usage);
+                  }
+                  setValue(key, event.target.value, { shouldValidate: true });
+                }}
+                onChange={() => undefined} // place holder function (required by PF)
+              />
+            </FormGroup>
+          </Tooltip>
+        );
+      }
+      // Convert params with enum (list) and boolean multiple choice select
+      if (question.enum || question.type === 'boolean') {
+        components.push(
+          <Tooltip key={key} content={<div>{question.description}</div>}>
+            <FormGroup label={question.name} fieldId={`${key}-form`}>
+              <Controller
+                name={key}
+                control={control}
+                render={({ field }) => (
+                  <FormSelect
+                    {...field}
+                    isRequired={question.required}
+                    aria-label={key}
+                  >
+                    {/* if an enum array exists */}
+                    {question.enum &&
+                      question.enum.map((value) => (
+                        <FormSelectOption
+                          key={value}
+                          value={value}
+                          label={value}
+                        />
+                      ))}
+                    {/* if boolean, convert to yes/no options */}
+                    {question.type === 'boolean' && [
+                      <FormSelectOption key="Yes" value label="Yes" />,
+                      <FormSelectOption key="No" value={false} label="No" />,
+                    ]}
+                  </FormSelect>
+                )}
+              />
+            </FormGroup>
+          </Tooltip>
+        );
+      }
+    }
+    return (
+      <Form id={`step-${stepId}-form`} onSubmit={handleSubmit(onSubmit)}>
+        {components}
+      </Form>
+    );
+  }
+  return <p>Loading</p>;
+};
+
+export default Questionnaire;

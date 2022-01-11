@@ -37,8 +37,9 @@ export const loadRequest = (
 
 export const loadSuccess = (
   clusterId: number | 'all',
-  data: Cluster | Cluster[]
-) => action(ClusterTypes.LOAD_SUCCESS, { clusterId, data });
+  data: Cluster | Cluster[],
+  nameCheck?: boolean
+) => action(ClusterTypes.LOAD_SUCCESS, { clusterId, data, nameCheck });
 
 export const loadFailure = () => action(ClusterTypes.LOAD_FAILURE);
 

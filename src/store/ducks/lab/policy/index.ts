@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable no-case-declarations */
 
 import { Reducer } from 'redux';
