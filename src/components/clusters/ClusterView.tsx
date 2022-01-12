@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 
@@ -16,7 +16,6 @@ import { AppState } from '@store';
 import { Cluster, ClusterHost } from '@ducks/lab/cluster/types';
 
 import DataTable, { RowPair } from '@components/dataTable/DataTable';
-import QuickClusterWizard from '@components/QuickClusterWizard/QuickClusterWizard';
 
 import { Quota } from '@ducks/lab/types';
 
@@ -36,7 +35,6 @@ const ClusterView: React.FC<Props> = ({ clusterViewType }: Props) => {
     2. they get rebuilt every weekend, so the rsvp and lifespan expirations are irrelevant
     */
   const { groupname } = useParams<Params>();
-  const [activeModal, setActiveModal] = useState('');
   const columns =
     clusterViewType === 'shared'
       ? ['Name', 'Template', 'Region', 'Status']
@@ -148,10 +146,6 @@ const ClusterView: React.FC<Props> = ({ clusterViewType }: Props) => {
     }));
   };
 
-  const onCreateQuickClusterClick = (name: string) => {
-    setActiveModal(name);
-  };
-
   if (Object.keys(clusters).length > 0) {
     rows = mapRows(Object.values(clusters));
   }
@@ -173,12 +167,15 @@ const ClusterView: React.FC<Props> = ({ clusterViewType }: Props) => {
       <CardTitle>
         {title}
         {clusterViewType !== 'shared' && (
-          <Button
-            variant="secondary"
-            onClick={() => onCreateQuickClusterClick('create-modal')}
+          <Link
+            to={{
+              pathname: `/resources/quickcluster/new`,
+              // eslint-disable-next-line no-restricted-globals
+              state: { prevPath: location.pathname },
+            }}
           >
-            New Cluster
-          </Button>
+            <Button variant="secondary">New Cluster</Button>
+          </Link>
         )}
       </CardTitle>
       <CardBody>
@@ -191,14 +188,6 @@ const ClusterView: React.FC<Props> = ({ clusterViewType }: Props) => {
           <DataTable columns={columns} rowPairs={rows} loading={loading} />
         )}{' '}
       </CardBody>
-      <QuickClusterWizard
-        isOpen={activeModal === 'create-modal'}
-        isErr={false}
-        onFinish={() => null}
-        onClose={() => {
-          setActiveModal('');
-        }}
-      />
     </Card>
   );
 };

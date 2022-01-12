@@ -6,6 +6,7 @@ import {
   WizardContextConsumer,
   WizardFooter,
 } from '@patternfly/react-core';
+import { useHistory } from 'react-router';
 
 import { AppState } from '@store';
 import { loadRequest as loadProducts } from '@ducks/lab/product/actions';
@@ -21,6 +22,8 @@ export const wizardValidContext = React.createContext<WizardContext>([
   false,
   () => null,
 ]);
+
+const QuickClusterWizard: React.FC = () => {
   const dispatch = useDispatch();
   const [isWizardValid, setIsWizardValid] = useState(false);
   const [stepIdReached, setStepIdReached] = useState(1);
@@ -29,6 +32,8 @@ export const wizardValidContext = React.createContext<WizardContext>([
   const token = useSelector((state: AppState) => state.user.current.token);
   const products = useSelector((state: AppState) => state.labProduct.data);
   const isLoading = useSelector((state: AppState) => state.labProduct.loading);
+
+  const history = useHistory();
 
   useEffect(() => {
     dispatch(loadProducts('all'));
@@ -44,6 +49,15 @@ export const wizardValidContext = React.createContext<WizardContext>([
     addWizardValuesWrapper(data);
   };
 
+  const onClose = () => {
+    history.goBack();
+  };
+
+  const onFinish = () => {
+    // TODO
+  };
+
+  const resetValidator = () => setIsWizardValid(false);
   const CustomFooter = (
     <WizardFooter>
       <WizardContextConsumer>
@@ -52,7 +66,7 @@ export const wizardValidContext = React.createContext<WizardContext>([
             return (
               <>
                 <Button
-                  variant="primary"
+                  // variant="primary"
                   type="submit"
                   form={activeStep.id === 3 ? 'form-id' : ''}
                   onClick={() => {
@@ -150,7 +164,7 @@ export const wizardValidContext = React.createContext<WizardContext>([
     {
       id: 4,
       name: 'Advanced Option',
-      component: <p>Step 4 content</p>,
+      component: <p>Advanced step content</p>,
       canJumpTo: stepIdReached >= 4,
     },
     {
@@ -167,13 +181,14 @@ export const wizardValidContext = React.createContext<WizardContext>([
   return (
     <wizardValidContext.Provider value={[isWizardValid, setIsWizardValid]}>
       <Wizard
-      title={title}
-      footer={CustomFooter}
-      description="Simple Wizard Description"
-      steps={steps}
-      onClose={onClose}
-      isOpen={isOpen}
-    />
+        navAriaLabel={`${title} steps`}
+        mainAriaLabel={`${title} content`}
+        title={title}
+        hideClose
+        isOpen
+        steps={steps}
+        footer={CustomFooter}
+      />
     </wizardValidContext.Provider>
   );
 };
