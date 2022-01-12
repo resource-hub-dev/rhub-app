@@ -19,6 +19,7 @@ import ClusterDetails from '@components/clusterDetails/ClusterDetails';
 import SharedClusters from '@components/clusters/SharedClusters';
 import MyClusters from '@components/clusters/MyClusters';
 import ResourcesDashboard from '@components/ResourcesDashboard/ResourcesDashboard';
+import QuickClusterWizard from '@components/QuickClusterWizard/QuickClusterWizard';
 
 import { Login, PrivateRoute, PublicRoute } from './CustomRoutes';
 
@@ -174,6 +175,9 @@ const MainScreen: React.FC = () => {
         </PrivateRoute>
         <PrivateRoute roles={[]} exact path="/resources/quickcluster/clusters">
           <MyClusters />
+        </PrivateRoute>
+        <PrivateRoute roles={[]} exact path="/resources/quickcluster/new">
+          <QuickClusterWizard />
         </PrivateRoute>
         <Route exact path="/cowsay" component={Cowsay} />
         <PrivateRoute roles={[]} exact path="/resources">
