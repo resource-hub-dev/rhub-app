@@ -1,0 +1,9 @@
+.charts-card-body {
+    display: flex;
+    justify-content: center;
+}
+
+.configuration-step-border {
+    padding-bottom: 25px;
+    border-bottom: 2px solid #8A8D90;
+}
