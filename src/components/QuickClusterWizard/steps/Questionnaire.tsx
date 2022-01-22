@@ -16,8 +16,7 @@ import { ExclamationCircleIcon } from '@patternfly/react-icons';
 import { Quota } from '@ducks/lab/types';
 import { loadRequest as checkNameExists } from '@ducks/lab/cluster/actions';
 
-import { genDefaultValues, genGraphValues } from '../helpers';
-import { wizardValidContext } from '../QuickClusterWizard';
+import {
 
 interface Props {
   /** ID of Selected Product in the Wizard */
@@ -175,8 +174,7 @@ const Questionnaire: React.FC<Props> = ({
                     // fire graph update if it's a node number variable (e.g. Master node, Infra node)
                     const usage = genGraphValues(
                       key,
-                      product.name,
-                      Number(event.target.value)
+                      product.flavors
                     );
                     updateUsage(usage);
                   }

@@ -1,3 +1,5 @@
+import { Quota } from '../types';
+
 export enum LabProductTypes {
   LOAD_REQUEST = '@lab/product/LOAD_REQUEST',
   LOAD_SUCCESS = '@lab/product/LOAD_SUCCESS',
@@ -18,7 +20,10 @@ export interface LabProductParams {
   description: string;
   variable: string;
   required: boolean;
-  type: string;
+  advanced: boolean;
+  condition: boolean; // TODO: This is to be implemented on rhub-api
+  enum?: [];
+  type: 'string' | 'integer' | 'boolean';
   max?: number;
   min?: number;
   maxLength?: number;
@@ -33,7 +38,8 @@ export interface LabProductData {
   description: string;
   enabled: boolean;
   tower_template_name: string;
-  parameters: LabProductParams;
+  parameters: LabProductParams[];
+  flavors: { [key: string]: Quota };
 }
 
 export interface Error {

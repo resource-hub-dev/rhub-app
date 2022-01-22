@@ -52,6 +52,7 @@ const ClusterConfiguration: React.FC<Props> = ({
     (state: AppState) => state.labProduct.data[productId]
   );
   const parameters = product.parameters.filter((param) => !param.advanced);
+  const { flavors } = product;
 
   const addErrors = (errorMsg: string) => {
     setErrors([
@@ -81,8 +82,7 @@ const ClusterConfiguration: React.FC<Props> = ({
         (data: Quota, currentParam: LabProductParams) => {
           const thisUsage = genGraphValues(
             currentParam.variable,
-            product.name,
-            Number(currentParam.default)
+            flavors
           );
           return {
             num_vcpus: data.num_vcpus + thisUsage.num_vcpus,
@@ -123,8 +123,9 @@ const ClusterConfiguration: React.FC<Props> = ({
   // Step 3 includes parameters that are not in advanced step
   return (
     <>
-      {regionUsage && quota && (
+      {regionUsage && quota && flavors && (
         <>
+          <AlertGroup>{error}</AlertGroup>
           <div className="configuration-step-border">
             <Questionnaire
               productId={productId}
