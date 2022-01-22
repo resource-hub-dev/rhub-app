@@ -17,6 +17,7 @@ const LabProductDataToState = (
       enabled: item.enabled,
       tower_template_name: item.tower_template_name,
       parameters: item.parameters,
+      flavors: item.flavors,
     },
   };
 };

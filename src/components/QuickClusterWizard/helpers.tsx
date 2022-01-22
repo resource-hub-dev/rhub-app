@@ -1,7 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { LabProductParams } from '@ducks/lab/product/types';
 import { Quota } from '@ducks/lab/types';
-import { Flavors as flavors } from '@facts/flavors';
 
 import React from 'react';
 
@@ -34,16 +33,15 @@ export const genDefaultValues = (parameters: LabProductParams[]) => {
 
 export const genGraphValues = (
   key: string,
-  productName: string,
-  numNodes: number
+  numNodes: number,
+  flavors: { [key: string]: Quota }
 ) => {
-  const productFlavor = flavors[productName];
   const flavor_key = key.substring(key.indexOf('num_') + 4);
   return {
-    num_vcpus: numNodes * productFlavor[flavor_key].num_vcpus,
-    ram_mb: numNodes * productFlavor[flavor_key].ram_mb,
-    volumes_gb: numNodes * productFlavor[flavor_key].volumes_gb,
-    num_volumes: numNodes * productFlavor[flavor_key].num_volumes,
+    num_vcpus: numNodes * flavors[flavor_key].num_vcpus,
+    ram_mb: numNodes * flavors[flavor_key].ram_mb,
+    volumes_gb: numNodes * flavors[flavor_key].volumes_gb,
+    num_volumes: numNodes * flavors[flavor_key].num_volumes,
   };
 };
 
