@@ -6,6 +6,8 @@ export enum LabRegionTypes {
   LOAD_FAILURE = '@lab/region/LOAD_FAILURE',
   LOAD_PRODUCT_REGIONS_REQUEST = '@lab/region/LOAD_PRODUCT_REGIONS_REQUEST',
   LOAD_PRODUCT_REGIONS_SUCCESS = '@lab/region/LOAD_PRODUCT_REGIONS_SUCCESS',
+  LOAD_USAGE_REQUEST = '@lab/region/LOAD_USAGE_REQUEST',
+  LOAD_USAGE_SUCCESS = '@lab/region/LOAD_USAGE_SUCCESS',
   CREATE_REQUEST = '@lab/region/CREATE_REQUEST',
   CREATE_SUCCESS = '@lab/region/CREATE_SUCCESS',
   CREATE_FAILURE = '@lab/region/CREATE_FAILURE',
@@ -27,7 +29,8 @@ export interface LabRegionData {
   reservations_enabled: boolean;
   reservation_expiration_max: number | null;
   lifespan_length: number | null;
-  quota: Quota | null;
+  user_quota?: Quota | null;
+  total_quota?: Quota | null;
   owner_group: string;
   users_group: string | null;
   tower_id: number;
@@ -54,7 +57,8 @@ export interface LabRegionCreate {
   reservations_enabled?: boolean;
   reservation_expiration_max?: number | null;
   lifespan_length?: number | null;
-  quota?: Quota | null;
+  user_quota?: Quota | null;
+  total_quota?: Quota | null;
   users_group?: string | null;
   tower_id: number;
   openstack: Openstack;
@@ -104,9 +108,22 @@ interface DnsServer {
       };
 }
 
+export interface Usage {
+  // user_quota,user_quota_usage, total_quota and total_quota_usage are values calculated from the data we store about clusters.
+  // In other words, it's how many resources Resource Hub can use (quota), and how many it currently uses (quota usage).
+  // It does not count resources that are not managed by Resource Hub.
+  // User quota and its usage is scoped to the currently logged in user. Total quota is overall quota and usage of the region.
+  openstack_limits: any;
+  user_quota: Quota;
+  user_quota_usage: Quota;
+  total_quota: Quota;
+  total_quota_usage: Quota;
+}
+
 export interface LabRegionState {
   data: { [key: number]: LabRegionData };
   product_regions: RegionsWithProduct[];
+  usage?: Usage;
   loading: boolean;
   errMsg: Error | {};
   error: boolean;
