@@ -54,3 +54,21 @@ export const genQuotaExceededError = (usage: Quota, regionQuota: Quota) => {
   }
   return undefined;
 };
+
+export const addWizardErrors = (
+  wizardErrors: string[],
+  setWizardErrors: React.Dispatch<React.SetStateAction<string[]>>,
+  key: string
+) => {
+  if (wizardErrors.indexOf(key) < 0) setWizardErrors([...wizardErrors, key]);
+};
+
+export const removeWizardErrors = (
+  wizardErrors: string[],
+  setWizardErrors: React.Dispatch<React.SetStateAction<string[]>>,
+  key: string
+) => {
+  const keyExistsInError = wizardErrors.indexOf(key) >= 0;
+  const newWizardErrors = wizardErrors.filter((value: string) => value !== key);
+  if (keyExistsInError) setWizardErrors(newWizardErrors);
+};

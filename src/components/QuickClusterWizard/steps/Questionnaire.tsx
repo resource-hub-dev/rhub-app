@@ -17,6 +17,12 @@ import { Quota } from '@ducks/lab/types';
 import { loadRequest as checkNameExists } from '@ducks/lab/cluster/actions';
 
 import {
+  addWizardErrors,
+  genDefaultValues,
+  genGraphValues,
+  removeWizardErrors,
+} from '../helpers';
+import { wizardContext } from '../QuickClusterWizard';
 
 interface Props {
   /** ID of Selected Product in the Wizard */
@@ -39,7 +45,7 @@ const Questionnaire: React.FC<Props> = ({
   stepId,
 }: Props) => {
   const dispatch = useDispatch();
-  const [, setIsWizardValid] = useContext(wizardValidContext);
+  const [wizardErrors, setWizardErrors] = useContext(wizardContext);
   // Step 3 includes parameters that are not in advanced step
   const product = useSelector(
     (state: AppState) => state.labProduct.data[productId]
@@ -64,28 +70,34 @@ const Questionnaire: React.FC<Props> = ({
     defaultValues,
   });
 
-  // const setNameExistError = () => {
-  //   if (clusterExists !== undefined && clusterExists === false) {
-  //     updateValid(v, clusterExists);
-  //   } else {
-  //     updateValid(v, false);
-  //   }
-  // }
   useEffect(() => {
-    if (!isDirty && stepId === 4) setIsWizardValid(true);
-    else setIsWizardValid(isValid && isDirty);
-  }, [isValid, isDirty, stepId, setIsWizardValid]);
+    if (isDirty && isValid) {
+      removeWizardErrors(wizardErrors, setWizardErrors, `step-${stepId}`);
+    } else {
+      addWizardErrors(wizardErrors, setWizardErrors, `step-${stepId}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isValid, isDirty, stepId, setWizardErrors]);
 
   useEffect(() => {
     if (clusterExists !== undefined) {
       if (clusterExists === true) {
+        const message =
+          'A cluster with this name exists. Please choose another';
         setError('name', {
           type: 'value',
-          message: 'A cluster with this name exists. Please choose another',
+          message,
         });
-      } else setIsWizardValid(isValid);
+        addWizardErrors(wizardErrors, setWizardErrors, `step-${stepId}-name`);
+      } else
+        removeWizardErrors(
+          wizardErrors,
+          setWizardErrors,
+          `step-${stepId}-name`
+        );
     }
-  }, [clusterExists, isValid, setError, setIsWizardValid]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clusterExists, isValid, setError, setWizardErrors]);
 
   if (parameters) {
     for (const question of parameters) {
@@ -174,6 +186,7 @@ const Questionnaire: React.FC<Props> = ({
                     // fire graph update if it's a node number variable (e.g. Master node, Infra node)
                     const usage = genGraphValues(
                       key,
+                      Number(event.target.value),
                       product.flavors
                     );
                     updateUsage(usage);
