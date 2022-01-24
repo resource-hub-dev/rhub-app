@@ -16,15 +16,16 @@ import Region from './steps/Regions';
 import { addWizardValues } from './helpers';
 import ClusterConfiguration from './steps/ClusterConfiguration';
 
-type WizardContext = [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+type WizardContext = [string[], React.Dispatch<React.SetStateAction<string[]>>];
 
-export const wizardValidContext = React.createContext<WizardContext>([
-  false,
+export const wizardContext = React.createContext<WizardContext>([
+  [],
   () => null,
 ]);
 
 const QuickClusterWizard: React.FC = () => {
   const dispatch = useDispatch();
+  const [wizardErrors, setWizardErrors] = useState<string[]>([]);
   const [isWizardValid, setIsWizardValid] = useState(false);
   const [stepIdReached, setStepIdReached] = useState(1);
   const [values, setValues] = useState<Record<string, any>>({});
@@ -39,9 +40,12 @@ const QuickClusterWizard: React.FC = () => {
     dispatch(loadProducts('all'));
   }, [dispatch, token]);
 
+  useEffect(() => {
+    setIsWizardValid(wizardErrors.length === 0);
+  }, [wizardErrors]);
   const title = 'Create a QuickCluster';
   const addWizardValuesWrapper = (newValues: { [key: string]: any }) => {
-    setIsWizardValid(true);
+    setIsWizardValid(Object.keys(wizardErrors).length === 0);
     addWizardValues(values, newValues, setValues);
   };
 
@@ -179,7 +183,7 @@ const QuickClusterWizard: React.FC = () => {
     return <>Loading....</>;
   }
   return (
-    <wizardValidContext.Provider value={[isWizardValid, setIsWizardValid]}>
+    <wizardContext.Provider value={[wizardErrors, setWizardErrors]}>
       <Wizard
         navAriaLabel={`${title} steps`}
         mainAriaLabel={`${title} content`}
@@ -189,7 +193,7 @@ const QuickClusterWizard: React.FC = () => {
         steps={steps}
         footer={CustomFooter}
       />
-    </wizardValidContext.Provider>
+    </wizardContext.Provider>
   );
 };
 

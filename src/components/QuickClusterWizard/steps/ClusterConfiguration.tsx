@@ -9,8 +9,13 @@ import { Alert, AlertGroup } from '@patternfly/react-core';
 
 import Questionnaire from './Questionnaire';
 import GraphsUtilization from './Graphs';
-import { genGraphValues, genQuotaExceededError } from '../helpers';
-import { wizardValidContext } from '../QuickClusterWizard';
+import {
+  addWizardErrors,
+  genGraphValues,
+  genQuotaExceededError,
+  removeWizardErrors,
+} from '../helpers';
+import { wizardContext } from '../QuickClusterWizard';
 
 interface Props {
   /** ID of Selected Product in the Wizard */
@@ -27,7 +32,7 @@ const ClusterConfiguration: React.FC<Props> = ({
   onSubmit,
 }: Props) => {
   const dispatch = useDispatch();
-  const [, setIsWizardValid] = useContext(wizardValidContext);
+  const [wizardErrors, setWizardErrors] = useContext(wizardContext);
   // Addditional errors in addition to validation errors on the fields
   const [error, setErrors] = useState<React.ReactNode[]>([]);
   // Usage is used for the donut graphs and to flag errors if quota is filled
@@ -65,6 +70,7 @@ const ClusterConfiguration: React.FC<Props> = ({
         timeout={5000}
       />,
     ]);
+    addWizardErrors(wizardErrors, setWizardErrors, 'step3');
   };
 
   useEffect(() => {
@@ -82,6 +88,7 @@ const ClusterConfiguration: React.FC<Props> = ({
         (data: Quota, currentParam: LabProductParams) => {
           const thisUsage = genGraphValues(
             currentParam.variable,
+            Number(currentParam.default),
             flavors
           );
           return {
@@ -103,7 +110,9 @@ const ClusterConfiguration: React.FC<Props> = ({
       const errorMsg = genQuotaExceededError(usage, quota);
       if (errorMsg) {
         addErrors(errorMsg);
-        setIsWizardValid(false);
+      } else {
+        setErrors([]);
+        removeWizardErrors(wizardErrors, setWizardErrors, 'step3');
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
