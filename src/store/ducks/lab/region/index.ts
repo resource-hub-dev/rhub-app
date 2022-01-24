@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable no-case-declarations */
 
 import { Reducer } from 'redux';
@@ -28,7 +27,8 @@ const labRegionDataToState = (
       reservations_enabled: item.reservations_enabled,
       reservation_expiration_max: item.reservation_expiration_max,
       lifespan_length: item.lifespan_length,
-      quota: item.quota,
+      user_quota: item.user_quota,
+      total_quota: item.total_quota,
       owner_group: item.owner_group,
       users_group: item.users_group,
       tower_id: item.tower_id,
@@ -45,6 +45,7 @@ const reducer: Reducer<LabRegionState> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case LabRegionTypes.LOAD_REQUEST:
     case LabRegionTypes.LOAD_PRODUCT_REGIONS_REQUEST:
+    case LabRegionTypes.LOAD_USAGE_REQUEST:
     case LabRegionTypes.CREATE_REQUEST:
     case LabRegionTypes.UPDATE_REQUEST:
     case LabRegionTypes.DELETE_REQUEST:
@@ -77,6 +78,15 @@ const reducer: Reducer<LabRegionState> = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         product_regions: action.payload.data,
+        loading: false,
+        error: false,
+        errMsg: {},
+      };
+    }
+    case LabRegionTypes.LOAD_USAGE_SUCCESS: {
+      return {
+        ...state,
+        usage: action.payload.usage,
         loading: false,
         error: false,
         errMsg: {},

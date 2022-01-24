@@ -12,6 +12,7 @@ import {
   deleteSuccess,
   deleteFailure,
   loadProductRegionsSuccess,
+  loadUsageSuccess,
 } from './actions';
 import { LabRegionTypes } from './types';
 
@@ -42,6 +43,19 @@ function* load_product_regions(action: AnyAction) {
       `lab/product/${productId}/regions`
     );
     yield put(loadProductRegionsSuccess(response.data));
+  } catch (err) {
+    yield put(loadFailure((err as any).response.data));
+  }
+}
+
+function* load_region_usage(action: AnyAction) {
+  const { regionId } = action.payload;
+  try {
+    const response: { [key: string]: any } = yield call(
+      api.get,
+      `lab/region/${regionId}/usage`
+    );
+    yield put(loadUsageSuccess(response.data));
   } catch (err) {
     yield put(loadFailure((err as any).response.data));
   }
@@ -86,6 +100,7 @@ const labRegionSagas = [
   takeLatest(LabRegionTypes.UPDATE_REQUEST, update),
   takeLatest(LabRegionTypes.DELETE_REQUEST, remove),
   takeLatest(LabRegionTypes.LOAD_PRODUCT_REGIONS_REQUEST, load_product_regions),
+  takeLatest(LabRegionTypes.LOAD_USAGE_REQUEST, load_region_usage),
 ];
 
 export default labRegionSagas;

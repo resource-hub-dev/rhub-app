@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadUserUsageRequest } from '@ducks/lab/region/actions';
+import { loadUsageRequest } from '@ducks/lab/region/actions';
 
 import { AppState } from '@store';
 import { Quota } from '@ducks/lab/types';
@@ -43,15 +43,14 @@ const ClusterConfiguration: React.FC<Props> = ({
     num_volumes: number;
   }>({ num_vcpus: 0, ram_mb: 0, volumes_gb: 0, num_volumes: 0 });
 
-  const userId = useSelector((state: AppState) => state.user.current.id);
   const quota = useSelector(
     (state: AppState) =>
       state.labRegion.product_regions.find(
         (value) => value.region.id === regionId
-      )?.region.quota
+      )?.region.user_quota
   );
   const regionUsage = useSelector(
-    (state: AppState) => state.labRegion.userUsage
+    (state: AppState) => state.labRegion.usage?.user_quota_usage
   );
   const product = useSelector(
     (state: AppState) => state.labProduct.data[productId]
@@ -74,8 +73,8 @@ const ClusterConfiguration: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    dispatch(loadUserUsageRequest(regionId, userId));
-  }, [dispatch, regionId, userId]);
+    dispatch(loadUsageRequest(regionId));
+  }, [dispatch, regionId]);
 
   useEffect(() => {
     if (regionUsage && parameters) {
@@ -154,7 +153,6 @@ const ClusterConfiguration: React.FC<Props> = ({
           />
         </>
       )}
-      <AlertGroup>{error}</AlertGroup>
     </>
   );
 };
