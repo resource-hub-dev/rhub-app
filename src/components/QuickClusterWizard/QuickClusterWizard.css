@@ -1,6 +1,24 @@
+.summary-charts-container {
+    padding-top: 20px;
+}
+
 .charts-card-body {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.resource-summary-container {
+    padding-left: 20px;
+}
+
+.resource-summary-table {
+    width: 250px;
+    flex-grow: 3;
+}
+
+.chart {
+    flex-grow: 2;
 }
 
 .configuration-step-border {

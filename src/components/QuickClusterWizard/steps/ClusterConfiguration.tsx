@@ -144,12 +144,12 @@ const ClusterConfiguration: React.FC<Props> = ({
             />
           </div>
           <GraphsUtilization
-            num_vcpus={usage?.num_vcpus}
-            ram_mb={usage?.ram_mb}
-            volumes_gb={usage?.volumes_gb}
-            cpuQuota={quota.num_vcpus}
-            ramQuotaMb={quota.ram_mb}
-            volumesMaxGb={quota.volumes_gb}
+            vCPUCoreUsed={totalUsage?.num_vcpus}
+            ramMbUsed={totalUsage?.ram_mb}
+            volumesGbUsed={totalUsage?.volumes_gb}
+            vCPUCoreQuota={quota.num_vcpus}
+            ramMbQuota={quota.ram_mb}
+            volumesGbQuota={quota.volumes_gb}
           />
         </>
       )}
