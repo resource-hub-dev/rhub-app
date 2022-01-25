@@ -23,25 +23,23 @@ interface Props {
   /** ID of Selected Region in the Wizard */
   regionId: number;
   /** Function to handle submit */
-  onSubmit: (data: any) => void;
+  /** Total resource consumptions */
+  totalUsage: Quota;
+  /** Update parent's totalUsage state */
+  setTotalUsage: React.Dispatch<React.SetStateAction<Quota>>;
 }
 
 const ClusterConfiguration: React.FC<Props> = ({
   productId,
   regionId,
   onSubmit,
+  totalUsage,
+  setTotalUsage,
 }: Props) => {
   const dispatch = useDispatch();
   const [wizardErrors, setWizardErrors] = useContext(wizardContext);
   // Addditional errors in addition to validation errors on the fields
   const [error, setErrors] = useState<React.ReactNode[]>([]);
-  // Usage is used for the donut graphs and to flag errors if quota is filled
-  const [usage, setUsage] = useState<{
-    num_vcpus: number;
-    ram_mb: number;
-    volumes_gb: number;
-    num_volumes: number;
-  }>({ num_vcpus: 0, ram_mb: 0, volumes_gb: 0, num_volumes: 0 });
 
   const quota = useSelector(
     (state: AppState) =>
@@ -99,14 +97,13 @@ const ClusterConfiguration: React.FC<Props> = ({
         },
         regionUsage
       );
-      setUsage(defaultUsage);
+      setTotalUsage(defaultUsage);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parameters.length, regionUsage, product.name, quota]);
 
   useEffect(() => {
-    if (usage && quota) {
-      const errorMsg = genQuotaExceededError(usage, quota);
+      const errorMsg = genQuotaExceededError(totalUsage, quota);
       if (errorMsg) {
         addErrors(errorMsg);
       } else {
@@ -119,13 +116,13 @@ const ClusterConfiguration: React.FC<Props> = ({
 
   // updateUsage takes future resources consumption from user inputs in the form and update usage state
   const updateUsage = (requiredResources: Quota) => {
-    if (regionUsage)
-      setUsage({
+      setTotalUsage({
         num_vcpus: regionUsage.num_vcpus + requiredResources.num_vcpus,
         ram_mb: regionUsage.ram_mb + requiredResources.ram_mb,
         volumes_gb: regionUsage.volumes_gb + requiredResources.volumes_gb,
         num_volumes: regionUsage.num_volumes + requiredResources.num_volumes,
       });
+    }
   };
 
   // Step 3 includes parameters that are not in advanced step

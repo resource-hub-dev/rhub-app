@@ -10,6 +10,7 @@ import { useHistory } from 'react-router';
 
 import { AppState } from '@store';
 import { loadRequest as loadProducts } from '@ducks/lab/product/actions';
+import { Quota } from '@ducks/lab/types';
 
 import Products from './steps/Products';
 import Region from './steps/Regions';
@@ -24,12 +25,19 @@ export const wizardContext = React.createContext<WizardContext>([
   () => null,
 ]);
 
+const emptyQuota = {
+  num_vcpus: 0,
+  ram_mb: 0,
+  volumes_gb: 0,
+  num_volumes: 0,
+};
+
 const QuickClusterWizard: React.FC = () => {
   const dispatch = useDispatch();
   const [wizardErrors, setWizardErrors] = useState<string[]>([]);
   const [isWizardValid, setIsWizardValid] = useState(false);
   const [stepIdReached, setStepIdReached] = useState(1);
-  const [values, setValues] = useState<Record<string, any>>({});
+  const [totalUsage, setTotalUsage] = useState<Quota>(emptyQuota);
 
   const token = useSelector((state: AppState) => state.user.current.token);
   const products = useSelector((state: AppState) => state.labProduct.data);
@@ -162,6 +170,7 @@ const QuickClusterWizard: React.FC = () => {
           regionId={values.region_id}
           productId={values.product_id}
           onSubmit={onSubmit}
+          setTotalUsage={setTotalUsage}
         />
       ),
       canJumpTo: stepIdReached >= 3,
