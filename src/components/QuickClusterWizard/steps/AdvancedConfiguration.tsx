@@ -1,0 +1,37 @@
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { AppState } from '@store';
+
+import Questionnaire from './Questionnaire';
+
+interface Props {
+  /** ID of Selected Product in the Wizard */
+  productId: number;
+  /** Function to handle submit */
+  onSubmit: (data: any) => void;
+}
+
+const AdvancedConfiguration: React.FC<Props> = ({
+  productId,
+  onSubmit,
+}: Props) => {
+  const product = useSelector(
+    (state: AppState) => state.labProduct.data[productId]
+  );
+  const parameters = product.parameters.filter((param) => param.advanced);
+
+  return (
+    <>
+      <div className="configuration-step-border">
+        <Questionnaire
+          productId={productId}
+          parameters={parameters}
+          onSubmit={onSubmit}
+          stepId={4}
+        />
+      </div>
+    </>
+  );
+};
+
+export default AdvancedConfiguration;

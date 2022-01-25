@@ -15,6 +15,7 @@ import Products from './steps/Products';
 import Region from './steps/Regions';
 import { addWizardValues } from './helpers';
 import ClusterConfiguration from './steps/ClusterConfiguration';
+import AdvancedConfiguration from './steps/AdvancedConfiguration';
 
 type WizardContext = [string[], React.Dispatch<React.SetStateAction<string[]>>];
 
@@ -168,7 +169,12 @@ const QuickClusterWizard: React.FC = () => {
     {
       id: 4,
       name: 'Advanced Option',
-      component: <p>Advanced step content</p>,
+      component: (
+        <AdvancedConfiguration
+          productId={values.product_id}
+          onSubmit={onSubmit}
+        />
+      ),
       canJumpTo: stepIdReached >= 4,
     },
     {
