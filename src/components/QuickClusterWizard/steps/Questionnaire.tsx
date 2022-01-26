@@ -72,10 +72,18 @@ const Questionnaire: React.FC<Props> = ({
   });
 
   useEffect(() => {
-    if (isDirty && isValid) {
-      removeWizardErrors(wizardErrors, setWizardErrors, `step-${stepId}`);
+    if (!isDirty && stepId !== 4) {
+      addWizardErrors(wizardErrors, setWizardErrors, `step-${stepId}-touched`);
+    } else if (isDirty) {
+      removeWizardErrors(
+        wizardErrors,
+        setWizardErrors,
+        `step-${stepId}-touched`
+      );
+    } else if (!isValid) {
+      addWizardErrors(wizardErrors, setWizardErrors, `step-${stepId}-valid`);
     } else {
-      addWizardErrors(wizardErrors, setWizardErrors, `step-${stepId}`);
+      removeWizardErrors(wizardErrors, setWizardErrors, `step-${stepId}-valid`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid, isDirty, stepId, setWizardErrors]);

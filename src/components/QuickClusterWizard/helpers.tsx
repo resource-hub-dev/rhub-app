@@ -52,7 +52,7 @@ export const genQuotaExceededError = (usage: Quota, regionQuota: Quota) => {
   for (const key of keys) {
     const percentUsed = (usage as any)[key] / (regionQuota as any)[key];
     if (percentUsed >= 1)
-      return 'Quota Exceeded: Check the graphs for more details';
+      return 'Quota Exceeded: Please resize your QuickCluster';
   }
   return undefined;
 };

@@ -69,7 +69,7 @@ const ClusterConfiguration: React.FC<Props> = ({
         timeout={5000}
       />,
     ]);
-    addWizardErrors(wizardErrors, setWizardErrors, 'step3');
+    addWizardErrors(wizardErrors, setWizardErrors, 'step-3-quota');
   };
 
   useEffect(() => {
@@ -111,7 +111,7 @@ const ClusterConfiguration: React.FC<Props> = ({
         addErrors(errorMsg);
       } else {
         setErrors([]);
-        removeWizardErrors(wizardErrors, setWizardErrors, 'step3');
+        removeWizardErrors(wizardErrors, setWizardErrors, 'step-3-quota');
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

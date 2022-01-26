@@ -39,7 +39,7 @@ const GraphsUtilization: React.FC<Props> = ({
       <p>
         These charts estimates your total resource consumption in the region
         <i> after </i> this QuickCluster is created. See the cost table for the
-        total size of this cluster. These calculations depend on your
+        total size of this cluster. These calculations are a result of your
         selections.
       </p>
       <div className="charts-card-body">
