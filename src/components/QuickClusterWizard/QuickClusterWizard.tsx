@@ -14,7 +14,7 @@ import { Quota } from '@ducks/lab/types';
 
 import Products from './steps/Products';
 import Region from './steps/Regions';
-import { addWizardValues } from './helpers';
+import { addWizardValues, WizardValues } from './helpers';
 import ClusterConfiguration from './steps/ClusterConfiguration';
 import AdvancedConfiguration from './steps/AdvancedConfiguration';
 
@@ -37,6 +37,7 @@ const QuickClusterWizard: React.FC = () => {
   const [wizardErrors, setWizardErrors] = useState<string[]>([]);
   const [isWizardValid, setIsWizardValid] = useState(false);
   const [stepIdReached, setStepIdReached] = useState(1);
+  const [values, setValues] = useState<WizardValues>({});
   const [totalUsage, setTotalUsage] = useState<Quota>(emptyQuota);
 
   const token = useSelector((state: AppState) => state.user.current.token);
@@ -53,7 +54,7 @@ const QuickClusterWizard: React.FC = () => {
     setIsWizardValid(wizardErrors.length === 0);
   }, [wizardErrors]);
   const title = 'Create a QuickCluster';
-  const addWizardValuesWrapper = (newValues: { [key: string]: any }) => {
+  const addWizardValuesWrapper = (newValues: WizardValues) => {
     setIsWizardValid(Object.keys(wizardErrors).length === 0);
     addWizardValues(values, newValues, setValues);
   };
@@ -156,7 +157,7 @@ const QuickClusterWizard: React.FC = () => {
       id: 2,
       component: (
         <Region
-          productId={values.product_id ? values.product_id : 0}
+          productId={values.product_id ? Number(values.product_id) : 0}
           addWizardValues={addWizardValuesWrapper}
         />
       ),
@@ -167,9 +168,10 @@ const QuickClusterWizard: React.FC = () => {
       name: 'Cluster Configuration',
       component: (
         <ClusterConfiguration
-          regionId={values.region_id}
-          productId={values.product_id}
+          regionId={Number(values.region_id)}
+          productId={Number(values.product_id)}
           onSubmit={onSubmit}
+          totalUsage={totalUsage}
           setTotalUsage={setTotalUsage}
         />
       ),
@@ -180,7 +182,7 @@ const QuickClusterWizard: React.FC = () => {
       name: 'Advanced Option',
       component: (
         <AdvancedConfiguration
-          productId={values.product_id}
+          productId={Number(values.product_id)}
           onSubmit={onSubmit}
         />
       ),

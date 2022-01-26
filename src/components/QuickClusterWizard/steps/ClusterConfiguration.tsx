@@ -14,6 +14,7 @@ import {
   genGraphValues,
   genQuotaExceededError,
   removeWizardErrors,
+  WizardValues,
 } from '../helpers';
 import { wizardContext } from '../QuickClusterWizard';
 
@@ -23,6 +24,7 @@ interface Props {
   /** ID of Selected Region in the Wizard */
   regionId: number;
   /** Function to handle submit */
+  onSubmit: (data: WizardValues) => void;
   /** Total resource consumptions */
   totalUsage: Quota;
   /** Update parent's totalUsage state */
@@ -103,6 +105,7 @@ const ClusterConfiguration: React.FC<Props> = ({
   }, [parameters.length, regionUsage, product.name, quota]);
 
   useEffect(() => {
+    if (totalUsage && quota) {
       const errorMsg = genQuotaExceededError(totalUsage, quota);
       if (errorMsg) {
         addErrors(errorMsg);
@@ -112,10 +115,11 @@ const ClusterConfiguration: React.FC<Props> = ({
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quota, usage]);
+  }, [quota, totalUsage]);
 
   // updateUsage takes future resources consumption from user inputs in the form and update usage state
   const updateUsage = (requiredResources: Quota) => {
+    if (regionUsage) {
       setTotalUsage({
         num_vcpus: regionUsage.num_vcpus + requiredResources.num_vcpus,
         ram_mb: regionUsage.ram_mb + requiredResources.ram_mb,

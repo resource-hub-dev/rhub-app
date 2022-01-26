@@ -21,6 +21,7 @@ import {
   genDefaultValues,
   genGraphValues,
   removeWizardErrors,
+  WizardValues,
 } from '../helpers';
 import { wizardContext } from '../QuickClusterWizard';
 
@@ -32,7 +33,7 @@ interface Props {
   /** Parameters from Product Region */
   parameters: LabProductParams[];
   /** Handles data once user hits submit */
-  onSubmit: (data: any) => void;
+  onSubmit: (data: WizardValues) => void;
   /** Determines which step the user is on */
   stepId: number;
 }
