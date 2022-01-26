@@ -23,14 +23,12 @@ const AdvancedConfiguration: React.FC<Props> = ({
 
   return (
     <>
-      <div className="configuration-step-border">
-        <Questionnaire
-          productId={productId}
-          parameters={parameters}
-          onSubmit={onSubmit}
-          stepId={4}
-        />
-      </div>
+      <Questionnaire
+        productId={productId}
+        parameters={parameters}
+        onSubmit={onSubmit}
+        stepId={4}
+      />
     </>
   );
 };
