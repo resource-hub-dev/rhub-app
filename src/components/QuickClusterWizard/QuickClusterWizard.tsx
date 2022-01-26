@@ -17,6 +17,7 @@ import Region from './steps/Regions';
 import { addWizardValues, WizardValues } from './helpers';
 import ClusterConfiguration from './steps/ClusterConfiguration';
 import AdvancedConfiguration from './steps/AdvancedConfiguration';
+import Review from './steps/Review';
 
 type WizardContext = [string[], React.Dispatch<React.SetStateAction<string[]>>];
 
@@ -191,7 +192,14 @@ const QuickClusterWizard: React.FC = () => {
     {
       id: 5,
       name: 'Review',
-      component: <p>Review step content</p>,
+      component: (
+        <Review
+          values={values}
+          regionId={Number(values.region_id)}
+          productId={Number(values.product_id)}
+          totalUsage={totalUsage}
+        />
+      ),
       nextButtonText: 'Finish',
       canJumpTo: stepIdReached >= 5,
     },
