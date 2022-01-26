@@ -4,10 +4,12 @@ import { Quota } from '@ducks/lab/types';
 
 import React from 'react';
 
+export type WizardValues = { [key: string]: string | number | boolean };
+
 export const addWizardValues = (
-  values: { [key: string]: any },
-  newValues: { [key: string]: any },
-  setValues: React.Dispatch<React.SetStateAction<Record<string, any>>>
+  values: WizardValues,
+  newValues: WizardValues,
+  setValues: React.Dispatch<React.SetStateAction<WizardValues>>
 ) => {
   setValues({
     ...values,

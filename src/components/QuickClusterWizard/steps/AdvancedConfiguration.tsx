@@ -3,12 +3,13 @@ import { useSelector } from 'react-redux';
 import { AppState } from '@store';
 
 import Questionnaire from './Questionnaire';
+import { WizardValues } from '../helpers';
 
 interface Props {
   /** ID of Selected Product in the Wizard */
   productId: number;
   /** Function to handle submit */
-  onSubmit: (data: any) => void;
+  onSubmit: (data: WizardValues) => void;
 }
 
 const AdvancedConfiguration: React.FC<Props> = ({
