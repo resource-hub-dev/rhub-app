@@ -11,6 +11,7 @@ import {
   updateFailure,
   deleteSuccess,
   deleteFailure,
+  loadRequest,
 } from './actions';
 import { LabPolicyTypes } from './types';
 
@@ -33,6 +34,7 @@ function* create(action: AnyAction) {
   try {
     yield call(api.post, '/policies', body);
     yield put(createSuccess());
+    yield put(loadRequest('all'));
   } catch (err) {
     yield put(createFailure((err as any).response.data));
   }
