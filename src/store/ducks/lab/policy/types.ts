@@ -47,6 +47,20 @@ export interface LabPolicyModel {
   };
 }
 
+export interface SubmitPolicyData {
+  name: string;
+  department: string;
+  constraint: {
+    sched_avail: string[] | null;
+    serv_avail: number | null;
+    limit: { [key: string]: string } | null;
+    density: string | null;
+    tag: string[] | null;
+    cost: number | null;
+    location: string | null;
+  };
+}
+
 export interface Error {
   detail: string;
   status: number;

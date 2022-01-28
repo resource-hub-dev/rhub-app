@@ -12,18 +12,6 @@ import {
   ToolbarContent,
   ToolbarItem,
   Divider,
-  Drawer,
-  DrawerActions,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerContentBody,
-  DrawerHead,
-  DrawerPanelBody,
-  DrawerPanelContent,
-  Flex,
-  FlexItem,
-  Form,
-  FormGroup,
   Modal,
   PageSection,
   PageSectionVariants,
@@ -31,9 +19,7 @@ import {
   PaginationVariant,
   Spinner,
   Text,
-  TextArea,
   TextContent,
-  Title,
 } from '@patternfly/react-core';
 
 import {
@@ -42,8 +28,11 @@ import {
   deleteRequest,
   updateRequest,
 } from '@ducks/lab/policy/actions';
+import { SubmitPolicyData } from '@ducks/lab/policy/types';
 
 import { AppState } from '@store';
+
+import PolicyForm, { PolicyFormData } from './PolicyForm';
 
 const Policies: React.FC = () => {
   const dispatch = useDispatch();
@@ -67,16 +56,8 @@ const Policies: React.FC = () => {
     page * perPage
   );
 
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const [createValue, setCreateValue] = useState<string>('');
-  const [editedValue, setEditedValue] = useState<string>('');
-  const [validated, setValidated] = useState<
-    'default' | 'warning' | 'success' | 'error' | undefined
-  >('default');
-  const [helperText, setHelperText] = useState<string>('');
-  const [invalidText, setInvalidText] = useState<string>('An error occurred');
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
   const queryPolicy = (): void => {
     dispatch(loadRequest('all'));
@@ -84,30 +65,26 @@ const Policies: React.FC = () => {
   useEffect(queryPolicy, [dispatch, token]);
 
   // API actions
-  const createPolicy = (): void => {
+  const createPolicy = (value: SubmitPolicyData): void => {
     setCaptureError(true);
+
     try {
-      dispatch(createRequest(JSON.parse(createValue)));
+      dispatch(createRequest(value));
     } catch (e) {
       if ((e as any).name === 'SyntaxError') {
         setCaptureError(false);
-        setHelperText('Invalid JSON');
-        setValidated('error');
       }
     }
   };
 
-  const editPolicy = (): void => {
-    if (editedValue && policyId) {
-      try {
-        setCaptureError(true);
-        dispatch(updateRequest(Number(policyId), JSON.parse(editedValue)));
-      } catch (e) {
-        if ((e as any).name === 'SyntaxError') {
-          setCaptureError(false);
-          setHelperText('Invalid JSON');
-          setValidated('error');
-        }
+  const editPolicy = (value: SubmitPolicyData): void => {
+    setCaptureError(true);
+
+    try {
+      dispatch(updateRequest(Number(policyId), value));
+    } catch (e) {
+      if ((e as any).name === 'SyntaxError') {
+        setCaptureError(false);
       }
     }
   };
@@ -119,25 +96,15 @@ const Policies: React.FC = () => {
     }
   };
 
-  const removeId = (policies: any) => {
-    if (policies) {
-      const policiesCopy = { ...policies };
-      delete policiesCopy.id;
-      return policiesCopy;
-    }
-    return {};
-  };
-
   const handleModalToggle = React.useCallback(() => {
-    setIsExpanded(false);
-    setIsModalOpen(!isModalOpen);
-    setInvalidText('');
-    setHelperText('');
-    setValidated(undefined);
-  }, [isModalOpen]);
+    setIsCreateModalOpen(!isCreateModalOpen);
+  }, [isCreateModalOpen]);
+
+  const handleEditModalToggle = React.useCallback(() => {
+    setIsEditModalOpen(!isEditModalOpen);
+  }, [isEditModalOpen]);
 
   const onSetPage = (_event: any, pageNumber: number) => {
-    setIsExpanded(false);
     setPolicyId(undefined);
     setPage(pageNumber);
   };
@@ -146,29 +113,10 @@ const Policies: React.FC = () => {
     setPerPage(newPerPage);
   };
 
-  const onTextAreaChange = (newValue: string) => {
-    setEditedValue(newValue);
-  };
-
-  const onCreateChange = (newValue: string) => {
-    setCreateValue(newValue);
-  };
-
   const onSelectDataListItem = (id: string) => {
     setPolicyId(Number(id));
     dispatch(loadRequest(Number(id)));
-    setIsExpanded(true);
-    setInvalidText('');
-    setHelperText('');
-    setValidated(undefined);
-  };
-
-  const onClose = () => {
-    setInvalidText('');
-    setHelperText('');
-    setValidated(undefined);
-    setIsExpanded(false);
-    setPolicyId(undefined);
+    setIsEditModalOpen(true);
   };
 
   const errorCallback = React.useCallback(() => {
@@ -178,18 +126,12 @@ const Policies: React.FC = () => {
     if (captureError) {
       if (loading === false) {
         if (error === true) {
-          if ('detail' in errMsg) {
-            setValidated('error');
-            setHelperText(errMsg.detail);
-          }
-        } else {
-          setValidated('success');
-          setHelperText('Success');
-          if (isModalOpen) {
+          if (isCreateModalOpen) {
             handleModalToggle();
+          } else if (isEditModalOpen) {
+            handleEditModalToggle();
           }
-          dispatch(loadRequest('all'));
-          setIsExpanded(false);
+
           setPolicyId(undefined);
         }
         setCaptureError(false);
@@ -197,12 +139,12 @@ const Policies: React.FC = () => {
     }
   }, [
     captureError,
-    errMsg,
     error,
     handleModalToggle,
-    isModalOpen,
+    isCreateModalOpen,
+    handleEditModalToggle,
+    isEditModalOpen,
     loading,
-    dispatch,
     page,
     policyPaginated,
   ]);
@@ -212,93 +154,78 @@ const Policies: React.FC = () => {
   };
   useEffect(setError, [loading, errorCallback]);
 
-  const panelContent = (
-    <DrawerPanelContent defaultSize="600px" style={{ whiteSpace: 'pre-wrap' }}>
-      <DrawerHead>
-        <Title size="lg" headingLevel="h2">
-          Policy data
-        </Title>
-        <DrawerActions>
-          <DrawerCloseButton onClick={onClose} />
-        </DrawerActions>
-      </DrawerHead>
-      <DrawerPanelBody>
-        <Flex
-          spaceItems={{ default: 'spaceItemsLg' }}
-          direction={{ default: 'column' }}
-        >
-          <FlexItem>
-            <Form key={JSON.stringify(currentPolicy, null, 2)}>
-              <FormGroup
-                type="string"
-                helperText={helperText}
-                helperTextInvalid={helperText}
-                fieldId="selection"
-                validated={validated}
-              >
-                <TextArea
-                  defaultValue={JSON.stringify(
-                    removeId(currentPolicy),
-                    null,
-                    2
-                  )}
-                  onChange={onTextAreaChange}
-                  isRequired
-                  rows={15}
-                  validated={validated}
-                  aria-label="invalid text area example"
-                />
-                <Button variant="primary" onClick={editPolicy}>
-                  Submit
-                </Button>{' '}
-                <Button variant="danger" onClick={deletePolicy}>
-                  Delete
-                </Button>
-              </FormGroup>
-            </Form>
-          </FlexItem>
-        </Flex>
-      </DrawerPanelBody>
-    </DrawerPanelContent>
-  );
+  const getSubmitData = (formData: PolicyFormData): SubmitPolicyData => ({
+    name: formData.name,
+    department: formData.department,
+    constraint: {
+      sched_avail:
+        formData.schedAvailEnabled &&
+        formData.schedAvailFrom &&
+        formData.schedAvailTo
+          ? [formData.schedAvailFrom, formData.schedAvailTo]
+          : null,
+      serv_avail: formData.servAvailEnabled ? formData.servAvail : null,
+      limit:
+        formData.limitEnabled && formData.limit
+          ? formData.limit.reduce(
+              (result, current) => ({
+                ...result,
+                [current.key]: current.value,
+              }),
+              {}
+            )
+          : null,
+      density: formData.densityEnabled ? formData.density : null,
+      tag:
+        formData.tagEnabled && formData.tag
+          ? formData.tag?.map((item) => item.value)
+          : null,
+      cost: formData.costEnabled ? formData.cost : null,
+      location: formData.locationEnabled ? formData.location : null,
+    },
+  });
 
-  const drawerContent = (
-    <>
-      <Toolbar id="data-list-data-toolbar" className="pf-m-page-insets">
-        <ToolbarContent>
-          <ToolbarItem>
-            <Button variant="primary" onClick={handleModalToggle}>
-              Create a Policy
-            </Button>
-          </ToolbarItem>
-        </ToolbarContent>
-      </Toolbar>
+  const getDefaultFormValues = (): PolicyFormData => ({
+    name: currentPolicy.name,
+    department: currentPolicy.department,
+    schedAvailFrom: currentPolicy.constraint.sched_avail
+      ? currentPolicy.constraint.sched_avail[0]
+      : null,
+    schedAvailTo: currentPolicy.constraint.sched_avail
+      ? currentPolicy.constraint.sched_avail[1]
+      : null,
+    servAvail: Number(currentPolicy.constraint.serv_avail),
+    limit: currentPolicy.constraint.limit
+      ? Object.keys(currentPolicy.constraint.limit).map((key: string) => ({
+          key,
+          value: Object(currentPolicy.constraint.limit)[key],
+        }))
+      : null,
+    density: currentPolicy.constraint.density,
+    tag: currentPolicy.constraint.tag
+      ? currentPolicy.constraint.tag.map((value: string) => ({ value }))
+      : null,
+    cost: Number(currentPolicy.constraint.cost),
+    location: currentPolicy.constraint.location || 'AMS2',
+    schedAvailEnabled: currentPolicy.constraint.sched_avail !== null,
+    servAvailEnabled: currentPolicy.constraint.serv_avail !== null,
+    limitEnabled: currentPolicy.constraint.limit !== null,
+    densityEnabled: currentPolicy.constraint.density !== null,
+    tagEnabled: currentPolicy.constraint.tag !== null,
+    costEnabled: currentPolicy.constraint.cost !== null,
+    locationEnabled: currentPolicy.constraint.location !== null,
+  });
 
-      <DataList
-        aria-label="selectable data list example"
-        selectedDataListItemId={String(policyId)}
-        onSelectDataListItem={onSelectDataListItem}
-      >
-        {policyPaginated.map((d: any) => (
-          <DataListItem
-            aria-label={`data-list-item-${String(d.id)}-in-card`}
-            id={String(d.id)}
-          >
-            <DataListItemRow>
-              <DataListItemCells
-                dataListCells={[
-                  <DataListCell>
-                    <div>{d.name}</div>
-                    <div>{d.department}</div>
-                  </DataListCell>,
-                ]}
-              />
-            </DataListItemRow>
-          </DataListItem>
-        ))}
-      </DataList>
-    </>
-  );
+  const onCreateSubmit = (formData: PolicyFormData) => {
+    createPolicy(getSubmitData(formData));
+    setIsCreateModalOpen(false);
+  };
+
+  const onEditSubmit = (formData: PolicyFormData) => {
+    editPolicy(getSubmitData(formData));
+    setIsEditModalOpen(false);
+  };
+
   if (loading && !currentPolicy && !captureError) {
     return (
       <div>
@@ -307,6 +234,7 @@ const Policies: React.FC = () => {
       </div>
     );
   }
+
   return (
     <>
       <PageSection variant={PageSectionVariants.light}>
@@ -322,18 +250,45 @@ const Policies: React.FC = () => {
       <Divider component="div" />
       <PageSection>
         <Card>
-          <Drawer isExpanded={isExpanded}>
-            <DrawerContent panelContent={panelContent}>
-              <DrawerContentBody>
-                {drawerContent}
-                {policyList.length === 0 ? (
-                  <TextContent>
-                    <Text>Sorry, no policies found.</Text>
-                  </TextContent>
-                ) : undefined}
-              </DrawerContentBody>
-            </DrawerContent>
-          </Drawer>
+          <Toolbar id="data-list-data-toolbar" className="pf-m-page-insets">
+            <ToolbarContent>
+              <ToolbarItem>
+                <Button variant="primary" onClick={handleModalToggle}>
+                  Create a Policy
+                </Button>
+              </ToolbarItem>
+            </ToolbarContent>
+          </Toolbar>
+
+          <DataList
+            aria-label="selectable data list example"
+            selectedDataListItemId={String(policyId)}
+            onSelectDataListItem={onSelectDataListItem}
+          >
+            {policyPaginated.map((d: any) => (
+              <DataListItem
+                aria-label={`data-list-item-${String(d.id)}-in-card`}
+                id={String(d.id)}
+                key={`policy-${String(d.id)}`}
+              >
+                <DataListItemRow>
+                  <DataListItemCells
+                    dataListCells={[
+                      <DataListCell key={`cell-${String(d.id)}`}>
+                        <div>{d.name}</div>
+                        <div>{d.department}</div>
+                      </DataListCell>,
+                    ]}
+                  />
+                </DataListItemRow>
+              </DataListItem>
+            ))}
+          </DataList>
+          {policyList.length === 0 ? (
+            <TextContent>
+              <Text>Sorry, no policies found.</Text>
+            </TextContent>
+          ) : undefined}
         </Card>
         <Pagination
           itemCount={policyList.length}
@@ -345,30 +300,80 @@ const Policies: React.FC = () => {
           onPerPageSelect={onPerPageSelect}
         />
 
+        {!loading && (
+          <Modal
+            title="Edit Policy"
+            isOpen={isEditModalOpen}
+            onClose={handleEditModalToggle}
+            variant="medium"
+            actions={[
+              <Button
+                variant="primary"
+                form="edit-policy-form"
+                key="submit"
+                onClick={() => {
+                  const form = document.getElementById('edit-policy-form');
+
+                  if (form !== null) {
+                    form.dispatchEvent(new Event('submit'));
+                  }
+                }}
+              >
+                Submit
+              </Button>,
+              <Button
+                variant="danger"
+                key="delete"
+                onClick={() => {
+                  deletePolicy();
+                  handleEditModalToggle();
+                }}
+              >
+                Delete
+              </Button>,
+              <Button
+                variant="link"
+                key="cancel"
+                onClick={handleEditModalToggle}
+              >
+                Cancel
+              </Button>,
+            ]}
+          >
+            <PolicyForm
+              onSubmit={onEditSubmit}
+              type="edit"
+              defaultValues={currentPolicy && getDefaultFormValues()}
+            />
+          </Modal>
+        )}
+
         <Modal
           title="Create Policy"
-          isOpen={isModalOpen}
+          isOpen={isCreateModalOpen}
           onClose={handleModalToggle}
+          variant="medium"
           actions={[
-            <Button variant="primary" onClick={createPolicy}>
+            <Button
+              variant="primary"
+              form="create-policy-form"
+              key="submit"
+              onClick={() => {
+                const form = document.getElementById('create-policy-form');
+
+                if (form !== null) {
+                  form.dispatchEvent(new Event('submit'));
+                }
+              }}
+            >
               Submit
+            </Button>,
+            <Button variant="link" key="cancel" onClick={handleModalToggle}>
+              Cancel
             </Button>,
           ]}
         >
-          <FormGroup
-            type="string"
-            helperText={helperText}
-            helperTextInvalid={invalidText}
-            fieldId="selection"
-          >
-            <TextArea
-              onChange={onCreateChange}
-              value={createValue}
-              validated={validated}
-              isRequired
-              rows={15}
-            />
-          </FormGroup>
+          <PolicyForm onSubmit={onCreateSubmit} type="create" />
         </Modal>
       </PageSection>
     </>

@@ -1,5 +1,10 @@
 import { action } from 'typesafe-actions';
-import { LabPolicyTypes, LabPolicyData, Error } from './types';
+import {
+  LabPolicyTypes,
+  LabPolicyData,
+  Error,
+  SubmitPolicyData,
+} from './types';
 
 export const loadRequest = (
   policyId: number | 'all',
@@ -18,7 +23,7 @@ export const loadSuccess = (
 export const loadFailure = (err: Error) =>
   action(LabPolicyTypes.LOAD_FAILURE, err);
 
-export const createRequest = (payload: LabPolicyData) =>
+export const createRequest = (payload: SubmitPolicyData) =>
   action(LabPolicyTypes.CREATE_REQUEST, payload);
 
 export const createSuccess = () => action(LabPolicyTypes.CREATE_SUCCESS);
@@ -26,7 +31,7 @@ export const createSuccess = () => action(LabPolicyTypes.CREATE_SUCCESS);
 export const createFailure = (err: Error) =>
   action(LabPolicyTypes.CREATE_FAILURE, err);
 
-export const updateRequest = (policyId: number, data: LabPolicyData) =>
+export const updateRequest = (policyId: number, data: SubmitPolicyData) =>
   action(LabPolicyTypes.UPDATE_REQUEST, { policyId, data });
 
 export const updateSuccess = () => action(LabPolicyTypes.UPDATE_SUCCESS);
