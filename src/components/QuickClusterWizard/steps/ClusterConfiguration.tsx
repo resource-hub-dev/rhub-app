@@ -39,7 +39,7 @@ const ClusterConfiguration: React.FC<Props> = ({
   setTotalUsage,
 }: Props) => {
   const dispatch = useDispatch();
-  const [wizardErrors, setWizardErrors] = useContext(wizardContext);
+  const [wizardErrors, setWizardErrors, values] = useContext(wizardContext);
   // Addditional errors in addition to validation errors on the fields
   const [error, setErrors] = useState<React.ReactNode[]>([]);
 
@@ -85,9 +85,13 @@ const ClusterConfiguration: React.FC<Props> = ({
       );
       const defaultUsage = nodeParams.reduce(
         (data: Quota, currentParam: LabProductParams) => {
+          // If selection exists, generate graph values based on this value instead of default value
+          const prevSelection = values[currentParam.variable];
           const thisUsage = genGraphValues(
             currentParam.variable,
-            Number(currentParam.default),
+            prevSelection
+              ? Number(prevSelection)
+              : Number(currentParam.default),
             flavors
           );
           return {

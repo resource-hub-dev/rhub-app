@@ -19,11 +19,13 @@ import ClusterConfiguration from './steps/ClusterConfiguration';
 import AdvancedConfiguration from './steps/AdvancedConfiguration';
 import Review from './steps/Review';
 
-type WizardContext = [string[], React.Dispatch<React.SetStateAction<string[]>>];
+  WizardValues
+];
 
 export const wizardContext = React.createContext<WizardContext>([
   [],
   () => null,
+  {},
 ]);
 
 const emptyQuota = {
@@ -208,7 +210,7 @@ const QuickClusterWizard: React.FC = () => {
     return <>Loading....</>;
   }
   return (
-    <wizardContext.Provider value={[wizardErrors, setWizardErrors]}>
+    <wizardContext.Provider value={[wizardErrors, setWizardErrors, values]}>
       <Wizard
         navAriaLabel={`${title} steps`}
         mainAriaLabel={`${title} content`}

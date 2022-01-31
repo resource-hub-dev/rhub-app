@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useContext, useState } from 'react';
 import {
   Card,
   CardBody,
@@ -10,6 +10,7 @@ import {
 } from '@patternfly/react-core';
 
 import { LabProductData } from '@ducks/lab/product/types';
+import { wizardContext } from '../QuickClusterWizard';
 
 // Requirements for images in Product selection:
 // Under assets/images, you must provide images with the same names as the products
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const Products: React.FC<Props> = ({ products, addWizardValues }: Props) => {
+  const [, , values] = useContext(wizardContext);
   const [selected, setSelected] = useState<number | string>('');
   let productList: LabProductData[] = [];
   if (Object.keys(products).length > 0) {
@@ -63,7 +65,9 @@ const Products: React.FC<Props> = ({ products, addWizardValues }: Props) => {
     <Grid hasGutter md={6} lg={3}>
       {productList.map((prod) => {
         const filePath = genImgSrc(prod.name);
+        const prevSelection = values.product_id;
         if (prod.enabled) {
+          const selection = selected || prevSelection;
           return (
             <Card>
               <CardTitle>
@@ -76,7 +80,7 @@ const Products: React.FC<Props> = ({ products, addWizardValues }: Props) => {
               <CardBody>{prod.description}</CardBody>
               <CardFooter>
                 <Radio
-                  isChecked={Number(selected) === prod.id}
+                  isChecked={Number(selection) === prod.id}
                   name={prod.name}
                   onChange={onSelect}
                   label="Select"
