@@ -43,38 +43,44 @@ const GraphsUtilization: React.FC<Props> = ({
         selections.
       </p>
       <div className="charts-card-body">
-        <UtilizationChart
-          title="CPU"
-          used={vCPUCoreUsed}
-          total={vCPUCoreQuota}
-          unit="Cores"
-          height="200px"
-          width="175px"
-        />
-        <UtilizationChart
-          title="RAM"
-          used={round(ramMbUsed / 1024, 1)}
-          total={round(ramMbQuota / 1024, 1)}
-          unit="GBs"
-          height="200px"
-          width="175px"
-        />
-        <UtilizationChart
-          title="Storage"
-          used={volumesGbUsed}
-          total={volumesGbQuota}
-          unit="GBs"
-          height="200px"
-          width="175px"
-        />
         {userQuotaUsage && (
-          <ResourceSummaryTable
-            row={{
-              num_vcpus: vCPUCoreUsed - userQuotaUsage?.num_vcpus,
-              ram_mb: ramMbUsed - userQuotaUsage?.ram_mb,
-              volumes_gb: volumesGbUsed - userQuotaUsage?.volumes_gb,
-            }}
-          />
+          <>
+            <UtilizationChart
+              title="CPU"
+              used={vCPUCoreUsed}
+              currentUsage={userQuotaUsage?.num_vcpus}
+              total={vCPUCoreQuota}
+              unit="Cores"
+              height="200px"
+              width="175px"
+            />
+            <UtilizationChart
+              title="RAM"
+              used={round(ramMbUsed / 1024, 1)}
+              total={round(ramMbQuota / 1024, 1)}
+              currentUsage={round(userQuotaUsage?.ram_mb / 1024, 1)}
+              unit="GBs"
+              height="200px"
+              width="175px"
+            />
+            <UtilizationChart
+              title="Storage"
+              used={volumesGbUsed}
+              total={volumesGbQuota}
+              currentUsage={userQuotaUsage?.volumes_gb}
+              unit="GBs"
+              height="200px"
+              width="175px"
+            />
+
+            <ResourceSummaryTable
+              row={{
+                num_vcpus: vCPUCoreUsed - userQuotaUsage?.num_vcpus,
+                ram_mb: ramMbUsed - userQuotaUsage?.ram_mb,
+                volumes_gb: volumesGbUsed - userQuotaUsage?.volumes_gb,
+              }}
+            />
+          </>
         )}
       </div>
     </div>

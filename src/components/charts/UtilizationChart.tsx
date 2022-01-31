@@ -11,6 +11,8 @@ interface Props {
   unit: string;
   height: string;
   width: string;
+  /** For graphs that display labels with current, total, and consumed/used utilization */
+  currentUsage?: number;
 }
 
 const UtilizationChart: React.FC<Props> = ({
@@ -20,7 +22,17 @@ const UtilizationChart: React.FC<Props> = ({
   unit,
   height,
   width,
+  currentUsage,
 }: Props) => {
+  const genLabel = (datum: any) => {
+    return currentUsage
+      ? `Current Balance: ${currentUsage} ${unit}
+      Cost: ${used - currentUsage} ${unit} 
+      Max: ${total} ${unit}
+      Total est.: ${datum.y}% Used`
+      : `${datum.x}: ${datum.y}%`;
+  };
+
   return (
     <div style={{ height, width }}>
       <ChartDonutThreshold
@@ -41,7 +53,8 @@ const UtilizationChart: React.FC<Props> = ({
       >
         <ChartDonutUtilization
           data={{ x: `${title} Used`, y: Math.round((used / total) * 100) }}
-          labels={({ datum }) => (datum.x ? `${datum.x}: ${datum.y}%` : null)}
+          labels={({ datum }) => (datum.x ? genLabel(datum) : null)}
+          allowTooltip
           legendData={[{ name: `${title}` }]}
           legendOrientation="vertical"
           legendPosition="bottom"
