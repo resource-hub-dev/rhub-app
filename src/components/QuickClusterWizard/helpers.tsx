@@ -18,7 +18,10 @@ export const addWizardValues = (
 };
 
 // generate an object with variable as key and default value as value
-export const genDefaultValues = (parameters: LabProductParams[]) => {
+export const genDefaultValues = (
+  parameters: LabProductParams[],
+  values: WizardValues
+) => {
   return parameters.reduce(
     (
       data: Record<string, number | boolean | string | null>,
@@ -26,7 +29,9 @@ export const genDefaultValues = (parameters: LabProductParams[]) => {
     ) => {
       return {
         ...data,
-        [item.variable]: item.default,
+        [item.variable]: values[item.variable]
+          ? values[item.variable]
+          : item.default,
       };
     },
     {}

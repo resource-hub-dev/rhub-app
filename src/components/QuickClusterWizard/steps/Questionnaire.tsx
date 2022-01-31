@@ -46,7 +46,7 @@ const Questionnaire: React.FC<Props> = ({
   stepId,
 }: Props) => {
   const dispatch = useDispatch();
-  const [wizardErrors, setWizardErrors] = useContext(wizardContext);
+  const [wizardErrors, setWizardErrors, values] = useContext(wizardContext);
   // Step 3 includes parameters that are not in advanced step
   const product = useSelector(
     (state: AppState) => state.labProduct.data[productId]
@@ -55,7 +55,7 @@ const Questionnaire: React.FC<Props> = ({
     (state: AppState) => state.cluster.clusterExists
   );
 
-  const defaultValues = genDefaultValues(parameters);
+  const defaultValues = genDefaultValues(parameters, values);
 
   const components: ReactElement[] = [];
   const {
