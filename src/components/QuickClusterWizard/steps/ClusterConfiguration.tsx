@@ -66,7 +66,7 @@ const ClusterConfiguration: React.FC<Props> = ({
         title={errorMsg}
         aria-live="polite"
         isInline
-        timeout={5000}
+        timeout={15000}
       />,
     ]);
     addWizardErrors(wizardErrors, setWizardErrors, 'step-3-quota');
@@ -134,7 +134,9 @@ const ClusterConfiguration: React.FC<Props> = ({
     <>
       {regionUsage && quota && flavors && (
         <>
-          <AlertGroup>{error}</AlertGroup>
+          <AlertGroup isToast isLiveRegion>
+            {error}
+          </AlertGroup>
           <div className="configuration-step-border">
             <Questionnaire
               productId={productId}
