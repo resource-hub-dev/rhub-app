@@ -22,6 +22,7 @@ import {
   genGraphValues,
   removeWizardErrors,
   WizardValues,
+  rsvpOpts,
 } from '../helpers';
 import { wizardContext } from '../QuickClusterWizard';
 
@@ -47,12 +48,21 @@ const Questionnaire: React.FC<Props> = ({
 }: Props) => {
   const dispatch = useDispatch();
   const [wizardErrors, setWizardErrors, values] = useContext(wizardContext);
+  const productId = Number(values?.product_id);
+  const regionId = Number(values.region_id);
   // Step 3 includes parameters that are not in advanced step
   const product = useSelector(
     (state: AppState) => state.labProduct.data[productId]
   );
   const clusterExists = useSelector(
     (state: AppState) => state.cluster.clusterExists
+  );
+
+  const region = useSelector(
+    (state: AppState) =>
+      state.labRegion.product_regions.find(
+        (value) => value.region.id === regionId
+      )?.region
   );
 
   const defaultValues = genDefaultValues(parameters, values);
@@ -241,6 +251,31 @@ const Questionnaire: React.FC<Props> = ({
     return (
       <Form id={`step-${stepId}-form`} onSubmit={handleSubmit(onSubmit)}>
         {components}
+        {stepId === 3 && region && region.reservations_enabled && (
+          <FormGroup
+            label="Days of Reservation"
+            isRequired
+            fieldId="rsvp-field"
+          >
+            <Controller
+              control={control}
+              name="rsvp"
+              rules={{ required: true }}
+              render={({ field }) => (
+                <FormSelect {...field} isRequired aria-label="rsvp">
+                  {rsvpOpts().map((option) => (
+                    <FormSelectOption
+                      key={option.value}
+                      isDisabled={option.disabled}
+                      value={option.value}
+                      label={option.label}
+                    />
+                  ))}
+                </FormSelect>
+              )}
+            />
+          </FormGroup>
+        )}
       </Form>
     );
   }

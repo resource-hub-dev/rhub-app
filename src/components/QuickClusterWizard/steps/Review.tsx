@@ -86,6 +86,12 @@ const Review: React.FC<Props> = ({
                 </DescriptionListDescription>
               </DescriptionListGroup>
             )}
+            <DescriptionListGroup>
+              <DescriptionListTerm>Days of Reservation</DescriptionListTerm>
+              <DescriptionListDescription>
+                {values.rsvp}
+              </DescriptionListDescription>
+            </DescriptionListGroup>
             {rows}
           </DescriptionList>
         </CardBody>
