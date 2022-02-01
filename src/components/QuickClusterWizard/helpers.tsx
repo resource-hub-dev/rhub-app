@@ -34,7 +34,7 @@ export const genDefaultValues = (
           : item.default,
       };
     },
-    {}
+    { rsvp: values.rsvp || 1 }
   );
 };
 
@@ -78,4 +78,31 @@ export const removeWizardErrors = (
   const keyExistsInError = wizardErrors.indexOf(key) >= 0;
   const newWizardErrors = wizardErrors.filter((value: string) => value !== key);
   if (keyExistsInError) setWizardErrors(newWizardErrors);
+};
+
+export const rsvpOpts = () => {
+  const getDateString = (delta: number) => {
+    const midnight = new Date();
+    midnight.setTime(midnight.getTime() + 86400000);
+    midnight.setUTCHours(0, 0, 0, 0);
+    const timeStr = new Date(midnight.getTime() + delta * 86400000).toString();
+    return `${delta} - Will expire on: ${timeStr}`;
+  };
+  return [
+    {
+      value: 1,
+      label: getDateString(1),
+      disabled: false,
+    },
+    {
+      value: 2,
+      label: getDateString(4),
+      disabled: false,
+    },
+    {
+      value: 3,
+      label: getDateString(7),
+      disabled: false,
+    },
+  ];
 };
