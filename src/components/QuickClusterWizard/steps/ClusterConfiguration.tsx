@@ -57,6 +57,7 @@ const ClusterConfiguration: React.FC<Props> = ({
     setErrors([
       ...error,
       <Alert
+        key={errorMsg}
         variant="danger"
         title={errorMsg}
         aria-live="polite"
