@@ -1,21 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from '@store';
 
 import Questionnaire from './Questionnaire';
 import { WizardValues } from '../helpers';
+import { wizardContext } from '../QuickClusterWizard';
 
 interface Props {
-  /** ID of Selected Product in the Wizard */
-  productId: number;
   /** Function to handle submit */
   onSubmit: (data: WizardValues) => void;
 }
 
-const AdvancedConfiguration: React.FC<Props> = ({
-  productId,
-  onSubmit,
-}: Props) => {
+const AdvancedConfiguration: React.FC<Props> = ({ onSubmit }: Props) => {
+  const [, , values] = useContext(wizardContext);
+  const productId = Number(values?.product_id);
   const product = useSelector(
     (state: AppState) => state.labProduct.data[productId]
   );
@@ -23,12 +21,7 @@ const AdvancedConfiguration: React.FC<Props> = ({
 
   return (
     <>
-      <Questionnaire
-        productId={productId}
-        parameters={parameters}
-        onSubmit={onSubmit}
-        stepId={4}
-      />
+      <Questionnaire parameters={parameters} onSubmit={onSubmit} stepId={4} />
     </>
   );
 };

@@ -176,8 +176,6 @@ const QuickClusterWizard: React.FC = () => {
       name: 'Cluster Configuration',
       component: (
         <ClusterConfiguration
-          regionId={Number(values.region_id)}
-          productId={Number(values.product_id)}
           onSubmit={onSubmit}
           totalUsage={totalUsage}
           setTotalUsage={setTotalUsage}
@@ -188,25 +186,13 @@ const QuickClusterWizard: React.FC = () => {
     {
       id: 4,
       name: 'Advanced Option',
-      component: (
-        <AdvancedConfiguration
-          productId={Number(values.product_id)}
-          onSubmit={onSubmit}
-        />
-      ),
+      component: <AdvancedConfiguration onSubmit={onSubmit} />,
       canJumpTo: stepIdReached >= 4,
     },
     {
       id: 5,
       name: 'Review',
-      component: (
-        <Review
-          values={values}
-          regionId={Number(values.region_id)}
-          productId={Number(values.product_id)}
-          totalUsage={totalUsage}
-        />
-      ),
+      component: <Review totalUsage={totalUsage} />,
       nextButtonText: 'Finish',
       canJumpTo: stepIdReached >= 5,
     },
