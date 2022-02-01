@@ -62,7 +62,7 @@ const Region: React.FC<Props> = ({ productId, addWizardValues }: Props) => {
     const prevSelection = values.region_id;
     const selection = selected || prevSelection;
     const regionRadio = (
-      <div>
+      <div key={region.id}>
         <Tooltip content={region.description}>
           <Radio
             isChecked={Number(selection) === region.id}
@@ -94,7 +94,7 @@ const Region: React.FC<Props> = ({ productId, addWizardValues }: Props) => {
     <Grid hasGutter md={6} lg={3}>
       {locations.map((location: string) => {
         return (
-          <Card>
+          <Card key={location}>
             <CardTitle>{location}</CardTitle>
             <CardBody>{regionsByLocation[location]}</CardBody>
           </Card>

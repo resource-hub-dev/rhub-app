@@ -69,7 +69,7 @@ const Products: React.FC<Props> = ({ products, addWizardValues }: Props) => {
         if (prod.enabled) {
           const selection = selected || prevSelection;
           return (
-            <Card>
+            <Card key={prod.id}>
               <CardTitle>
                 {filePath !== '' ? (
                   <img src={filePath} alt={prod.name} height="50px" />
