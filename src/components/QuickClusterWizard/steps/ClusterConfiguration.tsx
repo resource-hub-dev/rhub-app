@@ -19,10 +19,6 @@ import {
 import { wizardContext } from '../QuickClusterWizard';
 
 interface Props {
-  /** ID of Selected Product in the Wizard */
-  productId: number;
-  /** ID of Selected Region in the Wizard */
-  regionId: number;
   /** Function to handle submit */
   onSubmit: (data: WizardValues) => void;
   /** Total resource consumptions */
@@ -32,8 +28,6 @@ interface Props {
 }
 
 const ClusterConfiguration: React.FC<Props> = ({
-  productId,
-  regionId,
   onSubmit,
   totalUsage,
   setTotalUsage,
@@ -42,7 +36,8 @@ const ClusterConfiguration: React.FC<Props> = ({
   const [wizardErrors, setWizardErrors, values] = useContext(wizardContext);
   // Addditional errors in addition to validation errors on the fields
   const [error, setErrors] = useState<React.ReactNode[]>([]);
-
+  const productId = Number(values?.product_id);
+  const regionId = Number(values.region_id);
   const quota = useSelector(
     (state: AppState) =>
       state.labRegion.product_regions.find(
@@ -143,7 +138,6 @@ const ClusterConfiguration: React.FC<Props> = ({
           </AlertGroup>
           <div className="configuration-step-border">
             <Questionnaire
-              productId={productId}
               updateUsage={updateUsage}
               parameters={parameters}
               onSubmit={onSubmit}

@@ -27,8 +27,6 @@ import {
 import { wizardContext } from '../QuickClusterWizard';
 
 interface Props {
-  /** ID of Selected Product in the Wizard */
-  productId: number;
   /** Handles dynamic values for Utilization Charts in Step 3 */
   updateUsage?: (requiredResources: Quota) => void;
   /** Parameters from Product Region */
@@ -40,7 +38,6 @@ interface Props {
 }
 
 const Questionnaire: React.FC<Props> = ({
-  productId,
   updateUsage,
   parameters,
   onSubmit,

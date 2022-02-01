@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Card,
@@ -13,22 +13,18 @@ import {
 import { AppState } from '@store';
 import { Quota } from '@ducks/lab/types';
 
-import { WizardValues } from '../helpers';
 import GraphsUtilization from './Graphs';
+import { wizardContext } from '../QuickClusterWizard';
 
 interface Props {
-  values: WizardValues;
-  productId: number;
-  regionId: number;
+  /** Total Quota Usage after QuickCluster is Created */
   totalUsage: Quota;
 }
 
-const Review: React.FC<Props> = ({
-  values,
-  productId,
-  totalUsage,
-  regionId,
-}: Props) => {
+const Review: React.FC<Props> = ({ totalUsage }: Props) => {
+  const [, , values] = useContext(wizardContext);
+  const productId = Number(values?.product_id);
+  const regionId = Number(values.region_id);
   const product = useSelector(
     (state: AppState) => state.labProduct.data[productId]
   );
