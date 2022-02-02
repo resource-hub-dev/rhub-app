@@ -8,11 +8,17 @@ import '../QuickClusterWizard.css';
 import ResourceSummaryTable from './ResourceSummaryTable';
 
 export interface Props {
+  /** vCPUs used by this QuickCluster */
   vCPUCoreUsed: number;
+  /** RAM used by this QuickCluster */
   ramMbUsed: number;
+  /** Storage used by this QuickCluster */
   volumesGbUsed: number;
+  /** vCPUs quota for the user in this region */
   vCPUCoreQuota: number;
+  /** RAN quota for the user in this region */
   ramMbQuota: number;
+  /** Storage quota for the user in this region */
   volumesGbQuota: number;
 }
 
@@ -74,7 +80,7 @@ const GraphsUtilization: React.FC<Props> = ({
             />
 
             <ResourceSummaryTable
-              row={{
+              total={{
                 num_vcpus: vCPUCoreUsed - userQuotaUsage?.num_vcpus,
                 ram_mb: ramMbUsed - userQuotaUsage?.ram_mb,
                 volumes_gb: volumesGbUsed - userQuotaUsage?.volumes_gb,
