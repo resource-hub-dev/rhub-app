@@ -17,7 +17,7 @@ export const addWizardValues = (
   });
 };
 
-// generate an object with variable as key and default value as value
+// Generate an object with variable as key and default value as value
 export const genDefaultValues = (
   parameters: LabProductParams[],
   values: WizardValues
@@ -38,6 +38,7 @@ export const genDefaultValues = (
   );
 };
 
+// Generate values for graphs and charts from user's input of number of nodes
 export const genGraphValues = (
   key: string,
   numNodes: number,
@@ -52,6 +53,7 @@ export const genGraphValues = (
   };
 };
 
+// Generate error message if user exceeded their quota
 export const genQuotaExceededError = (usage: Quota, regionQuota: Quota) => {
   const keys = Object.keys(usage);
   for (const key of keys) {
@@ -62,6 +64,7 @@ export const genQuotaExceededError = (usage: Quota, regionQuota: Quota) => {
   return undefined;
 };
 
+// Add error message to the top-level WizardErrors
 export const addWizardErrors = (
   wizardErrors: string[],
   setWizardErrors: React.Dispatch<React.SetStateAction<string[]>>,
@@ -70,6 +73,7 @@ export const addWizardErrors = (
   if (wizardErrors.indexOf(key) < 0) setWizardErrors([...wizardErrors, key]);
 };
 
+// Remove error message from the top-level WizardErrors
 export const removeWizardErrors = (
   wizardErrors: string[],
   setWizardErrors: React.Dispatch<React.SetStateAction<string[]>>,
@@ -80,6 +84,7 @@ export const removeWizardErrors = (
   if (keyExistsInError) setWizardErrors(newWizardErrors);
 };
 
+// Generate Options for Expiration Reservation Days
 export const rsvpOpts = () => {
   const getDateString = (delta: number) => {
     const midnight = new Date();
