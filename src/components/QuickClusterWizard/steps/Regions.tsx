@@ -21,7 +21,9 @@ import { loadProductRegionsRequest } from '@ducks/lab/region/actions';
 import { wizardContext } from '../QuickClusterWizard';
 
 interface Props {
+  /** ID of Selected Region */
   productId: number;
+  /** Handler when the user selects a Product */
   addWizardValues: (newValues: Record<string, number>) => void;
 }
 

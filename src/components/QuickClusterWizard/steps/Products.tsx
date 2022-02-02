@@ -17,7 +17,9 @@ import { wizardContext } from '../QuickClusterWizard';
 // For example, if a product name is 'abc', the image name must be 'abc.svg';
 
 interface Props {
+  /** Products Available for QuickCluster */
   products: { [key: string]: LabProductData };
+  /** Handler when the user selects a Product */
   addWizardValues: (newValues: Record<string, number>) => void;
 }
 

@@ -17,10 +17,11 @@ import {
 } from '@patternfly/react-icons';
 
 interface Props {
-  row: Partial<Quota>;
+  /** Total Resources Consumed by this QuickCluster */
+  total: Partial<Quota>;
 }
 
-const ResourceSummaryTable: React.FC<Props> = ({ row }: Props) => {
+const ResourceSummaryTable: React.FC<Props> = ({ total }: Props) => {
   return (
     <>
       <TableComposable
@@ -40,15 +41,15 @@ const ResourceSummaryTable: React.FC<Props> = ({ row }: Props) => {
           <Tr key="utilization">
             <Td dataLabel="vCPU">
               <CpuIcon />
-              {` ${row.num_vcpus}`}
+              {` ${total.num_vcpus}`}
             </Td>
             <Td dataLabel="RAM">
               <MemoryIcon />
-              {` ${Number(row.ram_mb) / 1024} GB`}
+              {` ${Number(total.ram_mb) / 1024} GB`}
             </Td>
             <Td dataLabel="Storage">
               <StorageDomainIcon />
-              {` ${row.volumes_gb} GB`}
+              {` ${total.volumes_gb} GB`}
             </Td>
           </Tr>
         </Tbody>
