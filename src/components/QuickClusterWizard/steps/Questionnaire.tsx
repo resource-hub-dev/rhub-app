@@ -46,7 +46,7 @@ const Questionnaire: React.FC<Props> = ({
   stepId,
 }: Props) => {
   const dispatch = useDispatch();
-  const [wizardErrors, setWizardErrors] = useContext(wizardContext);
+  const [wizardErrors, setWizardErrors, values] = useContext(wizardContext);
   // Step 3 includes parameters that are not in advanced step
   const product = useSelector(
     (state: AppState) => state.labProduct.data[productId]
@@ -55,7 +55,7 @@ const Questionnaire: React.FC<Props> = ({
     (state: AppState) => state.cluster.clusterExists
   );
 
-  const defaultValues = genDefaultValues(parameters);
+  const defaultValues = genDefaultValues(parameters, values);
 
   const components: ReactElement[] = [];
   const {
@@ -72,15 +72,7 @@ const Questionnaire: React.FC<Props> = ({
   });
 
   useEffect(() => {
-    if (!isDirty && stepId !== 4) {
-      addWizardErrors(wizardErrors, setWizardErrors, `step-${stepId}-touched`);
-    } else if (isDirty) {
-      removeWizardErrors(
-        wizardErrors,
-        setWizardErrors,
-        `step-${stepId}-touched`
-      );
-    } else if (!isValid) {
+    if (!isValid) {
       addWizardErrors(wizardErrors, setWizardErrors, `step-${stepId}-valid`);
     } else {
       removeWizardErrors(wizardErrors, setWizardErrors, `step-${stepId}-valid`);
@@ -130,6 +122,7 @@ const Questionnaire: React.FC<Props> = ({
                     value: minLength,
                     message: `Minimum ${question.minLength} characters required`,
                   },
+                  required: question.required && `${question.name} is required`,
                   maxLength: {
                     value: maxLength,
                     message: `Maximum ${question.maxLength} characters allowed`,
@@ -183,6 +176,7 @@ const Questionnaire: React.FC<Props> = ({
                     value: question.max,
                     message: `Maximum ${question.max} allowed`,
                   },
+                  required: question.required && `${question.name} is required`,
                 })}
                 name={key}
                 key={`${key}-input`}

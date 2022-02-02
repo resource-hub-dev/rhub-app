@@ -19,11 +19,16 @@ import ClusterConfiguration from './steps/ClusterConfiguration';
 import AdvancedConfiguration from './steps/AdvancedConfiguration';
 import Review from './steps/Review';
 
-type WizardContext = [string[], React.Dispatch<React.SetStateAction<string[]>>];
+type WizardContext = [
+  string[],
+  React.Dispatch<React.SetStateAction<string[]>>,
+  WizardValues
+];
 
 export const wizardContext = React.createContext<WizardContext>([
   [],
   () => null,
+  {},
 ]);
 
 const emptyQuota = {
@@ -36,7 +41,6 @@ const emptyQuota = {
 const QuickClusterWizard: React.FC = () => {
   const dispatch = useDispatch();
   const [wizardErrors, setWizardErrors] = useState<string[]>([]);
-  const [isWizardValid, setIsWizardValid] = useState(false);
   const [stepIdReached, setStepIdReached] = useState(1);
   const [values, setValues] = useState<WizardValues>({});
   const [totalUsage, setTotalUsage] = useState<Quota>(emptyQuota);
@@ -51,12 +55,8 @@ const QuickClusterWizard: React.FC = () => {
     dispatch(loadProducts('all'));
   }, [dispatch, token]);
 
-  useEffect(() => {
-    setIsWizardValid(wizardErrors.length === 0);
-  }, [wizardErrors]);
   const title = 'Create a QuickCluster';
   const addWizardValuesWrapper = (newValues: WizardValues) => {
-    setIsWizardValid(Object.keys(wizardErrors).length === 0);
     addWizardValues(values, newValues, setValues);
   };
 
@@ -72,12 +72,21 @@ const QuickClusterWizard: React.FC = () => {
     // TODO
   };
 
-  const resetValidator = () => setIsWizardValid(false);
   const CustomFooter = (
     <WizardFooter>
       <WizardContextConsumer>
         {({ activeStep, onNext, onBack }) => {
+          const matches = wizardErrors.filter((e) =>
+            e.includes(String(activeStep.id))
+          );
+          let stepIsValid = matches.length === 0;
           if (activeStep.id !== 5) {
+            if (activeStep.id === 1) {
+              stepIsValid = Boolean(values.product_id);
+            }
+            if (activeStep.id === 2) {
+              stepIsValid = Boolean(values.region_id);
+            }
             return (
               <>
                 <Button
@@ -86,7 +95,6 @@ const QuickClusterWizard: React.FC = () => {
                   form={activeStep.id === 3 ? 'form-id' : ''}
                   onClick={() => {
                     setStepIdReached(stepIdReached + 1);
-                    resetValidator();
                     if (activeStep.id === 3 || activeStep.id === 4) {
                       const form = document.getElementById(
                         `step-${activeStep.id}-form`
@@ -96,7 +104,7 @@ const QuickClusterWizard: React.FC = () => {
                     }
                     return onNext();
                   }}
-                  isDisabled={!isWizardValid}
+                  isDisabled={!stepIsValid}
                 >
                   Next
                 </Button>
@@ -104,7 +112,6 @@ const QuickClusterWizard: React.FC = () => {
                   variant="secondary"
                   onClick={() => {
                     setStepIdReached(stepIdReached - 1);
-                    resetValidator();
                     return onBack();
                   }}
                   isDisabled={activeStep.name === 'Product'}
@@ -120,7 +127,7 @@ const QuickClusterWizard: React.FC = () => {
           // Final step buttons
           return (
             <>
-              <Button onClick={onFinish} isDisabled={!isWizardValid}>
+              <Button onClick={onFinish} isDisabled={wizardErrors.length !== 0}>
                 Finish
               </Button>
               <Button
@@ -208,7 +215,7 @@ const QuickClusterWizard: React.FC = () => {
     return <>Loading....</>;
   }
   return (
-    <wizardContext.Provider value={[wizardErrors, setWizardErrors]}>
+    <wizardContext.Provider value={[wizardErrors, setWizardErrors, values]}>
       <Wizard
         navAriaLabel={`${title} steps`}
         mainAriaLabel={`${title} content`}

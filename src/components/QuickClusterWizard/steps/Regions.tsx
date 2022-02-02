@@ -1,4 +1,10 @@
-import React, { ReactNode, useEffect, useState, FormEvent } from 'react';
+import React, {
+  ReactNode,
+  useEffect,
+  useState,
+  useContext,
+  FormEvent,
+} from 'react';
 import {
   Card,
   CardBody,
@@ -12,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { AppState } from '@store';
 import { loadProductRegionsRequest } from '@ducks/lab/region/actions';
+import { wizardContext } from '../QuickClusterWizard';
 
 interface Props {
   productId: number;
@@ -20,6 +27,7 @@ interface Props {
 
 const Region: React.FC<Props> = ({ productId, addWizardValues }: Props) => {
   const dispatch = useDispatch();
+  const [, , values] = useContext(wizardContext);
 
   const productRegions = useSelector(
     (state: AppState) => state.labRegion.product_regions
@@ -51,11 +59,13 @@ const Region: React.FC<Props> = ({ productId, addWizardValues }: Props) => {
   productRegions.forEach((productRegion) => {
     const { region, enabled } = productRegion;
     const { location } = region;
+    const prevSelection = values.region_id;
+    const selection = selected || prevSelection;
     const regionRadio = (
       <div>
         <Tooltip content={region.description}>
           <Radio
-            isChecked={selected === region.id}
+            isChecked={Number(selection) === region.id}
             isDisabled={!enabled}
             name={region.name}
             onChange={onSelect}

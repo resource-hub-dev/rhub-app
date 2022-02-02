@@ -39,7 +39,7 @@ const ClusterConfiguration: React.FC<Props> = ({
   setTotalUsage,
 }: Props) => {
   const dispatch = useDispatch();
-  const [wizardErrors, setWizardErrors] = useContext(wizardContext);
+  const [wizardErrors, setWizardErrors, values] = useContext(wizardContext);
   // Addditional errors in addition to validation errors on the fields
   const [error, setErrors] = useState<React.ReactNode[]>([]);
 
@@ -66,7 +66,7 @@ const ClusterConfiguration: React.FC<Props> = ({
         title={errorMsg}
         aria-live="polite"
         isInline
-        timeout={5000}
+        timeout={15000}
       />,
     ]);
     addWizardErrors(wizardErrors, setWizardErrors, 'step-3-quota');
@@ -85,9 +85,13 @@ const ClusterConfiguration: React.FC<Props> = ({
       );
       const defaultUsage = nodeParams.reduce(
         (data: Quota, currentParam: LabProductParams) => {
+          // If selection exists, generate graph values based on this value instead of default value
+          const prevSelection = values[currentParam.variable];
           const thisUsage = genGraphValues(
             currentParam.variable,
-            Number(currentParam.default),
+            prevSelection
+              ? Number(prevSelection)
+              : Number(currentParam.default),
             flavors
           );
           return {
@@ -134,7 +138,9 @@ const ClusterConfiguration: React.FC<Props> = ({
     <>
       {regionUsage && quota && flavors && (
         <>
-          <AlertGroup>{error}</AlertGroup>
+          <AlertGroup isToast isLiveRegion>
+            {error}
+          </AlertGroup>
           <div className="configuration-step-border">
             <Questionnaire
               productId={productId}
