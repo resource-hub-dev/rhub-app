@@ -11,6 +11,7 @@ import {
 
 import { LabProductData } from '@ducks/lab/product/types';
 import { wizardContext } from '../QuickClusterWizard';
+import { StepHeader } from '../helpers';
 
 // Requirements for images in Product selection:
 // Under assets/images, you must provide images with the same names as the products
@@ -64,38 +65,41 @@ const Products: React.FC<Props> = ({ products, addWizardValues }: Props) => {
   };
 
   return (
-    <Grid hasGutter md={6} lg={3}>
-      {productList.map((prod) => {
-        const filePath = genImgSrc(prod.name);
-        const prevSelection = values.product_id;
-        if (prod.enabled) {
-          const selection = selected || prevSelection;
-          return (
-            <Card key={prod.id}>
-              <CardTitle>
-                {filePath !== '' ? (
-                  <img src={filePath} alt={prod.name} height="50px" />
-                ) : (
-                  prod.name
-                )}
-              </CardTitle>
-              <CardBody>{prod.description}</CardBody>
-              <CardFooter>
-                <Radio
-                  isChecked={Number(selection) === prod.id}
-                  name={prod.name}
-                  onChange={onSelect}
-                  label="Select"
-                  id="radio-controlled"
-                  value={prod.id}
-                />
-              </CardFooter>
-            </Card>
-          );
-        }
-        return null;
-      })}
-    </Grid>
+    <>
+      <StepHeader text="Select a Product" />
+      <Grid hasGutter md={6} lg={3}>
+        {productList.map((prod) => {
+          const filePath = genImgSrc(prod.name);
+          const prevSelection = values.product_id;
+          if (prod.enabled) {
+            const selection = selected || prevSelection;
+            return (
+              <Card key={prod.id}>
+                <CardTitle>
+                  {filePath !== '' ? (
+                    <img src={filePath} alt={prod.name} height="50px" />
+                  ) : (
+                    prod.name
+                  )}
+                </CardTitle>
+                <CardBody>{prod.description}</CardBody>
+                <CardFooter>
+                  <Radio
+                    isChecked={Number(selection) === prod.id}
+                    name={prod.name}
+                    onChange={onSelect}
+                    label="Select"
+                    id="radio-controlled"
+                    value={prod.id}
+                  />
+                </CardFooter>
+              </Card>
+            );
+          }
+          return null;
+        })}
+      </Grid>
+    </>
   );
 };
 

@@ -1,3 +1,12 @@
+.step-header {
+    padding-bottom: 10px;
+}
+
+.advanced-step-warning {
+    margin-top: -5px;
+    margin-bottom: 10px;
+}
+
 .summary-charts-container {
     padding-top: 20px;
 }

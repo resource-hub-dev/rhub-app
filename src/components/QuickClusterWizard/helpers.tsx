@@ -1,8 +1,10 @@
 /* eslint-disable import/prefer-default-export */
+import React from 'react';
 import { LabProductParams } from '@ducks/lab/product/types';
 import { Quota } from '@ducks/lab/types';
+import { Text, TextContent, TextVariants } from '@patternfly/react-core';
 
-import React from 'react';
+import './QuickClusterWizard.css';
 
 export type WizardValues = { [key: string]: string | number | boolean };
 
@@ -110,4 +112,20 @@ export const rsvpOpts = () => {
       disabled: false,
     },
   ];
+};
+
+// StepHeader is a mini header for each step in Wizard
+interface StepHeaderProps {
+  /** Header text */
+  text: string;
+}
+
+export const StepHeader: React.FC<StepHeaderProps> = ({
+  text,
+}: StepHeaderProps) => {
+  return (
+    <TextContent className="step-header">
+      <Text component={TextVariants.h3}>{text}</Text>
+    </TextContent>
+  );
 };
