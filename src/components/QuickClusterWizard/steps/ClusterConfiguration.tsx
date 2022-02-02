@@ -14,6 +14,7 @@ import {
   genGraphValues,
   genQuotaExceededError,
   removeWizardErrors,
+  StepHeader,
   WizardValues,
 } from '../helpers';
 import { wizardContext } from '../QuickClusterWizard';
@@ -132,6 +133,8 @@ const ClusterConfiguration: React.FC<Props> = ({
   // Step 3 includes parameters that are not in advanced step
   return (
     <>
+      <StepHeader text="Cluster Configuration" />
+      <p>Please enter basic configuration for your QuickCluster</p>
       {regionUsage && quota && flavors && (
         <>
           <AlertGroup isToast isLiveRegion>

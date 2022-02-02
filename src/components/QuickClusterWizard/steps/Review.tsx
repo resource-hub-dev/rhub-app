@@ -15,6 +15,7 @@ import { Quota } from '@ducks/lab/types';
 
 import GraphsUtilization from './Graphs';
 import { wizardContext } from '../QuickClusterWizard';
+import { StepHeader } from '../helpers';
 
 interface Props {
   /** Total Quota Usage after QuickCluster is Created */
@@ -60,8 +61,9 @@ const Review: React.FC<Props> = ({ totalUsage }: Props) => {
   });
   return (
     <>
+      <StepHeader text="Summary" />
       <Card>
-        <CardTitle>Details Summary</CardTitle>
+        <CardTitle>Details</CardTitle>
         <CardBody>
           <DescriptionList
             columnModifier={{

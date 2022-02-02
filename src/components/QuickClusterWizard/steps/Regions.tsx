@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '@store';
 import { loadProductRegionsRequest } from '@ducks/lab/region/actions';
 import { wizardContext } from '../QuickClusterWizard';
+import { StepHeader } from '../helpers';
 
 interface Props {
   /** ID of Selected Region */
@@ -93,16 +94,19 @@ const Region: React.FC<Props> = ({ productId, addWizardValues }: Props) => {
 
   const locations = Object.keys(regionsByLocation);
   return (
-    <Grid hasGutter md={6} lg={3}>
-      {locations.map((location: string) => {
-        return (
-          <Card key={location}>
-            <CardTitle>{location}</CardTitle>
-            <CardBody>{regionsByLocation[location]}</CardBody>
-          </Card>
-        );
-      })}
-    </Grid>
+    <>
+      <StepHeader text="Select a Region" />
+      <Grid hasGutter md={6} lg={3}>
+        {locations.map((location: string) => {
+          return (
+            <Card key={location}>
+              <CardTitle>{location}</CardTitle>
+              <CardBody>{regionsByLocation[location]}</CardBody>
+            </Card>
+          );
+        })}
+      </Grid>
+    </>
   );
 };
 
