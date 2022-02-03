@@ -64,6 +64,8 @@ const Questionnaire: React.FC<Props> = ({
 
   const defaultValues = genDefaultValues(parameters, values);
 
+  if (stepId === 3)
+    defaultValues.reservation_expiration = values.reservation_expiration || 1;
   const components: ReactElement[] = [];
   const {
     handleSubmit,
@@ -184,6 +186,7 @@ const Questionnaire: React.FC<Props> = ({
                     message: `Maximum ${question.max} allowed`,
                   },
                   required: question.required && `${question.name} is required`,
+                  setValueAs: (v) => parseInt(v, 10),
                 })}
                 name={key}
                 key={`${key}-input`}
@@ -222,6 +225,15 @@ const Questionnaire: React.FC<Props> = ({
                     {...field}
                     isRequired={question.required}
                     aria-label={key}
+                    onChange={(value) => {
+                      if (question.type === 'boolean') {
+                        setValue(key, value === 'true');
+                      } else if (question.type === 'integer') {
+                        setValue(key, parseInt(value, 10));
+                      } else {
+                        setValue(key, value);
+                      }
+                    }}
                   >
                     {/* if an enum array exists */}
                     {question.enum &&
@@ -256,10 +268,16 @@ const Questionnaire: React.FC<Props> = ({
           >
             <Controller
               control={control}
-              name="rsvp"
-              rules={{ required: true }}
+              name="reservation_expiration"
               render={({ field }) => (
-                <FormSelect {...field} isRequired aria-label="rsvp">
+                <FormSelect
+                  {...field}
+                  isRequired
+                  aria-label="rsvp"
+                  onChange={(value) => {
+                    setValue('reservation_expiration', parseInt(value, 10));
+                  }}
+                >
                   {rsvpOpts().map((option) => (
                     <FormSelectOption
                       key={option.value}

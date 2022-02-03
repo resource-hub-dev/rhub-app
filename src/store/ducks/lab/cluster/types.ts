@@ -108,11 +108,11 @@ export interface ClusterEvent {
 
 export interface ClusterCreateData {
   name: string;
-  region_id?: number;
-  template_id?: number;
-  extraVars: Record<string, string | number>;
+  region_id: number;
+  product_id: number;
+  product_params: Record<string, string | number | boolean>;
   owner?: number;
-  reservationDays: string;
+  reservation_expiration: string;
 }
 
 export interface ClusterUpdateData {

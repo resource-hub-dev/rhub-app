@@ -36,7 +36,7 @@ export const genDefaultValues = (
           : item.default,
       };
     },
-    { rsvp: values.rsvp || 1 }
+    {}
   );
 };
 
@@ -86,29 +86,33 @@ export const removeWizardErrors = (
   if (keyExistsInError) setWizardErrors(newWizardErrors);
 };
 
+// Convert exp days to Date String
+export const convertToDateString = (expDays: number) => {
+  const midnight = new Date();
+  midnight.setTime(midnight.getTime() + 86400000);
+  midnight.setUTCHours(0, 0, 0, 0);
+  const timeStr = new Date(
+    midnight.getTime() + Number(expDays) * 86400000
+  ).toString();
+  return timeStr;
+};
+
 // Generate Options for Expiration Reservation Days
 export const rsvpOpts = () => {
-  const getDateString = (delta: number) => {
-    const midnight = new Date();
-    midnight.setTime(midnight.getTime() + 86400000);
-    midnight.setUTCHours(0, 0, 0, 0);
-    const timeStr = new Date(midnight.getTime() + delta * 86400000).toString();
-    return `${delta} - Will expire on: ${timeStr}`;
-  };
   return [
     {
       value: 1,
-      label: getDateString(1),
+      label: `1 - Will expire on: ${convertToDateString(1)}`,
       disabled: false,
     },
     {
-      value: 2,
-      label: getDateString(4),
+      value: 4,
+      label: `4 - Will expire on: ${convertToDateString(4)}`,
       disabled: false,
     },
     {
-      value: 3,
-      label: getDateString(7),
+      value: 7,
+      label: `7 - Will expire on: ${convertToDateString(7)}`,
       disabled: false,
     },
   ];

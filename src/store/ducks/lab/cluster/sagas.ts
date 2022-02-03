@@ -83,12 +83,10 @@ function* remove(action: AnyAction) {
 }
 
 function* create(action: AnyAction) {
-  const { payload, parameters } = action.payload;
+  const { payload } = action.payload;
   try {
-    payload.tower.job_template_path = payload.tower.jobTemplatePath;
-    yield call(api.post, `/api/v1/clusters`, payload);
+    yield call(api.post, `lab/cluster/`, payload);
     yield put(actions.createClusterSuccess());
-    yield put(actions.loadRequest('all', parameters));
   } catch (err) {
     yield put(actions.createClusterFailure());
   }
