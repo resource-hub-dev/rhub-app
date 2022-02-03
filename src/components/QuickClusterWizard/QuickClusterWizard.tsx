@@ -11,10 +11,11 @@ import { useHistory } from 'react-router';
 import { AppState } from '@store';
 import { loadRequest as loadProducts } from '@ducks/lab/product/actions';
 import { Quota } from '@ducks/lab/types';
+import { createClusterRequest } from '@ducks/lab/cluster/actions';
 
 import Products from './steps/Products';
 import Region from './steps/Regions';
-import { addWizardValues, WizardValues } from './helpers';
+import { addWizardValues, convertToDateString, WizardValues } from './helpers';
 import ClusterConfiguration from './steps/ClusterConfiguration';
 import AdvancedConfiguration from './steps/AdvancedConfiguration';
 import Review from './steps/Review';
@@ -70,6 +71,28 @@ const QuickClusterWizard: React.FC = () => {
 
   const onFinish = () => {
     // TODO
+    const product_params: WizardValues = {};
+    Object.keys(values).forEach((key) => {
+      if (
+        // eslint-disable-next-line prettier/prettier
+        ['name', 'region_id', 'product_id', 'reservation_expiration'].indexOf(
+          key
+        ) === -1
+      ) {
+        product_params[key] = values[key];
+      }
+    });
+    const newCluster = {
+      name: String(values.name),
+      region_id: Number(values.region_id),
+      reservation_expiration: new Date(
+        convertToDateString(Number(values.reservation_expiration))
+      ).toISOString(),
+      product_id: Number(values.product_id),
+      product_params,
+    };
+    dispatch(createClusterRequest(newCluster));
+    history.goBack();
   };
 
   const CustomFooter = (

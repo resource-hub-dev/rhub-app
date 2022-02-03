@@ -53,7 +53,7 @@ const Review: React.FC<Props> = ({ totalUsage }: Props) => {
       userInput = userInput ? 'Yes' : 'No';
     }
     rows.push(
-      <DescriptionListGroup>
+      <DescriptionListGroup key={param.variable}>
         <DescriptionListTerm>{param.name}</DescriptionListTerm>
         <DescriptionListDescription>{userInput}</DescriptionListDescription>
       </DescriptionListGroup>
@@ -85,9 +85,9 @@ const Review: React.FC<Props> = ({ totalUsage }: Props) => {
               </DescriptionListGroup>
             )}
             <DescriptionListGroup>
-              <DescriptionListTerm>Days of Reservation</DescriptionListTerm>
+              <DescriptionListTerm>Reservation Expires in</DescriptionListTerm>
               <DescriptionListDescription>
-                {values.rsvp}
+                {`${values.reservation_expiration} days`}
               </DescriptionListDescription>
             </DescriptionListGroup>
             {rows}
