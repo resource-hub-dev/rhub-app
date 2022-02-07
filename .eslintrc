@@ -72,7 +72,7 @@
     },
     "overrides": [
         {
-          "files": ["src/**/*.test.tsx", "src/**/*.test.ts", "src/tests/*"],
+          "files": ["src/**/*.test.tsx", "src/**/*.test.ts", "src/tests/*", "__tests__/*"],
           "rules": {
             "import/no-extraneous-dependencies": [0]
           }

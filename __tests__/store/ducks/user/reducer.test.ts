@@ -1,6 +1,6 @@
-import reducer, { INITIAL_STATE } from '.';
-import * as actions from './actions';
-import * as mocks from './mocks';
+import reducer, { INITIAL_STATE } from '@ducks/user';
+import * as actions from '@ducks/user/actions';
+import * as mocks from '@mocks/user';
 
 describe('user reducer', () => {
   test('returns the initial state', () => {

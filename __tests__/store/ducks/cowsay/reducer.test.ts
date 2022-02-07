@@ -1,6 +1,6 @@
-import reducer, { INITIAL_STATE } from '.';
-import * as actions from './actions';
-import mocks from './mocks';
+import reducer, { INITIAL_STATE } from '@ducks/cowsay';
+import * as actions from '@ducks/cowsay/actions';
+import mocks from '@mocks/cowsay';
 
 describe('cowsay reducer', () => {
   test('returns the initial state', () => {

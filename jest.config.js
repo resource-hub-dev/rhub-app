@@ -1,12 +1,12 @@
 const path  = require('path');
 
 module.exports = {
-  roots: ['<rootDir>/src'],
+  roots: ['<rootDir>/__tests__'],
   transform: {
     '^.+\\.(ts|tsx)?$': 'ts-jest',
   },
   setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
+  testMatch: ['**/*.test.ts?(x)'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
     '\\.(css|less|sass|scss)$': '<rootDir>/__mocks__/styleMock.js',

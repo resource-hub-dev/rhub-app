@@ -1,4 +1,4 @@
-import { UserData, UserModel } from './types';
+import { UserData, UserModel } from '@ducks/user/types';
 
 export const responseAPI: UserData = {
   id: '12345678-lol-lmao-1234-567890lmfao',
