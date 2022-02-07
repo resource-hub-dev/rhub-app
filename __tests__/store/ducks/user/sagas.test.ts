@@ -5,9 +5,9 @@ import * as matchers from 'redux-saga-test-plan/matchers';
 import api from '@services/api';
 import { AppState } from '@store';
 
-import rootSaga from '../rootSaga';
-import * as actions from './actions';
-import * as mocks from './mocks';
+import rootSaga from '@ducks/rootSaga';
+import * as actions from '@ducks/user/actions';
+import * as mocks from '@mocks/user';
 
 describe('user saga', () => {
   test('loads users information to the store', () => {
