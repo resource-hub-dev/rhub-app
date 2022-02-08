@@ -17,4 +17,4 @@ services:
       HOME: /opt/app-root/home
       NPM_CONFIG_PREFIX: /opt/app-root/home/.npm-global
     ports:
-      - 3000:3000
+      - "3000:3000"
