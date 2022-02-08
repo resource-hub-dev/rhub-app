@@ -27,22 +27,25 @@ export enum ClusterTypes {
 // Data Tyoes
 export interface ClusterData {
   id: number;
-  user_id: number;
+  user_id: string;
   created: string;
-  template_id: number;
+  product_id: string | number;
   region_id: number;
   status: string;
   hosts?: ClusterHost[];
   quota?: Quota;
-  group_id: number | null;
+  group_id: string | null;
   name: string;
   description: string;
   reservation_expiration: string | null;
   lifespan_expiration: string | null;
-  templateName: string;
   group_name: string | null;
   region_name: string;
   user_name: string;
+  product_name: string;
+  product_params: Record<string, any>;
+  quota_usage: Quota;
+  shared: boolean;
 }
 
 export enum ClusterEventType {
@@ -69,8 +72,7 @@ export interface ClusterEventData {
 // Model Types
 export interface Cluster {
   id: number;
-  created: string;
-  template_id: number;
+  created: Date | null;
   hosts: ClusterHost[];
   quota: Quota;
   status: string;
@@ -78,16 +80,19 @@ export interface Cluster {
   description: string;
   reservation_expiration: Date | null;
   lifespan_expiration: Date | null;
-  templateName: string;
   group_name: string | null;
   region_name: string;
   user_name: string;
+  product_name: string;
+  product_params: Record<string, any>;
+  quota_usage: Quota;
+  shared: boolean;
 }
 
 export interface ClusterHost {
   // Tower types
-  id: string;
-  cluster_id: string;
+  id: string | number;
+  cluster_id: string | number;
   fqdn: string;
   ipaddr: string[];
   num_vcpus: number;
@@ -104,6 +109,7 @@ export interface ClusterEvent {
   tower_job_id?: number | null;
   status?: string | null;
   user_id: string;
+  type?: string;
 }
 
 export interface ClusterCreateData {

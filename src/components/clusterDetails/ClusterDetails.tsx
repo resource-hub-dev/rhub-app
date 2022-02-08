@@ -89,7 +89,7 @@ const ClusterDetails: React.FC = () => {
     user_name,
     status,
     region_name,
-    template_id,
+    product_name,
     group_name,
     description,
     reservation_expiration,
@@ -105,7 +105,7 @@ const ClusterDetails: React.FC = () => {
     !user_name &&
     !status &&
     !region_name &&
-    !template_id &&
+    !product_name &&
     !description;
   // Only limit 'New Bundle' and 'Delete' to 3 groups:
   // cluster owner, admin and group members
@@ -180,7 +180,7 @@ const ClusterDetails: React.FC = () => {
                   owner={user_name}
                   status={status}
                   region={region_name}
-                  template={`${template_id}`}
+                  template={`${product_name}`}
                   group={group_name}
                 />
               </GridItem>
