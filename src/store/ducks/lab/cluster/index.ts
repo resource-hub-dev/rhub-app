@@ -25,6 +25,10 @@ const clusterDataToState = (data = {}, item: ClusterData) => ({
     description: item.description,
     group_name: item.group_name,
     region_name: item.region_name,
+    product_name: item.product_name,
+    product_params: item.product_params,
+    quota_usage: item.quota_usage,
+    shared: item.shared,
     user_name: item.user_name,
     hosts: item.hosts ? item.hosts : [],
     quota: item.quota,
@@ -59,8 +63,9 @@ const clusterEventDataToState = (item: ClusterEventData) => {
     id: item.id,
     date: item.date,
     cluster_id: item.cluster_id,
-    tower_id: item.tower_id,
-    tower_job_id: item.tower_job_id,
+    tower_id: item.tower_id || null,
+    tower_job_id: item.tower_job_id || null,
+    type: item.type,
     status,
     user_id: item.user_id,
   };
@@ -155,7 +160,7 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
     case ClusterTypes.DELETE_REQUEST:
       return { ...state, loading: true, error: false };
     case ClusterTypes.DELETE_SUCCESS:
-      return state;
+      return { ...state, loading: false, error: false };
     case ClusterTypes.DELETE_FAILURE:
       return { ...state, loading: false, error: true };
     case ClusterTypes.CREATE_REQUEST:

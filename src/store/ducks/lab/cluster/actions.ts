@@ -2,7 +2,6 @@ import { action } from 'typesafe-actions';
 
 import {
   ClusterTypes,
-  Cluster,
   ClusterCreateData,
   ClusterUpdateData,
   ClusterHost,
@@ -37,7 +36,7 @@ export const loadRequest = (
 
 export const loadSuccess = (
   clusterId: number | 'all',
-  data: Cluster | Cluster[],
+  data: ClusterData | ClusterData[],
   nameCheck?: boolean
 ) => action(ClusterTypes.LOAD_SUCCESS, { clusterId, data, nameCheck });
 

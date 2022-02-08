@@ -86,7 +86,7 @@ const ClusterView: React.FC<Props> = ({ clusterViewType }: Props) => {
           <Link to={`/resources/quickcluster/clusters/${item.id}`}>
             {String(item.name)}
           </Link>,
-          item.template_id,
+          item.product_name,
           item.region_name,
           item.status,
         ],
@@ -107,7 +107,7 @@ const ClusterView: React.FC<Props> = ({ clusterViewType }: Props) => {
           {item.name}
         </Link>,
         item.user_name,
-        item.template_id,
+        item.product_name,
         item.group_name || '',
         item.region_name,
         item.status,
