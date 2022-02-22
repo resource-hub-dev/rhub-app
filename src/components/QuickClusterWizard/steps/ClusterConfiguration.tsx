@@ -4,15 +4,14 @@ import { loadUsageRequest } from '@ducks/lab/region/actions';
 
 import { AppState } from '@store';
 import { Quota } from '@ducks/lab/types';
-import { LabProductParams } from '@ducks/lab/product/types';
 import { Alert, AlertGroup } from '@patternfly/react-core';
 
 import Questionnaire from './Questionnaire';
 import GraphsUtilization from './Graphs';
 import {
   addWizardErrors,
-  genGraphValues,
   genQuotaExceededError,
+  genTotalUsage,
   removeWizardErrors,
   StepHeader,
   WizardValues,
@@ -75,30 +74,11 @@ const ClusterConfiguration: React.FC<Props> = ({
 
   useEffect(() => {
     if (regionUsage && parameters) {
-      const nodeParams = parameters.filter(
-        (param) =>
-          param.variable.indexOf('_nodes') !== -1 &&
-          param.variable.indexOf('num') !== -1
-      );
-      const defaultUsage = nodeParams.reduce(
-        (data: Quota, currentParam: LabProductParams) => {
-          // If selection exists, generate graph values based on this value instead of default value
-          const prevSelection = values[currentParam.variable];
-          const thisUsage = genGraphValues(
-            currentParam.variable,
-            prevSelection
-              ? Number(prevSelection)
-              : Number(currentParam.default),
-            flavors
-          );
-          return {
-            num_vcpus: data.num_vcpus + thisUsage.num_vcpus,
-            ram_mb: data.ram_mb + thisUsage.ram_mb,
-            volumes_gb: data.volumes_gb + thisUsage.volumes_gb,
-            num_volumes: data.num_volumes + thisUsage.num_volumes,
-          };
-        },
-        regionUsage
+      const defaultUsage = genTotalUsage(
+        parameters,
+        regionUsage,
+        flavors,
+        values
       );
       setTotalUsage(defaultUsage);
     }
@@ -119,14 +99,11 @@ const ClusterConfiguration: React.FC<Props> = ({
   }, [quota, totalUsage]);
 
   // updateUsage takes future resources consumption from user inputs in the form and update usage state
-  const updateUsage = (requiredResources: Quota) => {
+  const updateUsage = (nodeCountMap: { [key: string]: number }) => {
     if (regionUsage) {
-      setTotalUsage({
-        num_vcpus: regionUsage.num_vcpus + requiredResources.num_vcpus,
-        ram_mb: regionUsage.ram_mb + requiredResources.ram_mb,
-        volumes_gb: regionUsage.volumes_gb + requiredResources.volumes_gb,
-        num_volumes: regionUsage.num_volumes + requiredResources.num_volumes,
-      });
+      setTotalUsage(
+        genTotalUsage(parameters, regionUsage, flavors, values, nodeCountMap)
+      );
     }
   };
 
