@@ -55,12 +55,52 @@ export const genGraphValues = (
   };
 };
 
+// Generate total usage of cluster
+export const genTotalUsage = (
+  parameters: LabProductParams[],
+  regionUsage: Quota,
+  flavors: { [key: string]: Quota },
+  values: WizardValues,
+  nodeCountMap?: { [key: string]: number } // this argument is for used when a node count changes
+) => {
+  const nodeParams = parameters.filter(
+    (param) =>
+      param.variable.indexOf('_nodes') !== -1 &&
+      param.variable.indexOf('num') !== -1
+  );
+  const defaultUsage = nodeParams.reduce(
+    (data: Quota, currentParam: LabProductParams) => {
+      // If selection exists, generate graph values based on this value instead of default value
+      const prevSelection = values[currentParam.variable];
+      let nodeCount = Number(currentParam.default);
+      if (nodeCountMap && nodeCountMap[currentParam.variable]) {
+        nodeCount = nodeCountMap[currentParam.variable];
+      } else if (prevSelection) {
+        nodeCount = Number(prevSelection);
+      }
+
+      const thisUsage = genGraphValues(
+        currentParam.variable,
+        nodeCount,
+        flavors
+      );
+      return {
+        num_vcpus: data.num_vcpus + thisUsage.num_vcpus,
+        ram_mb: data.ram_mb + thisUsage.ram_mb,
+        volumes_gb: data.volumes_gb + thisUsage.volumes_gb,
+        num_volumes: data.num_volumes + thisUsage.num_volumes,
+      };
+    },
+    regionUsage
+  );
+  return defaultUsage;
+};
 // Generate error message if user exceeded their quota
 export const genQuotaExceededError = (usage: Quota, regionQuota: Quota) => {
   const keys = Object.keys(usage);
   for (const key of keys) {
     const percentUsed = (usage as any)[key] / (regionQuota as any)[key];
-    if (percentUsed >= 1)
+    if (percentUsed > 1)
       return 'Quota Exceeded: Please resize your QuickCluster';
   }
   return undefined;
