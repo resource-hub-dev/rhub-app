@@ -13,13 +13,11 @@ import {
 import { AppState } from '@store';
 import { LabProductParams } from '@ducks/lab/product/types';
 import { ExclamationCircleIcon } from '@patternfly/react-icons';
-import { Quota } from '@ducks/lab/types';
 import { loadRequest as checkNameExists } from '@ducks/lab/cluster/actions';
 
 import {
   addWizardErrors,
   genDefaultValues,
-  genGraphValues,
   removeWizardErrors,
   WizardValues,
   rsvpOpts,
@@ -28,7 +26,7 @@ import { wizardContext } from '../QuickClusterWizard';
 
 interface Props {
   /** Handles dynamic values for Utilization Charts in Step 3 */
-  updateUsage?: (requiredResources: Quota) => void;
+  updateUsage?: (nodeCountMap: { [key: string]: number }) => void;
   /** Parameters from Product Region */
   parameters: LabProductParams[];
   /** Handles data once user hits submit */
@@ -72,6 +70,7 @@ const Questionnaire: React.FC<Props> = ({
     control,
     register,
     setValue,
+    getValues,
     setError,
     formState: { errors, isValid, isDirty },
   } = useForm({
@@ -110,6 +109,16 @@ const Questionnaire: React.FC<Props> = ({
   }, [clusterExists, isValid, setError, setWizardErrors]);
 
   if (parameters) {
+    const nodeParams = parameters.filter(
+      (param) =>
+        param.variable.indexOf('_nodes') !== -1 &&
+        param.variable.indexOf('num') !== -1
+    );
+    const nodeCountMap: { [key: string]: number } = {};
+    nodeParams.forEach((param) => {
+      nodeCountMap[param.variable] = Number(getValues(param.variable));
+    });
+    // get all variables of node types to render graph values
     for (const question of parameters) {
       const key = question.variable;
       if (question.type === 'string' && !question.enum) {
@@ -196,13 +205,10 @@ const Questionnaire: React.FC<Props> = ({
                 type="number"
                 onBlur={(event) => {
                   if (isNodesNum && updateUsage) {
-                    // fire graph update if it's a node number variable (e.g. Master node, Infra node)
-                    const usage = genGraphValues(
-                      key,
-                      Number(event.target.value),
-                      product.flavors
-                    );
-                    updateUsage(usage);
+                    updateUsage({
+                      ...nodeCountMap,
+                      [key]: Number(event.target.value),
+                    });
                   }
                   setValue(key, event.target.value, { shouldValidate: true });
                 }}
