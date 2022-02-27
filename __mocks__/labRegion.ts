@@ -1,0 +1,208 @@
+import {
+    LabRegionData, 
+    LabRegionCreate,
+    LabRegionUpdate,
+    RegionsWithProduct,
+    Usage
+} from '@ducks/lab/region/types';
+
+import {
+  Error
+} from '@ducks/lab/types'
+
+export const regionExample: LabRegionData = {
+  banner: "string",
+  description: "string",
+  dns_server: {
+    hostname: "ns.example.com",
+    key: "kv/region/rdu2-a/dns",
+    zone: "example.com."
+  },
+  download_server: "https://download.example.com",
+  enabled: true,
+  id: 1,
+  lifespan_length: 1,
+  location: "RDU",
+  name: "rdu2-a",
+  openstack: {
+    credentials: "kv/region/rdu2-a/openstack",
+    domain_id: "default",
+    domain_name: "Default",
+    keyname: "rhub",
+    networks: [
+      "provider_net_rhub"
+    ],
+    project: "rhub",
+    url: "https://openstack.example.com:13000"
+  },
+  owner_group: "7670ac07-cb21-448d-af8a-6e3882216be3",
+  reservation_expiration_max: 0,
+  reservations_enabled: true,
+  satellite: {
+    insecure: false,
+    credentials: "kv/region/rdu2-a/satellite",
+    hostname: "satellite.example.com"
+  },
+  total_quota: {
+    num_vcpus: 40000,
+    num_volumes: 40000,
+    ram_mb: 200000000,
+    volumes_gb: 540000
+  },
+  tower_id: 1,
+  user_quota: {
+    num_vcpus: 40,
+    num_volumes: 40,
+    ram_mb: 200000,
+    volumes_gb: 540
+  },
+  users_group: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  vault_server: "https://vault.example.com"
+}
+
+export const productRegionsExample: RegionsWithProduct = {
+  enabled: true,
+  product_id: 1,
+  region: {
+    banner: "string",
+    description: "string",
+    dns_server: {
+      hostname: "ns.example.com",
+      key: "kv/region/rdu2-a/dns",
+      zone: "example.com."
+    },
+    download_server: "https://download.example.com",
+    enabled: true,
+    id: 1,
+    lifespan_length: 1,
+    location: "RDU",
+    name: "rdu2-a",
+    openstack: {
+      credentials: "kv/region/rdu2-a/openstack",
+      domain_id: "default",
+      domain_name: "Default",
+      keyname: "rhub",
+      networks: [
+        "provider_net_rhub"
+      ],
+      project: "rhub",
+      url: "https://openstack.example.com:13000"
+    },
+    owner_group: "7670ac07-cb21-448d-af8a-6e3882216be3",
+    reservation_expiration_max: 0,
+    reservations_enabled: true,
+    satellite: {
+      insecure: false,
+      credentials: "kv/region/rdu2-a/satellite",
+      hostname: "satellite.example.com"
+    },
+    total_quota: {
+      num_vcpus: 40000,
+      num_volumes: 40000,
+      ram_mb: 200000000,
+      volumes_gb: 540000
+    },
+    tower_id: 1,
+    user_quota: {
+      num_vcpus: 40,
+      num_volumes: 40,
+      ram_mb: 200000,
+      volumes_gb: 540
+    },
+    users_group: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    vault_server: "https://vault.example.com"
+  }
+}
+
+export const regionUsageExample: Usage = {
+  openstack_limits: {},
+  total_quota: {
+    num_vcpus: 0,
+    num_volumes: 0,
+    ram_mb: 0,
+    volumes_gb: 0
+  },
+  total_quota_usage: {
+    num_vcpus: 0,
+    num_volumes: 0,
+    ram_mb: 0,
+    volumes_gb: 0
+  },
+  user_quota: {
+    num_vcpus: 0,
+    num_volumes: 0,
+    ram_mb: 0,
+    volumes_gb: 0
+  },
+  user_quota_usage: {
+    num_vcpus: 0,
+    num_volumes: 0,
+    ram_mb: 0,
+    volumes_gb: 0
+  }
+}
+
+export const errorExample: Error = {
+  detail: "Invalid token",
+  status: 401,
+  title: "Unauthorized",
+  type: "about:blank"
+}
+
+export const createRegionExample: LabRegionCreate = {
+  banner: "string",
+  description: "string",
+  dns_server: {
+    hostname: "ns.example.com",
+    key: "kv/region/rdu2-a/dns",
+    zone: "example.com."
+  },
+  download_server: "https://download.example.com",
+  enabled: true,
+  lifespan_length: 1,
+  location: "RDU",
+  name: "rdu2-a",
+  openstack: {
+    credentials: "kv/region/rdu2-a/openstack",
+    domain_id: "default",
+    domain_name: "Default",
+    keyname: "rhub",
+    networks: [
+      "provider_net_rhub"
+    ],
+    project: "rhub",
+    url: "https://openstack.example.com:13000"
+  },
+  reservation_expiration_max: 0,
+  reservations_enabled: true,
+  satellite: {
+    insecure: false,
+    credentials: "kv/region/rdu2-a/satellite",
+    hostname: "satellite.example.com"
+  },
+  total_quota: {
+    num_vcpus: 40000,
+    num_volumes: 40000,
+    ram_mb: 200000000,
+    volumes_gb: 540000
+  },
+  tower_id: 1,
+  user_quota: {
+    num_vcpus: 40,
+    num_volumes: 40,
+    ram_mb: 200000,
+    volumes_gb: 540
+  },
+  users_group: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  vault_server: "https://vault.example.com"
+}
+
+export const updateRegionExample: LabRegionUpdate = {
+  lifespan_length: 60,
+  user_quota: {
+    num_vcpus: 40,
+    num_volumes: 40,
+    ram_mb: 200000,
+    volumes_gb: 500
+  }
+}
