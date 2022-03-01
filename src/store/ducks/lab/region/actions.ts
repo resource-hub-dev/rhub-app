@@ -19,7 +19,7 @@ export const loadRequest = (
   });
 
 export const loadSuccess = (
-  regionId: number,
+  regionId: number | 'all',
   data: LabRegionData | LabRegionData[]
 ) => action(LabRegionTypes.LOAD_SUCCESS, { regionId, data });
 
