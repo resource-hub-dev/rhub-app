@@ -22,7 +22,7 @@ export interface LabProductParams {
   required: boolean;
   advanced: boolean;
   condition: boolean; // TODO: This is to be implemented on rhub-api
-  enum?: [];
+  enum?: string[] | number[];
   type: 'string' | 'integer' | 'boolean';
   max?: number;
   min?: number;
@@ -37,9 +37,10 @@ export interface LabProductData {
   name: string;
   description: string;
   enabled: boolean;
-  tower_template_name: string;
   parameters: LabProductParams[];
   flavors: { [key: string]: Quota };
+  tower_template_name_create: string;
+  tower_template_name_delete: string;
 }
 
 export interface Error {
