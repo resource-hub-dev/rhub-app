@@ -247,7 +247,7 @@ const Questionnaire: React.FC<Props> = ({
                         <FormSelectOption
                           key={value}
                           value={value}
-                          label={value}
+                          label={`${value}`}
                         />
                       ))}
                     {/* if boolean, convert to yes/no options */}
