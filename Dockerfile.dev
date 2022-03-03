@@ -4,3 +4,5 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 CMD ["npm", "run", "start"]
+
+HEALTHCHECK --interval=10s --retries=5 --timeout=5s CMD ["curl", "-f", "http://localhost:3000"]
