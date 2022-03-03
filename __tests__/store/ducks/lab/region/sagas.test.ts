@@ -1,4 +1,4 @@
-import { expectSaga } from "redux-saga-test-plan";
+import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
 
 import api from '@services/api';
@@ -6,14 +6,13 @@ import api from '@services/api';
 import rootSaga from '@ducks/rootSaga';
 import * as actions from '@ducks/lab/region/actions';
 import * as mocks from '@mocks/labRegion';
-import { roots } from "jest.config";
 
 describe('region saga', () => {
   test('loads all lab region data', () => {
     const apiResponse = {
-      data: { data: [mocks.regionExample]}
+      data: { data: [mocks.regionExample] },
     };
-    
+
     return expectSaga(rootSaga)
       .dispatch(actions.loadRequest('all'))
       .provide([[matchers.call.fn(api.get), apiResponse]])
@@ -23,7 +22,7 @@ describe('region saga', () => {
 
   test('loads a single lab region data', () => {
     const apiResponse = {
-      data: mocks.regionExample
+      data: mocks.regionExample,
     };
 
     return expectSaga(rootSaga)
@@ -35,7 +34,7 @@ describe('region saga', () => {
 
   test('loads regions with a product', () => {
     const apiResponse = {
-      data: [mocks.productRegionsExample]
+      data: [mocks.productRegionsExample],
     };
 
     return expectSaga(rootSaga)
@@ -47,7 +46,7 @@ describe('region saga', () => {
 
   test('loads region usage', () => {
     const apiResponse = {
-      data: mocks.regionUsageExample
+      data: mocks.regionUsageExample,
     };
 
     return expectSaga(rootSaga)
