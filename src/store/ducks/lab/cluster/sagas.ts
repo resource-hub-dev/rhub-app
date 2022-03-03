@@ -74,7 +74,7 @@ function* update(action: AnyAction) {
 function* remove(action: AnyAction) {
   try {
     const { clusterId, parameters } = action.payload;
-    yield call(api.delete, `api/v1/clusters/${clusterId}`);
+    yield call(api.delete, `lab/cluster/${clusterId}`);
     yield put(actions.deleteSuccess(clusterId));
     yield put(actions.loadRequest('all', parameters));
   } catch (err) {
