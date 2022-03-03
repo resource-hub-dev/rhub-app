@@ -1,5 +1,10 @@
 import { action } from 'typesafe-actions';
-import { LabProductData, LabProductTypes, Error } from './types';
+import {
+  LabProductData,
+  LabProductTypes,
+  Error,
+  LabProductInput,
+} from './types';
 
 export const loadRequest = (
   productId: number | 'all',
@@ -18,7 +23,7 @@ export const loadSuccess = (
 export const loadFailure = (err: Error) =>
   action(LabProductTypes.LOAD_FAILURE, err);
 
-export const createRequest = (payload: LabProductData) =>
+export const createRequest = (payload: LabProductInput) =>
   action(LabProductTypes.CREATE_REQUEST, payload);
 
 export const createSuccess = () => action(LabProductTypes.CREATE_SUCCESS);
@@ -26,7 +31,7 @@ export const createSuccess = () => action(LabProductTypes.CREATE_SUCCESS);
 export const createFailure = (err: Error) =>
   action(LabProductTypes.CREATE_FAILURE, err);
 
-export const updateRequest = (productId: number, data: LabProductData) =>
+export const updateRequest = (productId: number, data: LabProductInput) =>
   action(LabProductTypes.UPDATE_REQUEST, { productId, data });
 
 export const updateSuccess = () => action(LabProductTypes.UPDATE_SUCCESS);

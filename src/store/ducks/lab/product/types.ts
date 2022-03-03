@@ -43,6 +43,8 @@ export interface LabProductData {
   tower_template_name_delete: string;
 }
 
+export type LabProductInput = Omit<LabProductData, 'id'>;
+
 export interface Error {
   detail: string;
   status: number;
