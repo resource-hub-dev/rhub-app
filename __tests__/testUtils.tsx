@@ -1,7 +1,7 @@
 import React, { ReactElement, ReactNode } from 'react';
 import { render as rtlRender } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import createSagaMiddleware from 'redux-saga';
 import configureStore from 'redux-mock-store';
@@ -13,6 +13,7 @@ const connectedRender = (
   ui: ReactElement,
   state = {},
   route = '/',
+  path = '/',
   { ...renderOptions } = {}
 ) => {
   const store = mockStore(state);
@@ -20,7 +21,9 @@ const connectedRender = (
   const Wrapper = ({ children }: { children?: ReactNode }) => {
     return (
       <Provider store={store}>
-        <Router history={history}>{children}</Router>
+        <Router history={history}>
+          <Route path={path}>{children}</Route>
+        </Router>
       </Provider>
     );
   };
