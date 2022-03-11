@@ -1,8 +1,8 @@
-FROM registry.access.redhat.com/ubi8/nodejs-14
+FROM node:16
 # Keep the cache for node packages...
 COPY package*.json ./
-RUN npm install
 COPY . .
+RUN npm install
 CMD ["npm", "run", "start"]
 
 HEALTHCHECK --interval=10s --retries=5 --timeout=5s CMD ["curl", "-f", "http://localhost:3000"]
