@@ -172,8 +172,6 @@ const Questionnaire: React.FC<Props> = ({
       }
       // For Integer field
       if (question.type === 'integer' && !question.enum) {
-        const isNodesNum =
-          key.indexOf('_nodes') !== -1 && key.indexOf('num') !== -1;
         components.push(
           <Tooltip key={key} content={<div>{question.description}</div>}>
             <FormGroup
@@ -203,15 +201,6 @@ const Questionnaire: React.FC<Props> = ({
                 isRequired={question.required}
                 aria-label={key}
                 type="number"
-                onBlur={(event) => {
-                  if (isNodesNum && updateUsage) {
-                    updateUsage({
-                      ...nodeCountMap,
-                      [key]: Number(event.target.value),
-                    });
-                  }
-                  setValue(key, event.target.value, { shouldValidate: true });
-                }}
                 onChange={() => undefined} // place holder function (required by PF)
               />
             </FormGroup>
@@ -235,6 +224,15 @@ const Questionnaire: React.FC<Props> = ({
                       if (question.type === 'boolean') {
                         setValue(key, value === 'true');
                       } else if (question.type === 'integer') {
+                        const isNodesNum =
+                          key.indexOf('_nodes') !== -1 &&
+                          key.indexOf('num') !== -1;
+                        if (isNodesNum && updateUsage) {
+                          updateUsage({
+                            ...nodeCountMap,
+                            [key]: Number(value),
+                          });
+                        }
                         setValue(key, parseInt(value, 10));
                       } else {
                         setValue(key, value);
