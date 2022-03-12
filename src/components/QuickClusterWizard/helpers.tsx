@@ -31,9 +31,10 @@ export const genDefaultValues = (
     ) => {
       return {
         ...data,
-        [item.variable]: values[item.variable]
-          ? values[item.variable]
-          : item.default,
+        [item.variable]:
+          values[item.variable] !== undefined
+            ? values[item.variable]
+            : item.default,
       };
     },
     {}
@@ -73,9 +74,13 @@ export const genTotalUsage = (
       // If selection exists, generate graph values based on this value instead of default value
       const prevSelection = values[currentParam.variable];
       let nodeCount = Number(currentParam.default);
-      if (nodeCountMap && nodeCountMap[currentParam.variable]) {
+      if (
+        nodeCountMap &&
+        nodeCountMap[currentParam.variable] !== null &&
+        nodeCountMap[currentParam.variable] !== undefined
+      ) {
         nodeCount = nodeCountMap[currentParam.variable];
-      } else if (prevSelection) {
+      } else if (prevSelection !== null && prevSelection !== undefined) {
         nodeCount = Number(prevSelection);
       }
 

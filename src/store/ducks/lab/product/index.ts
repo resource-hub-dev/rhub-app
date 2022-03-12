@@ -8,6 +8,19 @@ const LabProductDataToState = (
   data: { [key: number]: LabProductData },
   item: LabProductData
 ) => {
+  const nameVar = {
+    name: 'Enter a Cluster ID (e.g., testcluster1)',
+    description:
+      'Combination of letters and numbers (a-z0-9). No spaces or special characters allowed. Minimum 6 characters',
+    variable: 'name',
+    required: true,
+    advanced: false,
+    condition: false,
+    type: 'string',
+    maxLength: 1024,
+    minLength: 5,
+    default: '',
+  };
   return {
     ...data,
     [item.id]: {
@@ -17,7 +30,7 @@ const LabProductDataToState = (
       enabled: item.enabled,
       tower_template_name_create: item.tower_template_name_create,
       tower_template_name_delete: item.tower_template_name_delete,
-      parameters: item.parameters,
+      parameters: [nameVar, ...item.parameters],
       flavors: item.flavors,
     },
   };
