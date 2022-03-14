@@ -1,6 +1,6 @@
 import { LabProductData, LabProductInput } from '@ducks/lab/product/types';
 
-export const labProductExample: LabProductData = {
+export const labProductResponse: LabProductData = {
   description: 'string',
   enabled: true,
   flavors: {
@@ -57,8 +57,27 @@ export const labProductExample: LabProductData = {
   tower_template_name_delete: 'rhub-openshift-delete',
 };
 
+export const labProductExample: LabProductData = {
+  ...labProductResponse,
+  parameters: [
+    {
+      name: 'Enter a Cluster ID (e.g., testcluster1)',
+      description:
+        'Combination of letters and numbers (a-z0-9). No spaces or special characters allowed. Minimum 6 characters',
+      variable: 'name',
+      required: true,
+      advanced: false,
+      condition: false,
+      type: 'string',
+      maxLength: 20,
+      minLength: 5,
+      default: '',
+    },
+    ...labProductResponse.parameters,
+  ],
+};
 export const labProductInputData: LabProductInput = {
-  ...labProductExample,
+  ...labProductResponse,
 };
 
 export const errorExample = {

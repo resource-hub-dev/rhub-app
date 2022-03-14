@@ -37,11 +37,11 @@ describe('product reducer', () => {
     });
   });
   test('handles load success for a single product', () => {
-    const apiResponseData = mocks.labProductExample;
+    const apiResponseData = mocks.labProductResponse;
     expect(
       reducer(
         { ...INITIAL_STATE, loading: true },
-        actions.loadSuccess(mocks.labProductExample.id, apiResponseData)
+        actions.loadSuccess(mocks.labProductResponse.id, apiResponseData)
       )
     ).toEqual({
       ...INITIAL_STATE,
@@ -51,7 +51,7 @@ describe('product reducer', () => {
     });
   });
   test('handles load success for all product', () => {
-    const apiResponseData = [mocks.labProductExample];
+    const apiResponseData = [mocks.labProductResponse];
     expect(
       reducer(
         { ...INITIAL_STATE, loading: true },

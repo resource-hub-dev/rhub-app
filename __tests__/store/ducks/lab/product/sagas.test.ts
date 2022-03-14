@@ -10,7 +10,7 @@ import * as mocks from '@mocks/labProduct';
 describe('product saga', () => {
   test('fetches all lab product data', () => {
     const apiResponse = {
-      data: { data: [mocks.labProductExample] },
+      data: { data: [mocks.labProductResponse] },
     };
     return expectSaga(rootSaga)
       .dispatch(actions.loadRequest('all'))
@@ -21,7 +21,7 @@ describe('product saga', () => {
 
   test('fetches a single lab product data', () => {
     const apiResponse = {
-      data: mocks.labProductExample,
+      data: mocks.labProductResponse,
     };
     return expectSaga(rootSaga)
       .dispatch(actions.loadRequest(123))
