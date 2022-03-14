@@ -1,5 +1,5 @@
 # https://catalog.redhat.com/software/containers/ubi8/nodejs-14/5ed7887dd70cc50e69c2fabb
-FROM registry.access.redhat.com/ubi8/nodejs-14 as build
+FROM registry.access.redhat.com/ubi8/nodejs-16 as build
 COPY . .
 RUN npm install && npm run build
 
