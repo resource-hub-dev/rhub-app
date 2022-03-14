@@ -154,7 +154,7 @@ const DataTable: React.FC<Props> = ({ columns, rowPairs, loading }: Props) => {
               };
               return (
                 <Th key={`col-${colIndex}`} {...sortParams}>
-                  {col}
+                  {typeof col === 'string' ? col : col.title || ''}
                 </Th>
               );
             })}
