@@ -17,7 +17,7 @@ const LabProductDataToState = (
     advanced: false,
     condition: false,
     type: 'string',
-    maxLength: 1024,
+    maxLength: 20,
     minLength: 5,
     default: '',
   };
