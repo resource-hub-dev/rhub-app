@@ -4,7 +4,7 @@ import { connectedRender } from '@tests/testUtils';
 
 import ClusterView from '@components/clusters/ClusterView';
 
-import * as mocks from '@mocks/clusterView';
+import * as mocks from '@mocks/clusters';
 
 describe('<ClusterView />', () => {
   test('Renders loading', async () => {
