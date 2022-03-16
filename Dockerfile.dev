@@ -1,8 +1,10 @@
 FROM node:16
 # Keep the cache for node packages...
+WORKDIR /opt/app-root/src
 COPY package*.json ./
-COPY . .
 RUN npm install
+
+COPY . .
 CMD ["npm", "run", "start"]
 
 HEALTHCHECK --interval=10s --retries=5 --timeout=5s CMD ["curl", "-f", "http://localhost:3000"]
