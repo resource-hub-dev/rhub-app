@@ -49,3 +49,13 @@ export const authenticated = () => {
     },
   };
 };
+
+export const subject = () => {
+  return {
+    initialized: true,
+    keycloak: {
+      ...authenticated().keycloak,
+      subject: 1,
+    },
+  };
+};

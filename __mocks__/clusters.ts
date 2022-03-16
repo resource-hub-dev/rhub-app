@@ -1,8 +1,11 @@
 import { ClusterState } from '@ducks/lab/cluster/types';
-import * as mocks from '@mocks/labCluster';
+import { UserState } from '@ducks/user/types';
+
+import { loadedCluster, loadedEventsState } from '@mocks/labCluster';
+import { loadedUser } from '@mocks/user';
 
 export const cluster = {
-  ...mocks.loadedCluster,
+  ...loadedCluster,
   name: 'name string',
   product_name: 'product string',
   group_name: 'group string',
@@ -12,11 +15,19 @@ export const cluster = {
   reservation_expiration: new Date(Date.now() + 3600000),
 };
 
+const userState: UserState = {
+  current: loadedUser,
+  data: {},
+  loggedIn: true,
+  loading: false,
+  error: false,
+};
+
 const loadedClusterState: ClusterState = {
   data: {
     [cluster.id]: cluster,
   },
-  events: mocks.loadedEventsState,
+  events: loadedEventsState,
   stdOutput: null,
   loading: false,
   error: false,
@@ -29,7 +40,7 @@ const noHostsClusterState: ClusterState = {
       hosts: [],
     },
   },
-  events: mocks.loadedEventsState,
+  events: loadedEventsState,
   stdOutput: null,
   loading: false,
   error: false,
@@ -43,14 +54,17 @@ export const loadingState: ExampleState = {
     loading: true,
     error: false,
   },
+  user: userState,
 };
 
 export const loadedState: ExampleState = {
   cluster: loadedClusterState,
+  user: userState,
 };
 
 export const noHostState: ExampleState = {
   cluster: noHostsClusterState,
+  user: userState,
 };
 
 export const noClusterGroupNameState: ExampleState = {
@@ -61,11 +75,12 @@ export const noClusterGroupNameState: ExampleState = {
         group_name: null,
       },
     },
-    events: mocks.loadedEventsState,
+    events: loadedEventsState,
     stdOutput: null,
     loading: false,
     error: false,
   },
+  user: userState,
 };
 
 export const noClusterExpirationState: ExampleState = {
@@ -77,11 +92,12 @@ export const noClusterExpirationState: ExampleState = {
         reservation_expiration: null,
       },
     },
-    events: mocks.loadedEventsState,
+    events: loadedEventsState,
     stdOutput: null,
     loading: false,
     error: false,
   },
+  user: userState,
 };
 
 export const noClustersState: ExampleState = {
@@ -92,8 +108,10 @@ export const noClustersState: ExampleState = {
     loading: false,
     error: false,
   },
+  user: userState,
 };
 
 export interface ExampleState {
   cluster: ClusterState;
+  user: UserState;
 }
