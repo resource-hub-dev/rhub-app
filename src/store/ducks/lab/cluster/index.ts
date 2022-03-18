@@ -50,6 +50,10 @@ const clusterEventDataToState = (item: ClusterEventData) => {
       status = item.status;
       break;
     }
+    case ClusterEventType.STATUS_CHANGE: {
+      status = item.new_value;
+      break;
+    }
     case ClusterEventType.LIFESPAN_CHANGE: {
       status = 'Lifespan Extended';
       break;

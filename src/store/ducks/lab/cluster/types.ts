@@ -50,6 +50,7 @@ export interface ClusterData {
 
 export enum ClusterEventType {
   TOWER_JOB = 'tower_job',
+  STATUS_CHANGE = 'status_change',
   RESERVATION_CHANGE = 'reservation_change',
   LIFESPAN_CHANGE = 'lifespan_change',
 }
@@ -62,7 +63,8 @@ export interface ClusterEventData {
   type:
     | ClusterEventType.TOWER_JOB
     | ClusterEventType.RESERVATION_CHANGE
-    | ClusterEventType.LIFESPAN_CHANGE;
+    | ClusterEventType.LIFESPAN_CHANGE
+    | ClusterEventType.STATUS_CHANGE;
   tower_id?: number;
   tower_job_id?: number;
   status?: string;
