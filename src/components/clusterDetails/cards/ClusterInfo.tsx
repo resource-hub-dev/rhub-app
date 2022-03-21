@@ -6,6 +6,7 @@ import {
   CardTitle,
   CardBody,
   Title,
+  ClipboardCopy,
 } from '@patternfly/react-core';
 
 import '../ClusterDetails.css';
@@ -36,7 +37,13 @@ const ClusterInfo: React.FC<Props> = ({ description, hosts }: Props) => {
       const newRows: RowPair[] = [];
       hosts.forEach((item) => {
         const row: IRow = [
-          item.ipaddr,
+          <ClipboardCopy
+            hoverTip={item.fqdn}
+            clickTip="Copied"
+            variant="inline-compact"
+          >
+            {item.fqdn}
+          </ClipboardCopy>,
           item.num_vcpus || '',
           item.ram_mb / 1024 || '',
           item.num_volumes,

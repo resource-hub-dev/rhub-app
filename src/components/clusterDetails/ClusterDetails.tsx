@@ -175,7 +175,7 @@ const ClusterDetails: React.FC = () => {
         <Grid hasGutter>
           {!isDeleted ? (
             <>
-              <GridItem span={4} className="ql-card-layout">
+              <GridItem span={5} className="ql-card-layout">
                 <OverView
                   owner={user_name}
                   status={status}
@@ -196,7 +196,7 @@ const ClusterDetails: React.FC = () => {
                   showLifespanBtn={keycloak.hasRealmRole('rhub-admin')}
                 />
               </GridItem>
-              <GridItem span={4} rowSpan={8} className="ql-card-layout">
+              <GridItem span={3} rowSpan={8} className="ql-card-layout">
                 <UtilizationCard
                   num_vcpus={num_vcpus}
                   ram_mb={ram_mb}
@@ -207,12 +207,12 @@ const ClusterDetails: React.FC = () => {
                   volumesMaxGb={quota.volumes_gb}
                 />
               </GridItem>
-              <GridItem span={8}>
+              <GridItem span={9}>
                 <ClusterInfo hosts={hosts} description={description} />
               </GridItem>
             </>
           ) : null}
-          <GridItem span={8}>
+          <GridItem span={9}>
             <ClusterEvents events={events} />
           </GridItem>
         </Grid>

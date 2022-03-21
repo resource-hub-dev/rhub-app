@@ -6,6 +6,19 @@
     margin-top: 5px;
 }
 
+div.pf-c-clipboard-copy.pf-m-inline {
+    background-color: transparent;
+    display: flex;
+    max-width: 25em;
+}
+
+span.pf-c-clipboard-copy__text {
+    padding-top: 3px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 .ql-card-layout article{
     height: 100%;
 }
