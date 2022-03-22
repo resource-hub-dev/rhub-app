@@ -26,7 +26,10 @@ import { wizardContext } from '../QuickClusterWizard';
 
 interface Props {
   /** Handles dynamic values for Utilization Charts in Step 3 */
-  updateUsage?: (nodeCountMap: { [key: string]: number }) => void;
+  updateUsage?: (
+    nodeCountMap: { [key: string]: number },
+    selectedFlavor?: string
+  ) => void;
   /** Parameters from Product Region */
   parameters: LabProductParams[];
   /** Handles data once user hits submit */
@@ -46,9 +49,6 @@ const Questionnaire: React.FC<Props> = ({
   const productId = Number(values?.product_id);
   const regionId = Number(values.region_id);
   // Step 3 includes parameters that are not in advanced step
-  const product = useSelector(
-    (state: AppState) => state.labProduct.data[productId]
-  );
   const clusterExists = useSelector(
     (state: AppState) => state.cluster.clusterExists
   );
@@ -68,6 +68,7 @@ const Questionnaire: React.FC<Props> = ({
   const {
     handleSubmit,
     control,
+    watch,
     register,
     setValue,
     getValues,
@@ -111,7 +112,7 @@ const Questionnaire: React.FC<Props> = ({
   if (parameters) {
     const nodeParams = parameters.filter(
       (param) =>
-        param.variable.indexOf('_nodes') !== -1 &&
+        param.variable.indexOf('_node') !== -1 &&
         param.variable.indexOf('num') !== -1
     );
     const nodeCountMap: { [key: string]: number } = {};
@@ -225,18 +226,32 @@ const Questionnaire: React.FC<Props> = ({
                         setValue(key, value === 'true');
                       } else if (question.type === 'integer') {
                         const isNodesNum =
-                          key.indexOf('_nodes') !== -1 &&
+                          key.indexOf('_node') !== -1 &&
                           key.indexOf('num') !== -1;
                         if (isNodesNum && updateUsage) {
-                          updateUsage({
-                            ...nodeCountMap,
-                            [key]: Number(value),
-                          });
+                          if (key === 'num_node') {
+                            // Generic special case: If a node number input changes for Generic clusters,
+                            // look up the selected flavor in the wizard and pass it to updateUsage
+                            const selectedFlavor = getValues('node_flavor');
+                            if (selectedFlavor && selectedFlavor !== null)
+                              updateUsage(
+                                {
+                                  ...nodeCountMap,
+                                  [key]: Number(value),
+                                },
+                                selectedFlavor.toString()
+                              );
+                          } else
+                            updateUsage({
+                              ...nodeCountMap,
+                              [key]: Number(value),
+                            });
                         }
                         setValue(key, parseInt(value, 10));
-                      } else {
-                        setValue(key, value);
+                      } else if (key === 'node_flavor' && updateUsage) {
+                        updateUsage(nodeCountMap, String(value));
                       }
+                      setValue(key, value);
                     }}
                   >
                     {/* if an enum array exists */}
