@@ -45,14 +45,22 @@ export const genDefaultValues = (
 export const genGraphValues = (
   key: string,
   numNodes: number,
-  flavors: { [key: string]: Quota }
+  flavors: { [key: string]: Quota },
+  selectedFlavor?: string
 ) => {
-  const flavor_key = key.substring(key.indexOf('num_') + 4);
+  if (selectedFlavor) {
+    return {
+      num_vcpus: numNodes * flavors[selectedFlavor].num_vcpus,
+      ram_mb: numNodes * flavors[selectedFlavor].ram_mb,
+      volumes_gb: numNodes * flavors[selectedFlavor].volumes_gb,
+      num_volumes: numNodes * flavors[selectedFlavor].num_volumes,
+    };
+  }
   return {
-    num_vcpus: numNodes * flavors[flavor_key].num_vcpus,
-    ram_mb: numNodes * flavors[flavor_key].ram_mb,
-    volumes_gb: numNodes * flavors[flavor_key].volumes_gb,
-    num_volumes: numNodes * flavors[flavor_key].num_volumes,
+    num_vcpus: numNodes * flavors[flavorKey].num_vcpus,
+    ram_mb: numNodes * flavors[flavorKey].ram_mb,
+    volumes_gb: numNodes * flavors[flavorKey].volumes_gb,
+    num_volumes: numNodes * flavors[flavorKey].num_volumes,
   };
 };
 
@@ -62,13 +70,30 @@ export const genTotalUsage = (
   regionUsage: Quota,
   flavors: { [key: string]: Quota },
   values: WizardValues,
-  nodeCountMap?: { [key: string]: number } // this argument is for used when a node count changes
+  nodeCountMap?: { [key: string]: number }, // this argument is for used when a node count changes
+  selectedFlavor?: string
 ) => {
   const nodeParams = parameters.filter(
     (param) =>
-      param.variable.indexOf('_nodes') !== -1 &&
+      param.variable.indexOf('_node') !== -1 &&
       param.variable.indexOf('num') !== -1
   );
+
+  // Special case for Generic clusters, which doesn't have specific types of nodes
+  // and instead allows the user to select the flavor
+  let genericFlavor: string | undefined;
+  if (nodeParams[0].variable === 'num_node') {
+    if (values.node_flavor) {
+      genericFlavor = String(values.node_flavor);
+    } else if (selectedFlavor) {
+      genericFlavor = selectedFlavor;
+    } else {
+      genericFlavor = String(
+        parameters.find((value) => value.variable === 'node_flavor')?.default
+      );
+    }
+  }
+
   const defaultUsage = nodeParams.reduce(
     (data: Quota, currentParam: LabProductParams) => {
       // If selection exists, generate graph values based on this value instead of default value
@@ -87,7 +112,8 @@ export const genTotalUsage = (
       const thisUsage = genGraphValues(
         currentParam.variable,
         nodeCount,
-        flavors
+        flavors,
+        genericFlavor
       );
       return {
         num_vcpus: data.num_vcpus + thisUsage.num_vcpus,

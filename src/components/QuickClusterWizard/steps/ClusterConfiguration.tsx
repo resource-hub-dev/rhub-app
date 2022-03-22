@@ -99,10 +99,20 @@ const ClusterConfiguration: React.FC<Props> = ({
   }, [quota, totalUsage]);
 
   // updateUsage takes future resources consumption from user inputs in the form and update usage state
-  const updateUsage = (nodeCountMap: { [key: string]: number }) => {
+  const updateUsage = (
+    nodeCountMap: { [key: string]: number },
+    selectedFlavor?: string
+  ) => {
     if (regionUsage) {
       setTotalUsage(
-        genTotalUsage(parameters, regionUsage, flavors, values, nodeCountMap)
+        genTotalUsage(
+          parameters,
+          regionUsage,
+          flavors,
+          values,
+          nodeCountMap,
+          selectedFlavor
+        )
       );
     }
   };
