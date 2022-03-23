@@ -48,6 +48,24 @@ export const genGraphValues = (
   flavors: { [key: string]: Quota },
   selectedFlavor?: string
 ) => {
+  let flavorKey = key.substring(key.indexOf('num_') + 4);
+  const isMasterFlavor = key.indexOf('master') !== -1;
+
+  // In order to accommodate master's flavor being dynamic based on the number
+  // of nodes, we need to set flavorKey to different flavors if the keys
+  // multi and single appear in flavors
+  if (isMasterFlavor) {
+    const flavorKeys = Object.keys(flavors);
+    if (numNodes === 1) {
+      flavorKey =
+        flavorKeys.find((flavorName) => flavorName.indexOf('single') !== -1) ||
+        flavorKey;
+    } else {
+      flavorKey =
+        flavorKeys.find((flavorName) => flavorName.indexOf('multi') !== -1) ||
+        flavorKey;
+    }
+  }
   if (selectedFlavor) {
     return {
       num_vcpus: numNodes * flavors[selectedFlavor].num_vcpus,
@@ -75,14 +93,14 @@ export const genTotalUsage = (
 ) => {
   const nodeParams = parameters.filter(
     (param) =>
-      param.variable.indexOf('_node') !== -1 &&
+      param.variable.indexOf('_nodes') !== -1 &&
       param.variable.indexOf('num') !== -1
   );
 
   // Special case for Generic clusters, which doesn't have specific types of nodes
   // and instead allows the user to select the flavor
   let genericFlavor: string | undefined;
-  if (nodeParams[0].variable === 'num_node') {
+  if (nodeParams[0].variable === 'num_nodes') {
     if (values.node_flavor) {
       genericFlavor = String(values.node_flavor);
     } else if (selectedFlavor) {
