@@ -112,7 +112,7 @@ const Questionnaire: React.FC<Props> = ({
   if (parameters) {
     const nodeParams = parameters.filter(
       (param) =>
-        param.variable.indexOf('_node') !== -1 &&
+        param.variable.indexOf('_nodes') !== -1 &&
         param.variable.indexOf('num') !== -1
     );
     const nodeCountMap: { [key: string]: number } = {};
@@ -226,10 +226,10 @@ const Questionnaire: React.FC<Props> = ({
                         setValue(key, value === 'true');
                       } else if (question.type === 'integer') {
                         const isNodesNum =
-                          key.indexOf('_node') !== -1 &&
+                          key.indexOf('_nodes') !== -1 &&
                           key.indexOf('num') !== -1;
                         if (isNodesNum && updateUsage) {
-                          if (key === 'num_node') {
+                          if (key === 'num_nodes') {
                             // Generic special case: If a node number input changes for Generic clusters,
                             // look up the selected flavor in the wizard and pass it to updateUsage
                             const selectedFlavor = getValues('node_flavor');
@@ -250,8 +250,8 @@ const Questionnaire: React.FC<Props> = ({
                         setValue(key, parseInt(value, 10));
                       } else if (key === 'node_flavor' && updateUsage) {
                         updateUsage(nodeCountMap, String(value));
-                      }
-                      setValue(key, value);
+                        setValue(key, value);
+                      } else setValue(key, value);
                     }}
                   >
                     {/* if an enum array exists */}
