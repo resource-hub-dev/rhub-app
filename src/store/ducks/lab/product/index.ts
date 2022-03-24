@@ -11,14 +11,14 @@ const LabProductDataToState = (
   const nameVar = {
     name: 'Enter a Cluster ID (e.g., testcluster1)',
     description:
-      'Combination of letters and numbers (a-z0-9). No spaces or special characters allowed. Minimum 6 characters',
+      'Combination of lower-case letters and numbers (a-z0-9). No spaces or special characters allowed. Minimum 6 characters',
     variable: 'name',
     required: true,
     advanced: false,
     condition: false,
     type: 'string',
     maxLength: 20,
-    minLength: 5,
+    minLength: 6,
     default: '',
   };
   return {

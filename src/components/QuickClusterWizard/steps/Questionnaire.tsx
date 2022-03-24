@@ -146,6 +146,10 @@ const Questionnaire: React.FC<Props> = ({
                     value: maxLength,
                     message: `Maximum ${question.maxLength} characters allowed`,
                   },
+                  pattern: {
+                    value: /^[a-z0-9]+$/,
+                    message: `Only lower-case letters and numbers allowed`,
+                  },
                 })}
                 name={key}
                 onBlur={(e) => {
