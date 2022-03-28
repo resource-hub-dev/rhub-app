@@ -92,6 +92,30 @@ function* create(action: AnyAction) {
   }
 }
 
+function* rebootHost(action: AnyAction): any {
+  try {
+    const { hostIds, clusterId } = action.payload;
+    const body: Record<string, string | Record<string, number>[]> = {
+      hosts: 'all',
+    };
+    if (hostIds !== 'all') {
+      body.hosts = (hostIds as string[]).map((id) => {
+        return {
+          id: Number(id),
+        };
+      });
+    }
+    const response = yield call(
+      api.post,
+      `lab/cluster/${clusterId}/reboot`,
+      body
+    );
+    yield put(actions.rebootHostSuccess(clusterId, response.data));
+  } catch (err) {
+    yield put(actions.rebootHostFailure());
+  }
+}
+
 const clusterSagas = [
   takeLatest(ClusterTypes.LOAD_REQUEST, load),
   takeLatest(ClusterTypes.LOAD_HOST_REQUEST, loadHost),
@@ -100,6 +124,7 @@ const clusterSagas = [
   takeLatest(ClusterTypes.UPDATE_REQUEST, update),
   takeLatest(ClusterTypes.DELETE_REQUEST, remove),
   takeLatest(ClusterTypes.CREATE_REQUEST, create),
+  takeLatest(ClusterTypes.REBOOT_HOST_REQUEST, rebootHost),
 ];
 
 export default clusterSagas;
