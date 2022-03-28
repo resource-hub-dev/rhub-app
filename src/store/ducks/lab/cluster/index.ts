@@ -89,6 +89,7 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
       return { ...state, stdOutput: null, loading: true };
     case ClusterTypes.LOAD_EVENTS_REQUEST:
     case ClusterTypes.LOAD_HOST_REQUEST:
+    case ClusterTypes.REBOOT_HOST_REQUEST:
       return { ...state, loading: true };
     case ClusterTypes.LOAD_SUCCESS: {
       const { nameCheck } = action.payload;
@@ -124,7 +125,8 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
         events: newEvents.map(clusterEventDataToState),
       };
     }
-    case ClusterTypes.LOAD_HOST_SUCCESS: {
+    case ClusterTypes.LOAD_HOST_SUCCESS:
+    case ClusterTypes.REBOOT_HOST_SUCCESS: {
       const { clusterId, hosts } = action.payload;
       return {
         ...state,
@@ -158,7 +160,6 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
         data: clusterDataToState(state.data, action.payload),
       };
     }
-
     case ClusterTypes.UPDATE_FAILURE:
       return { ...state, loading: false, error: true };
     case ClusterTypes.DELETE_REQUEST:
@@ -172,6 +173,10 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
     case ClusterTypes.CREATE_SUCCESS:
       return { ...state, loading: false, error: false };
     case ClusterTypes.CREATE_FAILURE:
+      return { ...state, loading: false, error: true };
+    case ClusterTypes.LOAD_HOST_FAILURE:
+    case ClusterTypes.LOAD_EVENTS_FAILURE:
+    case ClusterTypes.REBOOT_HOST_FAILURE:
       return { ...state, loading: false, error: true };
     default:
       return state;
