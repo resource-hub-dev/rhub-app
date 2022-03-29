@@ -48,7 +48,7 @@ const GraphsUtilization: React.FC<Props> = ({
         total size of this cluster. These calculations are a result of your
         selections.
       </p>
-      <div className="charts-card-body">
+      <div className="wizard-charts-card-body">
         {userQuotaUsage && (
           <>
             <UtilizationChart
