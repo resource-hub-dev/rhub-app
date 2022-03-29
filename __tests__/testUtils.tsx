@@ -34,6 +34,28 @@ const connectedRender = (
   };
 };
 
+const connectedRenderWithContext = (
+  ui: ReactElement,
+  context: React.Context<any>,
+  state = {},
+  providerValue = {},
+  { ...renderOptions } = {}
+) => {
+  const store = mockStore(state);
+  const Wrapper = ({ children }: { children?: ReactNode }) => {
+    return (
+      <Provider store={store}>
+        <context.Provider value={providerValue}>{children}</context.Provider>
+      </Provider>
+    );
+  };
+
+  return {
+    store,
+    result: rtlRender(ui, { wrapper: Wrapper, ...renderOptions }),
+  };
+};
+
 export * from '@testing-library/react';
 
-export { connectedRender };
+export { connectedRender, connectedRenderWithContext };
