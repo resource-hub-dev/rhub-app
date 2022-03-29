@@ -27,8 +27,7 @@ span.pf-c-clipboard-copy__text {
     color: #C9190B;
 }
 
-.charts-card-body {
-    display: block;
+.cluster-details-charts-card-body {
     margin-left: auto;
     margin-right: auto;
 }

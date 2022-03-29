@@ -29,7 +29,7 @@ const UtilizationCard: React.FC<Props> = ({
   return (
     <Card>
       <CardTitle>Utilization</CardTitle>
-      <CardBody className="charts-card-body">
+      <CardBody className="cluster-details-charts-card-body">
         {' '}
         <UtilizationChart
           title="CPU"
