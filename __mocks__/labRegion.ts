@@ -108,13 +108,31 @@ export const productRegionsExample: RegionsWithProduct = {
   },
 };
 
+export const noLocationProductRegionExample: RegionsWithProduct = {
+  enabled: true,
+  product_id: 1,
+  region: {
+    ...regionExample,
+    location: null,
+  },
+};
+
+export const noUserQuotaProductRegionExample: RegionsWithProduct = {
+  enabled: true,
+  product_id: 1,
+  region: {
+    ...regionExample,
+    user_quota: undefined,
+  },
+};
+
 export const regionUsageExample: Usage = {
   openstack_limits: {},
   total_quota: {
-    num_vcpus: 0,
-    num_volumes: 0,
-    ram_mb: 0,
-    volumes_gb: 0,
+    num_vcpus: 40,
+    num_volumes: 20,
+    ram_mb: 32 * 1024,
+    volumes_gb: 256,
   },
   total_quota_usage: {
     num_vcpus: 0,
@@ -123,10 +141,10 @@ export const regionUsageExample: Usage = {
     volumes_gb: 0,
   },
   user_quota: {
-    num_vcpus: 0,
-    num_volumes: 0,
-    ram_mb: 0,
-    volumes_gb: 0,
+    num_vcpus: 10,
+    num_volumes: 5,
+    ram_mb: 16 * 1024,
+    volumes_gb: 128,
   },
   user_quota_usage: {
     num_vcpus: 0,
