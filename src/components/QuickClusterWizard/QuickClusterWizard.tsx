@@ -20,7 +20,7 @@ import ClusterConfiguration from './steps/ClusterConfiguration';
 import AdvancedConfiguration from './steps/AdvancedConfiguration';
 import Review from './steps/Review';
 
-type WizardContext = [
+export type WizardContext = [
   string[],
   React.Dispatch<React.SetStateAction<string[]>>,
   WizardValues
