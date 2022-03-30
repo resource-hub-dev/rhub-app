@@ -208,7 +208,11 @@ const ClusterDetails: React.FC = () => {
                 />
               </GridItem>
               <GridItem span={9}>
-                <ClusterInfo hosts={hosts} description={description} />
+                <ClusterInfo
+                  hosts={hosts}
+                  clusterId={Number(clusterId)}
+                  description={description}
+                />
               </GridItem>
             </>
           ) : null}
