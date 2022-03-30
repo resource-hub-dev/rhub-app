@@ -6,6 +6,11 @@
     margin-top: 5px;
 }
 
+.host {
+    display: flex;
+    column-gap: 15px;
+}
+
 div.pf-c-clipboard-copy.pf-m-inline {
     background-color: transparent;
     display: flex;
@@ -28,6 +33,9 @@ span.pf-c-clipboard-copy__text {
 }
 
 .cluster-details-charts-card-body {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
     margin-left: auto;
     margin-right: auto;
 }
