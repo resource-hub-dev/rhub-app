@@ -20,12 +20,12 @@ export interface LabPolicyData {
   name: string;
   department: string;
   constraint: {
-    sched_avail: string;
-    serv_avail: string;
-    limit: string;
+    sched_avail: string[];
+    serv_avail: number;
+    limit: {};
     density: string;
-    tag: string;
-    cost: string;
+    tag: string[];
+    cost: number;
     location: string;
   };
 }
@@ -35,12 +35,12 @@ export interface LabPolicyModel {
   name: string;
   department: string;
   constraint: {
-    sched_avail: string;
-    serv_avail: string;
-    limit: string;
+    sched_avail: string[];
+    serv_avail: number;
+    limit: {};
     density: string;
-    tag: string;
-    cost: string;
+    tag: string[];
+    cost: number;
     location: string;
   };
 }
