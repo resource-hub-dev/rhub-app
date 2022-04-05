@@ -190,4 +190,53 @@ describe('cluster reducer', () => {
       error: false,
     });
   });
+  test('handles reboot success for a single cluster', () => {
+    const apiResponseData = mocks.clusterHosts;
+    expect(
+      reducer(
+        { ...INITIAL_STATE, loading: true },
+        actions.rebootHostSuccess(mocks.clusterExample.id, apiResponseData)
+      )
+    ).toEqual({
+      ...INITIAL_STATE,
+      data: {
+        1: {
+          hosts: mocks.clusterHosts,
+        },
+      },
+      loading: false,
+      error: false,
+    });
+  });
+  test('handles failures', () => {
+    const errState = {
+      ...INITIAL_STATE,
+      loading: false,
+      error: true,
+    };
+    expect(
+      reducer({ ...INITIAL_STATE, loading: true }, actions.loadFailure())
+    ).toEqual(errState);
+    expect(
+      reducer({ ...INITIAL_STATE, loading: true }, actions.deleteFailure())
+    ).toEqual(errState);
+    expect(
+      reducer(
+        { ...INITIAL_STATE, loading: true },
+        actions.createClusterFailure()
+      )
+    ).toEqual(errState);
+    expect(
+      reducer({ ...INITIAL_STATE, loading: true }, actions.loadHostFailure())
+    ).toEqual(errState);
+    expect(
+      reducer({ ...INITIAL_STATE, loading: true }, actions.loadEventFailure())
+    ).toEqual(errState);
+    expect(
+      reducer({ ...INITIAL_STATE, loading: true }, actions.updateFailure())
+    ).toEqual(errState);
+    expect(
+      reducer({ ...INITIAL_STATE, loading: true }, actions.rebootHostFailure())
+    ).toEqual(errState);
+  });
 });

@@ -134,6 +134,15 @@ export const clusterEventsData: ClusterEventData[] = [
     id: '1',
     user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
   },
+  {
+    old_value: 'Provisioning Queued',
+    new_value: 'Provisioning',
+    type: ClusterEventType.STATUS_CHANGE,
+    cluster_id: '1',
+    date: '2022-02-08T18:24:17.211Z',
+    id: '1',
+    user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+  },
 ];
 
 export const loadedEventsState: ClusterEvent[] = [
@@ -166,6 +175,16 @@ export const loadedEventsState: ClusterEvent[] = [
     date: '2022-02-08T18:24:17.211Z',
     id: '1',
     user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+  },
+  {
+    status: 'Provisioning',
+    type: ClusterEventType.STATUS_CHANGE,
+    cluster_id: '1',
+    date: '2022-02-08T18:24:17.211Z',
+    id: '1',
+    user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    tower_id: null,
+    tower_job_id: null,
   },
 ];
 export const clusterCreateData: ClusterCreateData = {
