@@ -199,11 +199,6 @@ describe('cluster reducer', () => {
       )
     ).toEqual({
       ...INITIAL_STATE,
-      data: {
-        1: {
-          hosts: mocks.clusterHosts,
-        },
-      },
       loading: false,
       error: false,
     });
