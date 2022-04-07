@@ -101,3 +101,15 @@ export const loadEventSuccess = (payload: ClusterEventData[]) =>
   action(ClusterTypes.LOAD_EVENTS_SUCCESS, payload);
 
 export const loadEventFailure = () => action(ClusterTypes.LOAD_EVENTS_FAILURE);
+
+export const rebootHostRequest = (
+  hostIds: 'all' | string[],
+  clusterId: number
+) => action(ClusterTypes.REBOOT_HOST_REQUEST, { hostIds, clusterId });
+
+export const rebootHostSuccess = (
+  clusterId: number,
+  hosts: Partial<ClusterHost>[]
+) => action(ClusterTypes.REBOOT_HOST_SUCCESS, { clusterId, hosts });
+
+export const rebootHostFailure = () => action(ClusterTypes.REBOOT_HOST_FAILURE);

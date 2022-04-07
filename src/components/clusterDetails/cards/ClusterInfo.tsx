@@ -13,7 +13,9 @@ import '../ClusterDetails.css';
 import { ClusterHost } from '@ducks/lab/cluster/types';
 import DataTable, { RowPair } from '@components/dataTable/DataTable';
 import { IRow } from '@patternfly/react-table';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { rebootHostRequest } from '@ducks/lab/cluster/actions';
+import { AppState } from '@store';
 
 /**
  * TODO:
@@ -22,13 +24,21 @@ import { useDispatch } from 'react-redux';
 
 export interface Props {
   description: string;
+  clusterId: number;
   hosts: ClusterHost[];
 }
 
-const ClusterInfo: React.FC<Props> = ({ description, hosts }: Props) => {
+const ClusterInfo: React.FC<Props> = ({
+  description,
+  clusterId,
+  hosts,
+}: Props) => {
   const dispatch = useDispatch();
 
   const markup = { __html: description };
+  const cluster = useSelector(
+    (state: AppState) => state.cluster.data[clusterId]
+  );
 
   const [rowPairs, setRowPairs] = useState<RowPair[]>([]);
 
@@ -37,13 +47,24 @@ const ClusterInfo: React.FC<Props> = ({ description, hosts }: Props) => {
       const newRows: RowPair[] = [];
       hosts.forEach((item) => {
         const row: IRow = [
-          <ClipboardCopy
-            hoverTip={item.fqdn}
-            clickTip="Copied"
-            variant="inline-compact"
-          >
-            {item.fqdn}
-          </ClipboardCopy>,
+          <div className="host">
+            <ClipboardCopy
+              hoverTip={item.fqdn}
+              clickTip="Copied"
+              variant="inline-compact"
+            >
+              {item.fqdn}
+            </ClipboardCopy>
+            <Button
+              variant="danger"
+              isDisabled={cluster.status !== 'Active'}
+              onClick={() => {
+                dispatch(rebootHostRequest([String(item.id)], clusterId));
+              }}
+            >
+              Reboot
+            </Button>
+          </div>,
           item.num_vcpus || '',
           item.ram_mb / 1024 || '',
           item.num_volumes,
@@ -53,7 +74,7 @@ const ClusterInfo: React.FC<Props> = ({ description, hosts }: Props) => {
       });
       setRowPairs(newRows);
     }
-  }, [hosts, dispatch]);
+  }, [hosts, dispatch, clusterId, cluster.status]);
 
   return (
     <Card>

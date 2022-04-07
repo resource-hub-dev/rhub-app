@@ -11,7 +11,7 @@
     padding-top: 20px;
 }
 
-.charts-card-body {
+.wizard-charts-card-body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
