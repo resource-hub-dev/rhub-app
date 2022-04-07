@@ -16,6 +16,7 @@ import {
   TachometerAltIcon,
 } from '@patternfly/react-icons';
 import { useKeycloak } from '@react-keycloak/web';
+import { Link } from 'react-router-dom';
 
 import './LandingPage.css';
 
@@ -76,6 +77,20 @@ const LandingPage: React.FC = () => {
               <div>
                 Quick Cluster provides quick, ready-to-use clusters with Red Hat
                 products preinstalled
+              </div>
+              <div>
+                <Button variant="link" className="info-link">
+                  <Link to="/resources/quickcluster/shared">
+                    Shared Clusters <ArrowRightIcon />
+                  </Link>
+                </Button>
+              </div>
+              <div>
+                <Button variant="link" className="info-link">
+                  <Link to="/resources/quickcluster/clusters">
+                    My Clusters <ArrowRightIcon />
+                  </Link>
+                </Button>
               </div>
             </GridItem>
             <GridItem className="grid-card last-card" span={4}>
