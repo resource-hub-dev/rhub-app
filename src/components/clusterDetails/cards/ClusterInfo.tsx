@@ -26,12 +26,16 @@ export interface Props {
   description: string;
   clusterId: number;
   hosts: ClusterHost[];
+  setNodeToBeRebooted: React.Dispatch<React.SetStateAction<any>>;
+  setOpenModal: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ClusterInfo: React.FC<Props> = ({
   description,
   clusterId,
   hosts,
+  setNodeToBeRebooted,
+  setOpenModal,
 }: Props) => {
   const dispatch = useDispatch();
 
@@ -59,7 +63,8 @@ const ClusterInfo: React.FC<Props> = ({
               variant="danger"
               isDisabled={cluster.status !== 'Active'}
               onClick={() => {
-                dispatch(rebootHostRequest([String(item.id)], clusterId));
+                setOpenModal('rebootModal');
+                setNodeToBeRebooted(item.id);
               }}
             >
               Reboot
@@ -74,6 +79,7 @@ const ClusterInfo: React.FC<Props> = ({
       });
       setRowPairs(newRows);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hosts, dispatch, clusterId, cluster.status]);
 
   return (

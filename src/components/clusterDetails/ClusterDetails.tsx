@@ -17,7 +17,11 @@ import { useKeycloak } from '@react-keycloak/web';
 
 import { AppState } from '@store';
 
-import { loadRequest, deleteRequest } from '@ducks/lab/cluster/actions';
+import {
+  loadRequest,
+  deleteRequest,
+  rebootHostRequest,
+} from '@ducks/lab/cluster/actions';
 import { ClusterHost } from '@ducks/lab/cluster/types';
 import ClusterLifespan from './cards/ClusterLifespan';
 import OverView from './cards/OverView';
@@ -43,7 +47,8 @@ const ClusterDetails: React.FC = () => {
   const { keycloak } = useKeycloak();
   const id = Number(clusterId);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openModal, setOpenModal] = useState('');
+  const [nodeToBeRebooted, setNodeToBeRebooted] = useState();
   const token = useSelector((state: AppState) => state.user.current.token);
 
   // fetch API calls
@@ -57,12 +62,12 @@ const ClusterDetails: React.FC = () => {
   const isLoading = useSelector((state: AppState) => state.cluster.loading);
 
   const user = useSelector((state: AppState) => state.user.current);
-  const handleModalToggle = () => {
-    setIsModalOpen(!isModalOpen);
+  const closeModal = () => {
+    setOpenModal('');
   };
 
   const dispatchDelete = () => {
-    handleModalToggle();
+    closeModal();
     let prevPath = '';
     if (routerHistory.location.state)
       prevPath = (routerHistory.location.state as any).prevPath;
@@ -75,6 +80,11 @@ const ClusterDetails: React.FC = () => {
       dispatch(deleteRequest(id, { username: user.email }));
       routerHistory.push('/');
     }
+  };
+  const dispatchNodeReboot = () => {
+    closeModal();
+    if (nodeToBeRebooted)
+      dispatch(rebootHostRequest([nodeToBeRebooted], Number(clusterId)));
   };
   if (isLoading || !cluster || !events) {
     return (
@@ -163,7 +173,7 @@ const ClusterDetails: React.FC = () => {
             <Button
               className="btn-delete"
               variant="danger"
-              onClick={handleModalToggle}
+              onClick={() => setOpenModal('deleteModal')}
               isDisabled={disableDelete || !clusterAccess}
             >
               Delete
@@ -211,6 +221,8 @@ const ClusterDetails: React.FC = () => {
                 <ClusterInfo
                   hosts={hosts}
                   clusterId={Number(clusterId)}
+                  setNodeToBeRebooted={setNodeToBeRebooted}
+                  setOpenModal={setOpenModal}
                   description={description}
                 />
               </GridItem>
@@ -224,18 +236,34 @@ const ClusterDetails: React.FC = () => {
       <Modal
         variant={ModalVariant.small}
         title="Please Confirm"
-        isOpen={isModalOpen}
-        onClose={handleModalToggle}
+        isOpen={openModal === 'deleteModal'}
+        onClose={closeModal}
         actions={[
           <Button key="delete" variant="danger" onClick={dispatchDelete}>
             Yes
           </Button>,
-          <Button key="cancel" variant="link" onClick={handleModalToggle}>
+          <Button key="cancel" variant="link" onClick={closeModal}>
             Cancel
           </Button>,
         ]}
       >
         Are you sure that you want to delete the cluster: {name}?
+      </Modal>
+      <Modal
+        variant={ModalVariant.small}
+        title="Please Confirm"
+        isOpen={openModal === 'rebootModal'}
+        onClose={closeModal}
+        actions={[
+          <Button key="delete" variant="danger" onClick={dispatchNodeReboot}>
+            Yes
+          </Button>,
+          <Button key="cancel" variant="link" onClick={closeModal}>
+            Cancel
+          </Button>,
+        ]}
+      >
+        Are you sure that you want to reboot the node?
       </Modal>
     </>
   );

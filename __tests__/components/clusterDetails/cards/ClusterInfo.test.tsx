@@ -18,6 +18,8 @@ describe('<ClusterInfo />', () => {
         description="description"
         clusterId={1}
         hosts={[mocks.exampleHost]}
+        setNodeToBeRebooted={jest.fn()}
+        setOpenModal={jest.fn()}
       />,
       state
     );
@@ -35,6 +37,8 @@ describe('<ClusterInfo />', () => {
         description="description"
         clusterId={1}
         hosts={[mocks.exampleHost]}
+        setNodeToBeRebooted={jest.fn()}
+        setOpenModal={jest.fn()}
       />,
       state
     );
@@ -48,7 +52,13 @@ describe('<ClusterInfo />', () => {
 
   test('Renders with no hosts', async () => {
     const { result } = connectedRender(
-      <ClusterInfo description="description" clusterId={1} hosts={[]} />,
+      <ClusterInfo
+        description="description"
+        clusterId={1}
+        hosts={[]}
+        setNodeToBeRebooted={jest.fn()}
+        setOpenModal={jest.fn()}
+      />,
       state
     );
 
@@ -65,6 +75,8 @@ describe('<ClusterInfo />', () => {
         description="description"
         clusterId={1}
         hosts={[mocks.exampleHost]}
+        setNodeToBeRebooted={jest.fn()}
+        setOpenModal={jest.fn()}
       />,
       state
     );

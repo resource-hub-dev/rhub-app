@@ -125,8 +125,12 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
         events: newEvents.map(clusterEventDataToState),
       };
     }
-    case ClusterTypes.LOAD_HOST_SUCCESS:
-    case ClusterTypes.REBOOT_HOST_SUCCESS: {
+    case ClusterTypes.REBOOT_HOST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case ClusterTypes.LOAD_HOST_SUCCESS: {
       const { clusterId, hosts } = action.payload;
       return {
         ...state,

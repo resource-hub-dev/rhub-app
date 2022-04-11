@@ -119,6 +119,29 @@ const Questionnaire: React.FC<Props> = ({
     nodeParams.forEach((param) => {
       nodeCountMap[param.variable] = Number(getValues(param.variable));
     });
+    const updateNodeUsage = (key: string, value: string | number) => {
+      const isNodesNum =
+        key.indexOf('_nodes') !== -1 && key.indexOf('num') !== -1;
+      if (isNodesNum && updateUsage) {
+        if (key === 'num_nodes') {
+          // Generic special case: If a node number input changes for Generic clusters,
+          // look up the selected flavor in the wizard and pass it to updateUsage
+          const selectedFlavor = getValues('node_flavor');
+          if (selectedFlavor && selectedFlavor !== null)
+            updateUsage(
+              {
+                ...nodeCountMap,
+                [key]: Number(value),
+              },
+              selectedFlavor.toString()
+            );
+        } else
+          updateUsage({
+            ...nodeCountMap,
+            [key]: Number(value),
+          });
+      }
+    };
     // get all variables of node types to render graph values
     for (const question of parameters) {
       const key = question.variable;
@@ -206,7 +229,10 @@ const Questionnaire: React.FC<Props> = ({
                 isRequired={question.required}
                 aria-label={key}
                 type="number"
-                onChange={() => undefined} // place holder function (required by PF)
+                onChange={(value) => {
+                  updateNodeUsage(key, value);
+                  setValue(key, parseInt(value, 10));
+                }} // place holder function (required by PF)
               />
             </FormGroup>
           </Tooltip>
@@ -229,28 +255,7 @@ const Questionnaire: React.FC<Props> = ({
                       if (question.type === 'boolean') {
                         setValue(key, value === 'true');
                       } else if (question.type === 'integer') {
-                        const isNodesNum =
-                          key.indexOf('_nodes') !== -1 &&
-                          key.indexOf('num') !== -1;
-                        if (isNodesNum && updateUsage) {
-                          if (key === 'num_nodes') {
-                            // Generic special case: If a node number input changes for Generic clusters,
-                            // look up the selected flavor in the wizard and pass it to updateUsage
-                            const selectedFlavor = getValues('node_flavor');
-                            if (selectedFlavor && selectedFlavor !== null)
-                              updateUsage(
-                                {
-                                  ...nodeCountMap,
-                                  [key]: Number(value),
-                                },
-                                selectedFlavor.toString()
-                              );
-                          } else
-                            updateUsage({
-                              ...nodeCountMap,
-                              [key]: Number(value),
-                            });
-                        }
+                        updateNodeUsage(key, value);
                         setValue(key, parseInt(value, 10));
                       } else if (key === 'node_flavor' && updateUsage) {
                         updateUsage(nodeCountMap, String(value));
