@@ -7,6 +7,7 @@ import labPolicySagas from './lab/policy/sagas';
 import labProductSagas from './lab/product/sagas';
 import clusterSagas from './lab/cluster/sagas';
 import labRegionSagas from './lab/region/sagas';
+import labLocationSagas from './lab/location/sagas';
 
 export default function* rootSaga(): Generator {
   return yield all([
@@ -16,5 +17,6 @@ export default function* rootSaga(): Generator {
     ...labProductSagas,
     ...clusterSagas,
     ...labRegionSagas,
+    ...labLocationSagas,
   ]);
 }
