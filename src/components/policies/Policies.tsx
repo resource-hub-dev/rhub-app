@@ -159,14 +159,16 @@ const Policies: React.FC = () => {
     department: formData.department,
     constraint: {
       sched_avail:
-        formData.schedAvailEnabled &&
+        formData.constraintsEnabled.schedAvail &&
         formData.schedAvailFrom &&
         formData.schedAvailTo
           ? [formData.schedAvailFrom, formData.schedAvailTo]
           : null,
-      serv_avail: formData.servAvailEnabled ? formData.servAvail : null,
+      serv_avail: formData.constraintsEnabled.servAvail
+        ? formData.servAvail
+        : null,
       limit:
-        formData.limitEnabled && formData.limit
+        formData.constraintsEnabled.limit && formData.limit
           ? formData.limit.reduce(
               (result, current) => ({
                 ...result,
@@ -175,13 +177,13 @@ const Policies: React.FC = () => {
               {}
             )
           : null,
-      density: formData.densityEnabled ? formData.density : null,
+      density: formData.constraintsEnabled.density ? formData.density : null,
       tag:
-        formData.tagEnabled && formData.tag
+        formData.constraintsEnabled.tag && formData.tag
           ? formData.tag?.map((item) => item.value)
           : null,
-      cost: formData.costEnabled ? formData.cost : null,
-      location: formData.locationEnabled ? formData.location : null,
+      cost: formData.constraintsEnabled.cost ? formData.cost : null,
+      location: formData.constraintsEnabled.location ? formData.location : null,
     },
   });
 
@@ -207,13 +209,15 @@ const Policies: React.FC = () => {
       : null,
     cost: Number(currentPolicy.constraint.cost),
     location: currentPolicy.constraint.location || 'AMS2',
-    schedAvailEnabled: currentPolicy.constraint.sched_avail !== null,
-    servAvailEnabled: currentPolicy.constraint.serv_avail !== null,
-    limitEnabled: currentPolicy.constraint.limit !== null,
-    densityEnabled: currentPolicy.constraint.density !== null,
-    tagEnabled: currentPolicy.constraint.tag !== null,
-    costEnabled: currentPolicy.constraint.cost !== null,
-    locationEnabled: currentPolicy.constraint.location !== null,
+    constraintsEnabled: {
+      schedAvail: currentPolicy.constraint.sched_avail !== null,
+      servAvail: currentPolicy.constraint.serv_avail !== null,
+      limit: currentPolicy.constraint.limit !== null,
+      density: currentPolicy.constraint.density !== null,
+      tag: currentPolicy.constraint.tag !== null,
+      cost: currentPolicy.constraint.cost !== null,
+      location: currentPolicy.constraint.location !== null,
+    },
   });
 
   const onCreateSubmit = (formData: PolicyFormData) => {
