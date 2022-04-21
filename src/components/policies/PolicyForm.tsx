@@ -15,6 +15,16 @@ import {
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import './PolicyForm.css';
 
+interface ConstraintsEnabled {
+  schedAvail: boolean;
+  servAvail: boolean;
+  limit: boolean;
+  density: boolean;
+  tag: boolean;
+  cost: boolean;
+  location: boolean;
+}
+
 export interface PolicyFormData {
   name: string;
   department: string;
@@ -26,13 +36,7 @@ export interface PolicyFormData {
   tag: { value: string }[] | null;
   cost: number | null;
   location: string | null;
-  schedAvailEnabled: boolean;
-  servAvailEnabled: boolean;
-  limitEnabled: boolean;
-  densityEnabled: boolean;
-  tagEnabled: boolean;
-  costEnabled: boolean;
-  locationEnabled: boolean;
+  constraintsEnabled: ConstraintsEnabled;
 }
 
 interface Props {
@@ -84,22 +88,22 @@ const PolicyForm: React.FC<Props> = ({
     removeTag(index);
   };
 
-  const watchSchedAvailEnabled = watch('schedAvailEnabled');
-  const watchServAvailEnabled = watch('servAvailEnabled');
-  const watchLimitEnabled = watch('limitEnabled');
-  const watchDensityEnabled = watch('densityEnabled');
-  const watchTagEnabled = watch('tagEnabled');
-  const watchCostEnabled = watch('costEnabled');
-  const watchLocationEnabled = watch('locationEnabled');
+  const watchSchedAvailEnabled = watch('constraintsEnabled.schedAvail');
+  const watchServAvailEnabled = watch('constraintsEnabled.servAvail');
+  const watchLimitEnabled = watch('constraintsEnabled.limit');
+  const watchDensityEnabled = watch('constraintsEnabled.density');
+  const watchTagEnabled = watch('constraintsEnabled.tag');
+  const watchCostEnabled = watch('constraintsEnabled.cost');
+  const watchLocationEnabled = watch('constraintsEnabled.location');
 
   const onDisableAllClick = () => {
-    setValue('schedAvailEnabled', false);
-    setValue('servAvailEnabled', false);
-    setValue('limitEnabled', false);
-    setValue('densityEnabled', false);
-    setValue('tagEnabled', false);
-    setValue('costEnabled', false);
-    setValue('locationEnabled', false);
+    setValue('constraintsEnabled.schedAvail', false);
+    setValue('constraintsEnabled.servAvail', false);
+    setValue('constraintsEnabled.limit', false);
+    setValue('constraintsEnabled.density', false);
+    setValue('constraintsEnabled.tag', false);
+    setValue('constraintsEnabled.cost', false);
+    setValue('constraintsEnabled.location', false);
   };
 
   const today = new Date();
@@ -191,7 +195,7 @@ const PolicyForm: React.FC<Props> = ({
           label="Scheduled Availability"
           labelInfo={
             <Controller
-              name="schedAvailEnabled"
+              name="constraintsEnabled.schedAvail"
               control={control}
               defaultValue={false}
               render={({ field: { onChange, value } }) => (
@@ -240,7 +244,7 @@ const PolicyForm: React.FC<Props> = ({
           label="Service Availability"
           labelInfo={
             <Controller
-              name="servAvailEnabled"
+              name="constraintsEnabled.servAvail"
               control={control}
               defaultValue={false}
               render={({ field: { onChange, value } }) => (
@@ -276,7 +280,7 @@ const PolicyForm: React.FC<Props> = ({
           label="Limit"
           labelInfo={
             <Controller
-              name="limitEnabled"
+              name="constraintsEnabled.limit"
               control={control}
               defaultValue={false}
               render={({ field: { onChange, value } }) => (
@@ -346,7 +350,7 @@ const PolicyForm: React.FC<Props> = ({
           label="Density"
           labelInfo={
             <Controller
-              name="densityEnabled"
+              name="constraintsEnabled.density"
               control={control}
               defaultValue={false}
               render={({ field: { onChange, value } }) => (
@@ -374,7 +378,7 @@ const PolicyForm: React.FC<Props> = ({
           label="Tag"
           labelInfo={
             <Controller
-              name="tagEnabled"
+              name="constraintsEnabled.tag"
               control={control}
               defaultValue={false}
               render={({ field: { onChange, value } }) => (
@@ -431,7 +435,7 @@ const PolicyForm: React.FC<Props> = ({
           label="Cost"
           labelInfo={
             <Controller
-              name="costEnabled"
+              name="constraintsEnabled.cost"
               control={control}
               defaultValue={false}
               render={({ field: { onChange, value } }) => (
@@ -467,7 +471,7 @@ const PolicyForm: React.FC<Props> = ({
           label="Location"
           labelInfo={
             <Controller
-              name="locationEnabled"
+              name="constraintsEnabled.location"
               control={control}
               defaultValue={false}
               render={({ field: { onChange, value } }) => (
