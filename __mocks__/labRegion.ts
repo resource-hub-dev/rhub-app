@@ -7,6 +7,7 @@ import {
 } from '@ducks/lab/region/types';
 
 import { Error } from '@ducks/lab/types';
+import { labLocationResponse } from './labLocation';
 
 export const regionExample: LabRegionData = {
   banner: 'string',
@@ -20,7 +21,7 @@ export const regionExample: LabRegionData = {
   enabled: true,
   id: 1,
   lifespan_length: 1,
-  location: 'RDU',
+  location: labLocationResponse,
   name: 'rdu2-a',
   openstack: {
     credentials: 'kv/region/rdu2-a/openstack',
@@ -71,7 +72,7 @@ export const productRegionsExample: RegionsWithProduct = {
     enabled: true,
     id: 1,
     lifespan_length: 1,
-    location: 'RDU',
+    location: labLocationResponse,
     name: 'rdu2-a',
     openstack: {
       credentials: 'kv/region/rdu2-a/openstack',

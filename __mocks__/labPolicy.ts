@@ -1,13 +1,14 @@
 import { LabPolicyData, LabPolicyModel } from '@ducks/lab/policy/types';
 
 import { Error } from '@ducks/lab/types';
+import { labLocationResponse } from './labLocation';
 
 export const labPolicyExample: LabPolicyData | LabPolicyModel = {
   constraint: {
     cost: 0,
     density: 'density',
     limit: {},
-    location: 'location',
+    location: labLocationResponse,
     sched_avail: ['2022-03-14T10:10:18.674Z'],
     serv_avail: 0,
     tag: ['tag1'],
