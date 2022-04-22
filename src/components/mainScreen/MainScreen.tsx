@@ -20,6 +20,7 @@ import SharedClusters from '@components/clusters/SharedClusters';
 import MyClusters from '@components/clusters/MyClusters';
 import ResourcesDashboard from '@components/ResourcesDashboard/ResourcesDashboard';
 import QuickClusterWizard from '@components/QuickClusterWizard/QuickClusterWizard';
+import TowerOutput from '@components/TowerOutput/TowerOutput';
 
 import { Login, PrivateRoute, PublicRoute } from './CustomRoutes';
 
@@ -169,6 +170,13 @@ const MainScreen: React.FC = () => {
           path="/resources/quickcluster/clusters/:clusterId"
         >
           <ClusterDetails />
+        </PrivateRoute>
+        <PrivateRoute
+          roles={[]}
+          exact
+          path="/resources/quickcluster/clusters/events/:historyId/towerstdout"
+        >
+          <TowerOutput />
         </PrivateRoute>
         <PrivateRoute roles={[]} exact path="/resources/quickcluster/shared">
           <SharedClusters />

@@ -37,7 +37,7 @@ function* loadHost(action: AnyAction): any {
 function* loadStdout(action: AnyAction): any {
   try {
     const eventId = action.payload;
-    const response = yield call(api.get, `lab/cluster/${eventId}/stdout`);
+    const response = yield call(api.get, `lab/cluster_event/${eventId}/stdout`);
     yield put(actions.loadStdoutSuccess(response.data));
   } catch (err) {
     yield put(actions.loadStdoutFailure());

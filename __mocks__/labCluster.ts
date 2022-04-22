@@ -109,7 +109,7 @@ export const clusterEventsData: ClusterEventData[] = [
   {
     status: 'Active',
     tower_id: 1,
-    tower_job_id: 1,
+    tower_job_id: 176,
     type: ClusterEventType.TOWER_JOB,
     cluster_id: '1',
     date: '2022-02-08T15:05:34.807Z',
@@ -149,7 +149,7 @@ export const loadedEventsState: ClusterEvent[] = [
   {
     status: 'Active',
     tower_id: 1,
-    tower_job_id: 1,
+    tower_job_id: 176,
     type: ClusterEventType.TOWER_JOB,
     cluster_id: '1',
     date: '2022-02-08T15:05:34.807Z',

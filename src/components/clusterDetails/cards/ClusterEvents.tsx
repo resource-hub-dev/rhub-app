@@ -36,7 +36,9 @@ const ClusterEvents: React.FC<Props> = ({ events }: Props) => {
           item.user_id || '',
           item.status || '',
           item.tower_job_id ? (
-            <Link to={`/clusters/events/${item.id}/towerstdout`}>
+            <Link
+              to={`/resources/quickcluster/clusters/events/${item.id}/towerstdout`}
+            >
               {item.tower_job_id.toString()}
             </Link>
           ) : (
