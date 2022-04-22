@@ -77,9 +77,7 @@ export const loadHostSuccess = (clusterId: number, hosts: ClusterHost[]) =>
 export const loadHostFailure = () => action(ClusterTypes.LOAD_HOST_FAILURE);
 
 export const loadStdoutRequest = (eventId: number) =>
-  action(ClusterTypes.LOAD_STDOUT_REQUEST, {
-    eventId,
-  });
+  action(ClusterTypes.LOAD_STDOUT_REQUEST, eventId);
 
 export const loadStdoutSuccess = (payload: string) =>
   action(ClusterTypes.LOAD_STDOUT_SUCCESS, payload);
