@@ -80,12 +80,12 @@ const Region: React.FC<Props> = ({ productId, addWizardValues }: Props) => {
       </div>
     );
     if (location !== null) {
-      if (!regionsByLocation[location]) {
+      if (!regionsByLocation[location.name]) {
         // Initiate if non-exist
-        regionsByLocation[location] = [regionRadio];
+        regionsByLocation[location.name] = [regionRadio];
       } else {
-        regionsByLocation[location] = [
-          ...regionsByLocation[location],
+        regionsByLocation[location.name] = [
+          ...regionsByLocation[location.name],
           regionRadio,
         ];
       }

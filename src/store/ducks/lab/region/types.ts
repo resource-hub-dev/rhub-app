@@ -1,3 +1,4 @@
+import { LabLocation } from '../location/types';
 import { Quota } from '../types';
 
 export enum LabRegionTypes {
@@ -22,7 +23,7 @@ export enum LabRegionTypes {
 export interface LabRegionData {
   id: number;
   name: string;
-  location: string | null;
+  location: LabLocation | null;
   description: string;
   banner: string;
   enabled: boolean;

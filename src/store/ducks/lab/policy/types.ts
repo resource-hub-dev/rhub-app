@@ -1,3 +1,5 @@
+import { LabLocation } from '../location/types';
+
 export enum LabPolicyTypes {
   LOAD_REQUEST = '@lab/policy/LOAD_REQUEST',
   LOAD_SUCCESS = '@lab/policy/LOAD_SUCCESS',
@@ -26,7 +28,7 @@ export interface LabPolicyData {
     density: string;
     tag: string[];
     cost: number;
-    location: string;
+    location: LabLocation;
   };
 }
 
@@ -41,7 +43,7 @@ export interface LabPolicyModel {
     density: string;
     tag: string[];
     cost: number;
-    location: string;
+    location: LabLocation;
   };
 }
 
