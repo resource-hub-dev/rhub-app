@@ -6,8 +6,8 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const InterpolateHtmlPlugin = require('interpolate-html-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 const config = {
   entry: './src/index.tsx',
@@ -107,6 +107,7 @@ const config = {
         include: [
           path.resolve(__dirname, 'src'),
           path.resolve(__dirname, 'node_modules/patternfly'),
+          path.resolve(__dirname, 'assets/images'),
           path.resolve(
             __dirname,
             'node_modules/@patternfly/patternfly/assets/images'
@@ -171,18 +172,26 @@ const config = {
     },
     historyApiFallback: true,
     host: "0.0.0.0",
-    port: 3000,
-    watchOptions: {
-      ignored: [
-        path.resolve(__dirname, 'dist'),
-        path.resolve(__dirname, 'node_modules'),
-      ],
+    static: {
+      directory: path.join(__dirname, 'assets'),
+      publicPath: '/assets',
     },
+    port: 3000,
+  },
+  optimization: {
+    minimizer: [new CssMinimizerPlugin()],
+  },
+  watchOptions: {
+    ignored: [
+      path.resolve(__dirname, 'dist'),
+      path.resolve(__dirname, 'node_modules'),
+    ],
   },
 };
 
 module.exports = (env, argv) => {
   const isProductionMode = argv.mode === 'production';
+  config.mode = isProductionMode ? 'production' : 'development';
 
   config.plugins.push(
     new HtmlWebPackPlugin({
@@ -213,8 +222,7 @@ module.exports = (env, argv) => {
       new BundleAnalyzerPlugin({
         analyzerMode: 'static',
         reportFilename: '../report.html',
-      }),
-      new OptimizeCSSAssetsPlugin({})
+      })
     );
   }
 
