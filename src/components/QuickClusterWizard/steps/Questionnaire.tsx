@@ -286,7 +286,7 @@ const Questionnaire: React.FC<Props> = ({
       }
     }
     return (
-      <Form id={`step-${stepId}-form`} onSubmit={handleSubmit(onSubmit)}>
+      <Form id={`step-${stepId}-form`} onSubmit={handleSubmit(onSubmit as any)}>
         {components}
         {stepId === 3 && region && region.reservations_enabled && (
           <FormGroup

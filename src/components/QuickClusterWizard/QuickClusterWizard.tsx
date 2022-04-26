@@ -61,7 +61,7 @@ const QuickClusterWizard: React.FC = () => {
     addWizardValues(values, newValues, setValues);
   };
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: WizardValues) => {
     addWizardValuesWrapper(data);
   };
 
