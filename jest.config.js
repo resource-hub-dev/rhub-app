@@ -1,6 +1,7 @@
 const path  = require('path');
 
 module.exports = {
+  testEnvironment: 'jsdom',
   roots: ['<rootDir>/__tests__'],
   transform: {
     '^.+\\.(ts|tsx)?$': 'ts-jest',
