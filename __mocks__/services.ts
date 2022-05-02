@@ -50,6 +50,30 @@ export const authenticated = () => {
   };
 };
 
+export const unauthorized = () => {
+  return {
+    initialized: true,
+    keycloak: {
+      ...authenticated().keycloak,
+      hasRealmRole(role: string) {
+        return false;
+      },
+      hasResourceRole(role: string) {
+        return false;
+      },
+    },
+  };
+};
+
+export const uninitialized = () => {
+  return {
+    initialized: false,
+    keycloak: {
+      ...unauthenticated().keycloak,
+    },
+  };
+};
+
 export const subject = () => {
   return {
     initialized: true,
