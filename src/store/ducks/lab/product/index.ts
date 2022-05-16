@@ -15,7 +15,7 @@ const LabProductDataToState = (
     variable: 'name',
     required: true,
     advanced: false,
-    condition: false,
+    condition: null,
     type: 'string',
     maxLength: 20,
     minLength: 6,
@@ -63,12 +63,12 @@ const reducer: Reducer<LabProductState> = (state = INITIAL_STATE, action) => {
       };
     case LabProductTypes.LOAD_SUCCESS: {
       if (action.payload.productId === 'all') {
-        const policies = action.payload.data;
+        const products = action.payload.data;
         return {
           ...state,
           loading: false,
           error: false,
-          data: policies.reduce(LabProductDataToState, state.data),
+          data: products.reduce(LabProductDataToState, state.data),
         };
       }
       return {
