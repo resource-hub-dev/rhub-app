@@ -21,7 +21,7 @@ export interface LabProductParams {
   variable: string;
   required: boolean;
   advanced: boolean;
-  condition: boolean; // TODO: This is to be implemented on rhub-api
+  condition: any[] | null;
   enum?: string[] | number[];
   type: 'string' | 'integer' | 'boolean';
   max?: number;

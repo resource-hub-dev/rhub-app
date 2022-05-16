@@ -186,6 +186,47 @@ export const convertToDateString = (expDays: number) => {
   return timeStr;
 };
 
+export const validateConditions = (
+  expr: any[],
+  values: WizardValues,
+  addErrors: (errorMsg: string, isValidationErr?: boolean) => void
+): any => {
+  // Evaluate condition expression.
+  // ["not", <expr>]
+  // ["and", <expr...>]
+  // ["or", <expr...>]
+  // ["param_eq", <param-name>, <value>]
+  // ["param_ne", <param-name>, <value>]
+  // ["param_lt", <param-name>, <value>]
+  // ["param_gt", <param-name>, <value>]
+  const op = expr[0];
+  if (op === 'not') return !validateConditions(expr[1], values, addErrors);
+  else if (op === 'and') {
+    const mapped = expr
+      .slice(1)
+      .map((value) => validateConditions(value, values, addErrors));
+    return mapped.every(Boolean);
+  } else if (op === 'or') {
+    const mapped = expr
+      .slice(1)
+      .map((value) => validateConditions(value, values, addErrors));
+    return mapped.some(Boolean);
+  }
+  if (op === 'param_eq') {
+    const val = values[expr[1]] === expr[2];
+    return val;
+  } else if (op === 'param_ne') {
+    const val = values[expr[1]] !== expr[2];
+    return val;
+  } else if (op === 'param_lt') {
+    const val = expr[1] in values && values[expr[1]] < expr[2];
+    return val;
+  } else if (op === 'param_gt') {
+    const val = expr[1] in values && values[expr[1]] > expr[2];
+    return val;
+  }
+  return false;
+};
 // Generate Options for Expiration Reservation Days
 export const rsvpOpts = () => {
   return [
