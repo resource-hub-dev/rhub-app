@@ -1,15 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadUsageRequest } from '@ducks/lab/region/actions';
 
 import { AppState } from '@store';
 import { Quota } from '@ducks/lab/types';
-import { Alert, AlertGroup } from '@patternfly/react-core';
+import { AlertGroup } from '@patternfly/react-core';
 
 import Questionnaire from './Questionnaire';
 import GraphsUtilization from './Graphs';
 import {
-  addWizardErrors,
   genQuotaExceededError,
   genTotalUsage,
   removeWizardErrors,
@@ -25,17 +24,28 @@ interface Props {
   totalUsage: Quota;
   /** Update parent's totalUsage state */
   setTotalUsage: React.Dispatch<React.SetStateAction<Quota>>;
+  /** Array of Error Components */
+  errors: React.ReactNode[];
+  /** Set Errors */
+  setErrors: React.Dispatch<React.SetStateAction<React.ReactNode[]>>;
+  /** Append to Errors */
+  addErrors: (
+    errorMsg: string | React.ReactNode,
+    isValidationErr?: boolean | undefined
+  ) => void;
 }
 
 const ClusterConfiguration: React.FC<Props> = ({
   onSubmit,
   totalUsage,
   setTotalUsage,
+  errors,
+  setErrors,
+  addErrors,
 }: Props) => {
   const dispatch = useDispatch();
   const [wizardErrors, setWizardErrors, values] = useContext(wizardContext);
   // Addditional errors in addition to validation errors on the fields
-  const [error, setErrors] = useState<React.ReactNode[]>([]);
   const productId = Number(values?.product_id);
   const regionId = Number(values.region_id);
   const quota = useSelector(
@@ -52,21 +62,6 @@ const ClusterConfiguration: React.FC<Props> = ({
   );
   const parameters = product.parameters.filter((param) => !param.advanced);
   const { flavors } = product;
-
-  const addErrors = (errorMsg: string) => {
-    setErrors([
-      ...error,
-      <Alert
-        key={errorMsg}
-        variant="danger"
-        title={errorMsg}
-        aria-live="polite"
-        isInline
-        timeout={15000}
-      />,
-    ]);
-    addWizardErrors(wizardErrors, setWizardErrors, 'step-3-quota');
-  };
 
   useEffect(() => {
     dispatch(loadUsageRequest(regionId));
@@ -125,7 +120,7 @@ const ClusterConfiguration: React.FC<Props> = ({
       {regionUsage && quota && flavors && (
         <>
           <AlertGroup isToast isLiveRegion>
-            {error}
+            {errors}
           </AlertGroup>
           <div className="configuration-step-border">
             <Questionnaire

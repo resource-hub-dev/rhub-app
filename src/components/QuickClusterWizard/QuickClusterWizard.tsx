@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  Alert,
   Button,
   Wizard,
   WizardContextConsumer,
@@ -45,6 +46,7 @@ const QuickClusterWizard: React.FC = () => {
   const [stepIdReached, setStepIdReached] = useState(1);
   const [values, setValues] = useState<WizardValues>({});
   const [totalUsage, setTotalUsage] = useState<Quota>(emptyQuota);
+  const [errors, setErrors] = useState<React.ReactNode[]>([]);
 
   const token = useSelector((state: AppState) => state.user.current.token);
   const products = useSelector((state: AppState) => state.labProduct.data);
@@ -59,6 +61,41 @@ const QuickClusterWizard: React.FC = () => {
   const title = 'Create a QuickCluster';
   const addWizardValuesWrapper = (newValues: WizardValues) => {
     addWizardValues(values, newValues, setValues);
+  };
+
+  const addErrors = (
+    errorMsg: string | ReactNode,
+    isValidationErr?: boolean
+  ) => {
+    if (typeof errorMsg === 'string') {
+      setErrors((errors) => [
+        ...errors,
+        <Alert
+          key={errorMsg}
+          variant="danger"
+          title={errorMsg}
+          aria-live="polite"
+          isInline
+          timeout={15000}
+        />,
+      ]);
+    } else {
+      setErrors((errors) => [
+        ...errors,
+        <Alert
+          key="errorMsg"
+          variant="danger"
+          title="Error"
+          aria-live="polite"
+          isInline
+          timeout={15000}
+        >
+          {errorMsg}
+        </Alert>,
+      ]);
+    }
+    if (!isValidationErr)
+      addWizardErrors(wizardErrors, setWizardErrors, 'step-3-quota');
   };
 
   const onSubmit = (data: WizardValues) => {
