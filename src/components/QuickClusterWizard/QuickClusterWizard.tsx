@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Alert,
@@ -16,7 +16,15 @@ import { createClusterRequest } from '@ducks/lab/cluster/actions';
 
 import Products from './steps/Products';
 import Region from './steps/Regions';
-import { addWizardValues, convertToDateString, WizardValues } from './helpers';
+import {
+  addWizardErrors,
+  addWizardValues,
+  convertToDateString,
+  generateErrorMsg,
+  removeWizardErrors,
+  validateConditions,
+  WizardValues,
+} from './helpers';
 import ClusterConfiguration from './steps/ClusterConfiguration';
 import AdvancedConfiguration from './steps/AdvancedConfiguration';
 import Review from './steps/Review';
@@ -99,6 +107,35 @@ const QuickClusterWizard: React.FC = () => {
   };
 
   const onSubmit = (data: WizardValues) => {
+    if (values.product_id) {
+      const product = products[values.product_id as number];
+      // const conditions: { [key: string]: any[] | null } = {};
+      product.parameters
+        .filter((param) => param.condition && param.condition !== null)
+        .forEach((param) => {
+          if (param.variable in data) {
+            // conditions[param.variable] = param.condition;
+            if (
+              !validateConditions(param.condition as any[], data, addErrors)
+            ) {
+              addWizardErrors(
+                wizardErrors,
+                setWizardErrors,
+                'invalid-conditions'
+              );
+              addErrors(
+                generateErrorMsg(param.condition as any[], product.parameters),
+                true
+              );
+            } else
+              removeWizardErrors(
+                wizardErrors,
+                setWizardErrors,
+                'invalid-conditions'
+              );
+          }
+        });
+    }
     addWizardValuesWrapper(data);
   };
 
@@ -154,7 +191,6 @@ const QuickClusterWizard: React.FC = () => {
                   type="submit"
                   form={activeStep.id === 3 ? 'form-id' : ''}
                   onClick={() => {
-                    setStepIdReached(stepIdReached + 1);
                     if (activeStep.id === 3 || activeStep.id === 4) {
                       const form = document.getElementById(
                         `step-${activeStep.id}-form`
@@ -162,6 +198,7 @@ const QuickClusterWizard: React.FC = () => {
                       if (form !== null)
                         form.dispatchEvent(new Event('submit'));
                     }
+                    setStepIdReached(stepIdReached + 1);
                     return onNext();
                   }}
                   isDisabled={!stepIsValid}
@@ -239,6 +276,9 @@ const QuickClusterWizard: React.FC = () => {
           onSubmit={onSubmit}
           totalUsage={totalUsage}
           setTotalUsage={setTotalUsage}
+          errors={errors}
+          setErrors={setErrors}
+          addErrors={addErrors}
         />
       ),
       canJumpTo: stepIdReached >= 3,
@@ -246,13 +286,13 @@ const QuickClusterWizard: React.FC = () => {
     {
       id: 4,
       name: 'Advanced Option',
-      component: <AdvancedConfiguration onSubmit={onSubmit} />,
+      component: <AdvancedConfiguration onSubmit={onSubmit} errors={errors} />,
       canJumpTo: stepIdReached >= 4,
     },
     {
       id: 5,
       name: 'Review',
-      component: <Review totalUsage={totalUsage} />,
+      component: <Review totalUsage={totalUsage} errors={errors} />,
       nextButtonText: 'Finish',
       canJumpTo: stepIdReached >= 5,
     },
