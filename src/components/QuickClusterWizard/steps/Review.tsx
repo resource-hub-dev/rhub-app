@@ -1,6 +1,7 @@
 import React, { ReactNode, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import {
+  AlertGroup,
   Card,
   CardBody,
   CardTitle,
@@ -20,9 +21,11 @@ import { StepHeader } from '../helpers';
 interface Props {
   /** Total Quota Usage after QuickCluster is Created */
   totalUsage: Quota;
+  /** Array of Error Components */
+  errors: React.ReactNode[];
 }
 
-const Review: React.FC<Props> = ({ totalUsage }: Props) => {
+const Review: React.FC<Props> = ({ totalUsage, errors }: Props) => {
   const [, , values] = useContext(wizardContext);
   const productId = Number(values?.product_id);
   const regionId = Number(values.region_id);
@@ -61,6 +64,9 @@ const Review: React.FC<Props> = ({ totalUsage }: Props) => {
   });
   return (
     <>
+      <AlertGroup isToast isLiveRegion>
+        {errors}
+      </AlertGroup>
       <StepHeader text="Summary" />
       <Card>
         <CardTitle>Details</CardTitle>

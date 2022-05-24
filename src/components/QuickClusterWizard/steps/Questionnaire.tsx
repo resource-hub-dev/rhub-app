@@ -68,7 +68,6 @@ const Questionnaire: React.FC<Props> = ({
   const {
     handleSubmit,
     control,
-    watch,
     register,
     setValue,
     getValues,
