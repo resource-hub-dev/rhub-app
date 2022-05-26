@@ -10,7 +10,6 @@ import { wizardContext } from '@components/QuickClusterWizard/QuickClusterWizard
 
 describe('<AdvancedConfiguration />', () => {
   const onSubmitMock = jest.fn();
-
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -18,7 +17,7 @@ describe('<AdvancedConfiguration />', () => {
   test('Renders advanced configuration', async () => {
     const { result } = await waitFor(() =>
       connectedRenderWithContext(
-        <AdvancedConfiguration onSubmit={onSubmitMock} />,
+        <AdvancedConfiguration errors={[]} onSubmit={onSubmitMock} />,
         wizardContext,
         mocks.loadedState,
         mocks.wizzardContextDefaultValue

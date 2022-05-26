@@ -29,7 +29,7 @@ export const labProductResponse: LabProductData = {
       required: true,
       type: 'string',
       variable: 'version',
-      condition: false,
+      condition: null,
     },
     {
       advanced: false,
@@ -39,7 +39,7 @@ export const labProductResponse: LabProductData = {
       required: true,
       type: 'integer',
       variable: 'num_workers',
-      condition: false,
+      condition: null,
     },
     {
       advanced: true,
@@ -50,7 +50,7 @@ export const labProductResponse: LabProductData = {
       type: 'boolean',
       variable: 'keep_boostrap',
       required: false,
-      condition: false,
+      condition: null,
     },
   ],
   tower_template_name_create: 'rhub-openshift-create',

@@ -13,7 +13,7 @@ describe('<Review />', () => {
   test('Renders review', async () => {
     const { result } = await waitFor(() =>
       connectedRenderWithContext(
-        <Review totalUsage={mocks.totalQuota} />,
+        <Review errors={[]} totalUsage={mocks.totalQuota} />,
         wizardContext,
         mocks.loadedState,
         mocks.wizzardContextReviewValue
@@ -66,7 +66,7 @@ describe('<Review />', () => {
   test('Renders with no product regions', async () => {
     const { result } = await waitFor(() =>
       connectedRenderWithContext(
-        <Review totalUsage={mocks.totalQuota} />,
+        <Review errors={[]} totalUsage={mocks.totalQuota} />,
         wizardContext,
         mocks.noProductRegionsState,
         mocks.wizzardContextReviewValue
@@ -80,7 +80,7 @@ describe('<Review />', () => {
   test('Renders with no region usage', async () => {
     const { result } = await waitFor(() =>
       connectedRenderWithContext(
-        <Review totalUsage={mocks.totalQuota} />,
+        <Review errors={[]} totalUsage={mocks.totalQuota} />,
         wizardContext,
         mocks.noRegionUsageState,
         mocks.wizzardContextReviewValue
