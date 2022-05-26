@@ -9,11 +9,13 @@ import { wizardContext } from '@components/QuickClusterWizard/QuickClusterWizard
 
 import * as mocks from '@mocks/QuickClusterWizard';
 import { waitFor } from '@testing-library/react';
+import { Alert } from '@patternfly/react-core';
 
 describe('<ClusterConfiguration />', () => {
   const setTotalUsageMock = jest.fn();
   const onSubmitMock = jest.fn();
-
+  const setErrorMock = jest.fn();
+  const addErrorMock = jest.fn();
   const renderClusterConfiguration = (
     state: mocks.exampleState,
     totalUsage: Quota
@@ -22,7 +24,19 @@ describe('<ClusterConfiguration />', () => {
       <ClusterConfiguration
         onSubmit={onSubmitMock}
         setTotalUsage={setTotalUsageMock}
+        errors={[
+          <Alert
+            key="unique-key"
+            variant="danger"
+            title="dangerous"
+            aria-live="polite"
+            isInline
+            timeout={15000}
+          />,
+        ]}
+        setErrors={setErrorMock}
         totalUsage={totalUsage}
+        addErrors={addErrorMock}
       />,
       wizardContext,
       state,
@@ -115,7 +129,6 @@ describe('<ClusterConfiguration />', () => {
       mocks.loadedState,
       mocks.errorQuota
     );
-
     expect(result.queryByText(/Danger alert:/)).toBeInTheDocument();
   });
 });

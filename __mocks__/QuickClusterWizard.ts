@@ -25,7 +25,7 @@ export const labProductParams: LabProductParams[] = [
     variable: 'name',
     required: true,
     advanced: false,
-    condition: false,
+    condition: null,
     type: 'string',
     maxLength: 20,
     minLength: 5,
@@ -40,7 +40,7 @@ export const labProductParams: LabProductParams[] = [
     required: true,
     type: 'string',
     variable: 'version',
-    condition: false,
+    condition: null,
   },
 
   {
@@ -51,7 +51,16 @@ export const labProductParams: LabProductParams[] = [
     required: true,
     type: 'integer',
     variable: 'num_workers',
-    condition: false,
+    condition: [
+      'and',
+      ['param_eq', 'keep_bootstrap', false],
+      [
+        'or',
+        ['param_ne', 'name', 'cluster1'],
+        ['param_gt', 'num_non_generic_nodes', 2],
+      ],
+      ['param_lt', 'test_integers', 3],
+    ],
   },
   {
     advanced: true,
@@ -74,7 +83,7 @@ export const labProductParams: LabProductParams[] = [
     type: 'integer',
     variable: 'num_nodes',
     required: false,
-    condition: false,
+    condition: null,
   },
   {
     advanced: false,
@@ -85,7 +94,7 @@ export const labProductParams: LabProductParams[] = [
     type: 'integer',
     variable: 'num_non_generic_nodes',
     required: false,
-    condition: false,
+    condition: null,
   },
   {
     advanced: false,
@@ -106,7 +115,7 @@ export const labProductParams: LabProductParams[] = [
     type: 'boolean',
     variable: 'test_boolean',
     required: false,
-    condition: false,
+    condition: null,
   },
   {
     advanced: true,
@@ -117,7 +126,7 @@ export const labProductParams: LabProductParams[] = [
     required: false,
     type: 'integer',
     variable: 'test_integers',
-    condition: true,
+    condition: null,
   },
 ];
 
