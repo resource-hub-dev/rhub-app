@@ -92,6 +92,19 @@ describe('<QuickClusterWizard />', () => {
     });
 
     await waitFor(() => {
+      // Enter Cluster ID
+      const masterInput = result.getByLabelText(/num_master_nodes/);
+
+      fireEvent.change(masterInput, {
+        target: {
+          value: 2,
+        },
+      });
+
+      fireEvent.blur(masterInput);
+    });
+
+    await waitFor(() => {
       fireEvent.click(nextBtn);
     });
 
