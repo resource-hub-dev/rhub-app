@@ -71,7 +71,7 @@ export const labProductParams: LabProductParams[] = [
     type: 'boolean',
     variable: 'keep_bootstrap',
     required: false,
-    condition: false,
+    condition: null,
   },
   // Some more parameters for testing different conditions
   {
@@ -105,7 +105,17 @@ export const labProductParams: LabProductParams[] = [
     type: 'string',
     variable: 'node_flavor',
     required: false,
-    condition: false,
+    condition: null,
+  },
+  {
+    advanced: false,
+    default: 1,
+    description: 'Testing master flavors',
+    name: 'Master flavor test',
+    type: 'string',
+    variable: 'num_master_nodes',
+    required: true,
+    condition: null,
   },
   {
     advanced: true,
