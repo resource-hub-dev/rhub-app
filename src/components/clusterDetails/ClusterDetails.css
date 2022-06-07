@@ -7,8 +7,17 @@
 }
 
 .host {
-    display: flex;
+    display: inline-flex;
+    flex-wrap: wrap;
     column-gap: 15px;
+}
+
+.pf-c-table tr > * {
+    max-width: fit-content !important;
+}
+
+.host > * span.pf-c-clipboard-copy__text {
+    flex: 0.5 1 200px;
 }
 
 div.pf-c-clipboard-copy.pf-m-inline {
