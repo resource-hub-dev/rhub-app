@@ -34,11 +34,15 @@ const ResourcesDashboard: React.FC = () => {
       footerLinks: [
         {
           link: '/resources/quickcluster/clusters',
-          title: 'View Your Clusters',
+          title: 'View My Clusters',
         },
         {
           link: '/resources/quickcluster/shared',
           title: 'Explore OpenShift Shared Clusters',
+        },
+        {
+          link: '/resources/quickcluster/activity',
+          title: 'My Activity',
         },
       ],
     },
