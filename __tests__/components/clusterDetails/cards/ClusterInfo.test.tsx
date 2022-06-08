@@ -82,8 +82,8 @@ describe('<ClusterInfo />', () => {
     );
 
     expect(result.queryByText(/Host/)).toBeInTheDocument();
-    expect(result.queryByText(/Reboot/)).toBeInTheDocument();
-    const rebootBtn = result.getByText('Reboot');
+    expect(result.queryByLabelText(/Reboot/)).toBeInTheDocument();
+    const rebootBtn = result.getByLabelText('Reboot');
     fireEvent.click(rebootBtn);
     expect(
       store

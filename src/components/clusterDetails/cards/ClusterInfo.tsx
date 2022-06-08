@@ -7,6 +7,7 @@ import {
   CardBody,
   Title,
   ClipboardCopy,
+  Tooltip,
 } from '@patternfly/react-core';
 
 import '../ClusterDetails.css';
@@ -16,6 +17,7 @@ import { IRow } from '@patternfly/react-table';
 import { useDispatch, useSelector } from 'react-redux';
 import { rebootHostRequest } from '@ducks/lab/cluster/actions';
 import { AppState } from '@store';
+import { RebootingIcon } from '@patternfly/react-icons';
 
 /**
  * TODO:
@@ -59,16 +61,19 @@ const ClusterInfo: React.FC<Props> = ({
             >
               {item.fqdn}
             </ClipboardCopy>
-            <Button
-              variant="danger"
-              isDisabled={cluster.status !== 'Active'}
-              onClick={() => {
-                setOpenModal('rebootModal');
-                setNodeToBeRebooted(item.id);
-              }}
-            >
-              Reboot
-            </Button>
+            <Tooltip content="Reboot">
+              <Button
+                variant="link"
+                isDisabled={cluster.status !== 'Active'}
+                onClick={() => {
+                  setOpenModal('rebootModal');
+                  setNodeToBeRebooted(item.id);
+                }}
+                aria-label="Reboot"
+                icon={<RebootingIcon />}
+                className="quickcluster-reboot-btn"
+              />
+            </Tooltip>
           </div>,
           item.num_vcpus || '',
           item.ram_mb / 1024 || '',
