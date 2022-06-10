@@ -9,7 +9,7 @@
 .host {
     display: inline-flex;
     flex-wrap: wrap;
-    column-gap: 15px;
+    column-gap: 10px;
 }
 
 .pf-c-table tr > * {
@@ -17,12 +17,23 @@
 }
 
 .host > * span.pf-c-clipboard-copy__text {
-    flex: 0.5 1 200px;
+    max-width: 22.5em;
+}
+
+
+td[data-label = "Host"] {
+    display: inline-block;
+}
+
+.quickcluster-reboot-btn {
+    color: var(--pf-global--danger-color--100) !important;
+    padding-left: 0px !important;
+    bottom: 5px;
 }
 
 div.pf-c-clipboard-copy.pf-m-inline {
     background-color: transparent;
-    display: flex;
+    display: inline-flex;
     max-width: 25em;
 }
 
@@ -51,4 +62,16 @@ span.pf-c-clipboard-copy__text {
 
 .rhub-chart {
     min-width: 80%; 
+}
+
+@media screen and (max-width: 768px) {
+    .host > * span.pf-c-clipboard-copy__text {
+        max-width: 10em;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .host > * span.pf-c-clipboard-copy__text {
+        max-width: 20em;
+    }
 }
