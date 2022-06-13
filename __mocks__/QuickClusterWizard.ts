@@ -42,7 +42,6 @@ export const labProductParams: LabProductParams[] = [
     variable: 'version',
     condition: null,
   },
-
   {
     advanced: false,
     default: 3,
@@ -62,6 +61,7 @@ export const labProductParams: LabProductParams[] = [
           ['param_gt', 'num_non_generic_nodes', 2],
         ],
         ['param_lt', 'test_integers', 3],
+        ['param_in', 'test_substrings', 'bar'],
       ],
     },
   },
@@ -123,7 +123,7 @@ export const labProductParams: LabProductParams[] = [
   {
     advanced: true,
     default: false,
-    description: 'Testing boolean value represantation in Review component.',
+    description: 'Testing boolean value representation in Review component.',
     name: 'Boolean test',
     type: 'boolean',
     variable: 'test_boolean',
@@ -139,6 +139,17 @@ export const labProductParams: LabProductParams[] = [
     required: false,
     type: 'integer',
     variable: 'test_integers',
+    condition: null,
+  },
+  {
+    advanced: true,
+    default: 'foobar',
+    description: 'Testing substring enums.',
+    enum: ['foobar', 'foobat', 'foobot'],
+    name: 'Test substring enums',
+    required: false,
+    type: 'string',
+    variable: 'test_substrings',
     condition: null,
   },
 ];

@@ -206,6 +206,7 @@ export const validateConditions = (
   // ["param_ne", <param-name>, <value>]
   // ["param_lt", <param-name>, <value>]
   // ["param_gt", <param-name>, <value>]
+  // ["param_in", <param-name>, <value>]
   const op = expr[0];
   if (op === 'not') return !validateConditions(expr[1], values, addErrors);
   else if (op === 'and') {
@@ -230,6 +231,10 @@ export const validateConditions = (
     return val;
   } else if (op === 'param_gt') {
     const val = expr[1] in values && values[expr[1]] > expr[2];
+    return val;
+  } else if (op === 'param_in') {
+    const val =
+      expr[1] in values && String(values[expr[1]]).indexOf(expr[2]) !== -1;
     return val;
   }
   return false;
