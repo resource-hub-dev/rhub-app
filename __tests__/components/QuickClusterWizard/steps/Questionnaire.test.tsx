@@ -86,6 +86,7 @@ describe('<Questionnaire />', () => {
     expect(result.getByLabelText(/node_flavor/)).toHaveValue('flavor1');
     expect(result.getByLabelText(/num_nodes/)).toHaveValue('3');
     expect(result.getByLabelText(/num_non_generic_nodes/)).toHaveValue('3');
+    expect(result.getByLabelText(/test_substrings/)).toHaveValue('foobar');
   });
 
   test('Adds and removes errors', async () => {
@@ -216,6 +217,28 @@ describe('<Questionnaire />', () => {
     await submitForm(result);
 
     expect(onSubmitMock.mock.calls[0][0].test_integers).toBe(3);
+  });
+
+  test('Handles substring enum values', async () => {
+    const { result } = renderQuestionnaire(
+      mocks.loadedState,
+      mocks.labProductParams,
+      3
+    );
+
+    await setClusterName(result);
+
+    await waitFor(() => {
+      fireEvent.change(result.getByLabelText(/test_substrings/), {
+        target: {
+          value: 'foobar',
+        },
+      });
+    });
+
+    await submitForm(result);
+
+    expect(onSubmitMock.mock.calls[0][0].test_substrings).toBe('foobar');
   });
 
   test('Handles number of nodes for Generic clusters', async () => {
