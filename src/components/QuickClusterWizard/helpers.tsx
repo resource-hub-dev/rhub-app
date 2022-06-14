@@ -235,45 +235,6 @@ export const validateConditions = (
   return false;
 };
 
-export const generateErrorMsg = (expr: any[], params: LabProductParams[]) => {
-  const op = expr[0];
-  const result: ReactNode[] = [];
-  // if (op === 'not') return !generateErrorMsg(expr[1]);
-  if (op === 'and' || op === 'or') {
-    const mapped = expr
-      .slice(1)
-      .map((value) => generateErrorMsg(value, params));
-    mapped.forEach((item, index) => {
-      if (item) {
-        const renderedItem =
-          typeof item === 'string' ? (
-            <ListItem key={item}>
-              {`${item} `}
-              {index !== mapped.length - 1 && (
-                <i>{(op as string).toUpperCase()}</i>
-              )}
-            </ListItem>
-          ) : (
-            item
-          );
-        result.push(renderedItem);
-      }
-    });
-    return <List>{result}</List>;
-  }
-  const fieldName = params.find((param) => param.variable === expr[1])?.name;
-  if (op === 'param_eq') {
-    return `${fieldName} should be set to ${expr[2]}`;
-  } else if (op === 'param_ne') {
-    return `${fieldName} should not be set to ${expr[2]}`;
-  } else if (op === 'param_lt') {
-    return `${fieldName} should be lower than ${expr[2]}`;
-  } else if (op === 'param_gt') {
-    return `${expr[1]} should be greater than ${expr[2]}`;
-  }
-  return result;
-};
-
 // Generate Options for Expiration Reservation Days
 export const rsvpOpts = () => {
   return [
