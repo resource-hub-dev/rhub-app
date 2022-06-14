@@ -116,7 +116,11 @@ const QuickClusterWizard: React.FC = () => {
           if (param.variable in data) {
             // conditions[param.variable] = param.condition;
             if (
-              !validateConditions(param.condition as any[], data, addErrors)
+              !validateConditions(
+                param.condition?.data as any[],
+                data,
+                addErrors
+              )
             ) {
               addWizardErrors(
                 wizardErrors,
@@ -124,9 +128,14 @@ const QuickClusterWizard: React.FC = () => {
                 'invalid-conditions'
               );
               addErrors(
-                generateErrorMsg(param.condition as any[], product.parameters),
+                <div>
+                  {param.condition?.msg.split('\n').map((str) => (
+                    <p>{str}</p>
+                  ))}
+                </div>,
                 true
               );
+              console.log(param.condition?.msg);
             } else
               removeWizardErrors(
                 wizardErrors,

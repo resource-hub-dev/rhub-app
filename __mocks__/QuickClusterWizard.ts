@@ -51,16 +51,19 @@ export const labProductParams: LabProductParams[] = [
     required: true,
     type: 'integer',
     variable: 'num_workers',
-    condition: [
-      'and',
-      ['param_eq', 'keep_bootstrap', false],
-      [
-        'or',
-        ['param_ne', 'name', 'cluster1'],
-        ['param_gt', 'num_non_generic_nodes', 2],
+    condition: {
+      msg: 'error',
+      data: [
+        'and',
+        ['param_eq', 'keep_bootstrap', false],
+        [
+          'or',
+          ['param_ne', 'name', 'cluster1'],
+          ['param_gt', 'num_non_generic_nodes', 2],
+        ],
+        ['param_lt', 'test_integers', 3],
       ],
-      ['param_lt', 'test_integers', 3],
-    ],
+    },
   },
   {
     advanced: true,
