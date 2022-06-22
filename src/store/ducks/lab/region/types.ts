@@ -124,7 +124,7 @@ export interface Usage {
 export interface LabRegionState {
   data: { [key: number]: LabRegionData };
   product_regions: RegionsWithProduct[];
-  usage?: Usage;
+  usage?: Record<number | string, Usage>;
   loading: boolean;
   errMsg: Error | {};
   error: boolean;
