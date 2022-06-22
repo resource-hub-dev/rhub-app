@@ -55,7 +55,7 @@ function* load_region_usage(action: AnyAction) {
       api.get,
       `lab/region/${regionId}/usage`
     );
-    yield put(loadUsageSuccess(response.data));
+    yield put(loadUsageSuccess(regionId, response.data));
   } catch (err) {
     yield put(loadFailure((err as any).response.data));
   }
