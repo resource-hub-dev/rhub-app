@@ -84,9 +84,13 @@ const reducer: Reducer<LabRegionState> = (state = INITIAL_STATE, action) => {
       };
     }
     case LabRegionTypes.LOAD_USAGE_SUCCESS: {
+      const { usage, regionId } = action.payload;
       return {
         ...state,
-        usage: action.payload.usage,
+        usage: {
+          ...state.usage,
+          [regionId]: usage,
+        },
         loading: false,
         error: false,
         errMsg: {},
