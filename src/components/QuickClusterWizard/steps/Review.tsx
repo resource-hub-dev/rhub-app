@@ -40,7 +40,7 @@ const Review: React.FC<Props> = ({ totalUsage, errors }: Props) => {
   );
 
   const quota = useSelector(
-    (state: AppState) => state.labRegion.usage?.user_quota
+    (state: AppState) => state.labRegion.usage?.[regionId].user_quota
   );
 
   const basicParams = product.parameters.filter((param) => !param.advanced);
@@ -104,6 +104,7 @@ const Review: React.FC<Props> = ({ totalUsage, errors }: Props) => {
       {quota && (
         <Card className="resource-summary-container">
           <GraphsUtilization
+            regionId={regionId}
             vCPUCoreUsed={totalUsage?.num_vcpus}
             ramMbUsed={totalUsage?.ram_mb}
             volumesGbUsed={totalUsage?.volumes_gb}
