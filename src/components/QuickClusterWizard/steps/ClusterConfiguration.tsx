@@ -55,7 +55,7 @@ const ClusterConfiguration: React.FC<Props> = ({
       )?.region.user_quota
   );
   const regionUsage = useSelector(
-    (state: AppState) => state.labRegion.usage?.user_quota_usage
+    (state: AppState) => state.labRegion.usage?.[regionId].user_quota_usage
   );
   const product = useSelector(
     (state: AppState) => state.labProduct.data[productId]
@@ -131,6 +131,7 @@ const ClusterConfiguration: React.FC<Props> = ({
             />
           </div>
           <GraphsUtilization
+            regionId={regionId}
             vCPUCoreUsed={totalUsage?.num_vcpus}
             ramMbUsed={totalUsage?.ram_mb}
             volumesGbUsed={totalUsage?.volumes_gb}
