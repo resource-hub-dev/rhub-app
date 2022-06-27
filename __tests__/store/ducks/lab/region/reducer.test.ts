@@ -87,13 +87,13 @@ describe('region reducer', () => {
     expect(
       reducer(
         { ...INITIAL_STATE, loading: true },
-        actions.loadUsageSuccess(apiResponseData)
+        actions.loadUsageSuccess(1, apiResponseData)
       )
     ).toEqual({
       ...INITIAL_STATE,
       loading: false,
       error: false,
-      usage: mocks.regionUsageExample,
+      usage: { [mocks.regionExample.id]: mocks.regionUsageExample },
     });
   });
 

@@ -52,7 +52,7 @@ describe('region saga', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.loadUsageRequest(1))
       .provide([[matchers.call.fn(api.get), apiResponse]])
-      .put(actions.loadUsageSuccess(apiResponse.data))
+      .put(actions.loadUsageSuccess(1, apiResponse.data))
       .silentRun();
   });
 
