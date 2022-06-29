@@ -18,7 +18,7 @@ describe('<ResourcesDashboard />', () => {
     ).toBeInTheDocument();
 
     // Check if the dashboard items are rendered
-    expect(result.queryByText('View Your Clusters')).toBeInTheDocument();
+    expect(result.queryByText('View My Clusters')).toBeInTheDocument();
     expect(
       result.queryByText('Explore OpenShift Shared Clusters')
     ).toBeInTheDocument();
