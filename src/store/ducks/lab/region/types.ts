@@ -32,7 +32,7 @@ export interface LabRegionData {
   lifespan_length: number | null;
   user_quota?: Quota | null;
   total_quota?: Quota | null;
-  owner_group: string;
+  owner_group_name: string;
   users_group: string | null;
   tower_id: number;
   openstack: Openstack;

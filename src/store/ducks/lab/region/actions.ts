@@ -36,8 +36,10 @@ export const loadUsageRequest = (regionId: number | 'all') =>
     regionId,
   });
 
-export const loadUsageSuccess = (regionId: number | 'all', usage: Usage) =>
-  action(LabRegionTypes.LOAD_USAGE_SUCCESS, { regionId, usage });
+export const loadUsageSuccess = (
+  regionId: number | 'all',
+  usage: Usage | { [region: string]: Usage }
+) => action(LabRegionTypes.LOAD_USAGE_SUCCESS, { regionId, usage });
 
 export const loadFailure = (err: Error) =>
   action(LabRegionTypes.LOAD_FAILURE, err);
