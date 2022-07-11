@@ -29,7 +29,7 @@ const labRegionDataToState = (
       lifespan_length: item.lifespan_length,
       user_quota: item.user_quota,
       total_quota: item.total_quota,
-      owner_group: item.owner_group,
+      owner_group_name: item.owner_group_name,
       users_group: item.users_group,
       tower_id: item.tower_id,
       openstack: item.openstack,
@@ -85,6 +85,18 @@ const reducer: Reducer<LabRegionState> = (state = INITIAL_STATE, action) => {
     }
     case LabRegionTypes.LOAD_USAGE_SUCCESS: {
       const { usage, regionId } = action.payload;
+      if (regionId === 'all') {
+        return {
+          ...state,
+          usage: {
+            ...state.usage,
+            ...usage,
+          },
+          loading: false,
+          error: false,
+          errMsg: {},
+        };
+      }
       return {
         ...state,
         usage: {
