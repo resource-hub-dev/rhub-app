@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '@store';
-import { loadUsageRequest } from '@ducks/lab/region/actions';
+import {
+  loadUsageRequest,
+  loadRequest as loadRegion,
+} from '@ducks/lab/region/actions';
 import {
   Card,
   CardBody,
@@ -18,27 +21,40 @@ import UtilizationChart from '@components/charts/UtilizationChart';
 import { loadRequest as loadCluster } from '@ducks/lab/cluster/actions';
 import './QuickClusterUserActivity.css';
 import { InfoCircleIcon } from '@patternfly/react-icons';
+import { round } from '@services/common';
+import RegionalUsageTable from './RegionalUsageTable';
 
 const QuickClusterUserActivity: React.FC = () => {
   const dispatch = useDispatch();
   const token = useSelector((state: AppState) => state.user.current.token);
+  const regionUsage = useSelector((state: AppState) => state.labRegion.usage);
+
+  const clusters = useSelector((state: AppState) => state.cluster.data);
+  const clusterCount = clusters ? Object.keys(clusters).length : 0;
+  const regions = useSelector((state: AppState) => state.labRegion.data);
+
+  const isLoading = useSelector(
+    (state: AppState) => state.labRegion.loading || state.cluster.loading
+  );
+  const allRegionUsage = regionUsage?.all;
 
   useEffect(() => {
     dispatch(loadUsageRequest('all'));
     dispatch(loadCluster('all'));
   }, [dispatch, token]);
 
-  const allRegionUsage = useSelector(
-    (state: AppState) => state.labRegion.usage?.all
-  );
+  useEffect(() => {
+    dispatch(loadRegion('all'));
+  }, [dispatch, regionUsage]);
 
-  const clusters = useSelector((state: AppState) => state.cluster.data);
-  const clusterCount = clusters ? Object.keys(clusters).length : 0;
-
-  const isLoading = useSelector(
-    (state: AppState) => state.labRegion.loading || state.cluster.loading
-  );
-  if (isLoading || !allRegionUsage || !clusterCount) {
+  if (
+    isLoading ||
+    !regionUsage ||
+    !allRegionUsage ||
+    !regions ||
+    !clusters ||
+    clusterCount === undefined
+  ) {
     return (
       <>
         <h3>Loading...</h3>
@@ -46,12 +62,8 @@ const QuickClusterUserActivity: React.FC = () => {
       </>
     );
   }
-
   const { user_quota, user_quota_usage } = allRegionUsage;
-  const round = (value: number, precision: number) => {
-    const multiplier = precision ? 10 ** precision : 1; // Math.pow(10, precision || 0);
-    return Math.round(value * multiplier) / multiplier;
-  };
+
   return (
     <>
       <PageSection variant={PageSectionVariants.light}>
@@ -97,6 +109,23 @@ const QuickClusterUserActivity: React.FC = () => {
                     width="200px"
                   />
                 </div>
+              </CardBody>
+            </Card>
+          </GridItem>
+          <GridItem>
+            <Card>
+              <CardTitle>
+                <div className="activity-title-text">Regional Utilization </div>
+                <Tooltip content="This table includes information and reflects your resource utilization in each region">
+                  <InfoCircleIcon className="activity-title-info-icon" />
+                </Tooltip>
+              </CardTitle>
+              <CardBody>
+                <RegionalUsageTable
+                  regions={regions}
+                  allUsage={regionUsage}
+                  clusters={clusters}
+                />
               </CardBody>
             </Card>
           </GridItem>
