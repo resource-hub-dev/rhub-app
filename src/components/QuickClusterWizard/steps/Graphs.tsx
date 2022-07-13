@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import UtilizationChart from '@components/charts/UtilizationChart';
 import { Title } from '@patternfly/react-core';
 import { AppState } from '@store';
+import { round } from '@services/common';
 
 import '../QuickClusterWizard.css';
 import ResourceSummaryTable from './ResourceSummaryTable';
@@ -36,11 +37,6 @@ const GraphsUtilization: React.FC<Props> = ({
   const userQuotaUsage = useSelector(
     (state: AppState) => state.labRegion.usage?.[regionId].user_quota_usage
   );
-
-  const round = (value: number, precision: number) => {
-    const multiplier = precision ? 10 ** precision : 1; // Math.pow(10, precision || 0);
-    return Math.round(value * multiplier) / multiplier;
-  };
 
   return (
     <div className="summary-charts-container">
