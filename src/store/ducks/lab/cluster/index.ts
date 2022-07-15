@@ -71,7 +71,7 @@ const clusterEventDataToState = (item: ClusterEventData) => {
     tower_job_id: item.tower_job_id || null,
     type: item.type,
     status,
-    user_id: item.user_id,
+    user_name: item.user_name,
   };
 };
 
