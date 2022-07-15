@@ -61,6 +61,7 @@ export enum ClusterEventType {
 export interface ClusterEventData {
   id: string;
   date: string;
+  user_name: string;
   user_id: string;
   cluster_id: string;
   type:
@@ -113,7 +114,7 @@ export interface ClusterEvent {
   tower_id?: number | null;
   tower_job_id?: number | null;
   status?: string | null;
-  user_id: string;
+  user_name: string;
   type?: string;
 }
 
