@@ -34,7 +34,6 @@ describe('<GraphsUtilization />', () => {
         /this QuickCluster is created. See the cost table for the total size of this cluster. These calculations are a result of your selections./
       )
     ).toBeInTheDocument();
-    console.log(result.debug(undefined, 30000));
     expect(result.queryByText(/Utilization-CPU/)).toBeInTheDocument();
     expect(result.queryByText(/^7$/)).toBeInTheDocument();
     expect(result.queryByText(/of 10 Cores/)).toBeInTheDocument();

@@ -32,7 +32,7 @@ export const regionExample: LabRegionData = {
     project: 'rhub',
     url: 'https://openstack.example.com:13000',
   },
-  owner_group: '7670ac07-cb21-448d-af8a-6e3882216be3',
+  owner_group_name: 'group1',
   reservation_expiration_max: 0,
   reservations_enabled: true,
   satellite: {
@@ -83,7 +83,7 @@ export const productRegionsExample: RegionsWithProduct = {
       project: 'rhub',
       url: 'https://openstack.example.com:13000',
     },
-    owner_group: '7670ac07-cb21-448d-af8a-6e3882216be3',
+    owner_group_name: 'group1',
     reservation_expiration_max: 0,
     reservations_enabled: true,
     satellite: {
