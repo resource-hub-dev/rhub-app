@@ -115,6 +115,7 @@ export const clusterEventsData: ClusterEventData[] = [
     date: '2022-02-08T15:05:34.807Z',
     id: '1',
     user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    user_name: 'testuser1',
   },
   {
     new_value: '2022-02-08T18:24:17.211Z',
@@ -124,6 +125,7 @@ export const clusterEventsData: ClusterEventData[] = [
     date: '2022-02-08T18:24:17.211Z',
     id: '1',
     user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    user_name: 'testuser1',
   },
   {
     new_value: '2022-02-08T18:24:17.211Z',
@@ -133,6 +135,7 @@ export const clusterEventsData: ClusterEventData[] = [
     date: '2022-02-08T18:24:17.211Z',
     id: '1',
     user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    user_name: 'testuser1',
   },
   {
     old_value: 'Provisioning Queued',
@@ -142,6 +145,7 @@ export const clusterEventsData: ClusterEventData[] = [
     date: '2022-02-08T18:24:17.211Z',
     id: '1',
     user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    user_name: 'testuser1',
   },
 ];
 
@@ -154,7 +158,7 @@ export const loadedEventsState: ClusterEvent[] = [
     cluster_id: '1',
     date: '2022-02-08T15:05:34.807Z',
     id: '1',
-    user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    user_name: 'testuser1',
   },
   {
     type: ClusterEventType.RESERVATION_CHANGE,
@@ -164,7 +168,7 @@ export const loadedEventsState: ClusterEvent[] = [
     status: 'Reservation Extended',
     date: '2022-02-08T18:24:17.211Z',
     id: '1',
-    user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    user_name: 'testuser1',
   },
   {
     type: ClusterEventType.LIFESPAN_CHANGE,
@@ -174,7 +178,7 @@ export const loadedEventsState: ClusterEvent[] = [
     status: 'Lifespan Extended',
     date: '2022-02-08T18:24:17.211Z',
     id: '1',
-    user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    user_name: 'testuser1',
   },
   {
     status: 'Provisioning',
@@ -182,7 +186,7 @@ export const loadedEventsState: ClusterEvent[] = [
     cluster_id: '1',
     date: '2022-02-08T18:24:17.211Z',
     id: '1',
-    user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    user_name: 'testuser1',
     tower_id: null,
     tower_job_id: null,
   },
