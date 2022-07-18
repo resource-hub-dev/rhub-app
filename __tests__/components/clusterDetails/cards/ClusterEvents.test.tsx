@@ -16,7 +16,7 @@ describe('<ClusterEvents />', () => {
 
     const { result } = connectedRender(<ClusterEvents events={[event]} />);
 
-    expect(result.queryByText(`${event.user_id}`)).toBeInTheDocument();
+    expect(result.queryByText(`${event.user_name}`)).toBeInTheDocument();
     expect(result.queryByText(`${event.status}`)).toBeInTheDocument();
     expect(result.queryByText(/^123$/)).toBeInTheDocument();
   });
