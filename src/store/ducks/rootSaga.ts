@@ -8,6 +8,7 @@ import labProductSagas from './lab/product/sagas';
 import clusterSagas from './lab/cluster/sagas';
 import labRegionSagas from './lab/region/sagas';
 import labLocationSagas from './lab/location/sagas';
+import openstackCloudSagas from './openstack/cloud/sagas';
 
 export default function* rootSaga(): Generator {
   return yield all([
@@ -18,5 +19,6 @@ export default function* rootSaga(): Generator {
     ...clusterSagas,
     ...labRegionSagas,
     ...labLocationSagas,
+    ...openstackCloudSagas,
   ]);
 }

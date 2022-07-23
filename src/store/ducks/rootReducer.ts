@@ -5,6 +5,7 @@ import labPolicy from './lab/policy';
 import labProduct from './lab/product';
 import cluster from './lab/cluster';
 import labRegion from './lab/region';
+import openstackCloud from './openstack/cloud';
 
 export default combineReducers({
   cluster,
@@ -13,4 +14,5 @@ export default combineReducers({
   labPolicy,
   labRegion,
   labProduct,
+  openstackCloud,
 });
