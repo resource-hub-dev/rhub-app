@@ -1,6 +1,7 @@
 import React from 'react';
 import UtilizationChart from '@components/charts/UtilizationChart';
 import { Title } from '@patternfly/react-core';
+import { round } from '@services/common';
 import './Clusters.css';
 
 export interface Props {
@@ -20,11 +21,6 @@ const ClusterTableUtilization: React.FC<Props> = ({
   ramQuotaMb,
   volumesMaxGb,
 }: Props) => {
-  const round = (value: number, precision: number) => {
-    const multiplier = precision ? 10 ** precision : 1; // Math.pow(10, precision || 0);
-    return Math.round(value * multiplier) / multiplier;
-  };
-
   return (
     <>
       <Title headingLevel="h5">Resource Consumption</Title>

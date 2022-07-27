@@ -1,6 +1,7 @@
 import React from 'react';
 import UtilizationChart from '@components/charts/UtilizationChart';
 import { Card, CardBody, CardTitle } from '@patternfly/react-core';
+import { round } from '@services/common';
 import '../ClusterDetails.css';
 
 export interface Props {
@@ -21,11 +22,6 @@ const UtilizationCard: React.FC<Props> = ({
   ramQuotaMb,
   volumesMaxGb,
 }: Props) => {
-  const round = (value: number, precision: number) => {
-    const multiplier = precision ? 10 ** precision : 1; // Math.pow(10, precision || 0);
-    return Math.round(value * multiplier) / multiplier;
-  };
-
   return (
     <Card>
       <CardTitle>Utilization</CardTitle>

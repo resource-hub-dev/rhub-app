@@ -209,7 +209,7 @@ export const labRegionState: LabRegionState = {
   loading: false,
   errMsg: {},
   error: false,
-  usage: regionUsageExample,
+  usage: { [regionExample.id]: regionUsageExample },
 };
 
 export const noUserQuotaLabRegionState: LabRegionState = {

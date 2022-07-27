@@ -32,7 +32,7 @@ export const regionExample: LabRegionData = {
     project: 'rhub',
     url: 'https://openstack.example.com:13000',
   },
-  owner_group: '7670ac07-cb21-448d-af8a-6e3882216be3',
+  owner_group_name: 'group1',
   reservation_expiration_max: 0,
   reservations_enabled: true,
   satellite: {
@@ -83,7 +83,7 @@ export const productRegionsExample: RegionsWithProduct = {
       project: 'rhub',
       url: 'https://openstack.example.com:13000',
     },
-    owner_group: '7670ac07-cb21-448d-af8a-6e3882216be3',
+    owner_group_name: 'group1',
     reservation_expiration_max: 0,
     reservations_enabled: true,
     satellite: {
@@ -136,10 +136,10 @@ export const regionUsageExample: Usage = {
     volumes_gb: 256,
   },
   total_quota_usage: {
-    num_vcpus: 0,
-    num_volumes: 0,
-    ram_mb: 0,
-    volumes_gb: 0,
+    num_vcpus: 9,
+    num_volumes: 10,
+    ram_mb: 11 * 1024,
+    volumes_gb: 12,
   },
   user_quota: {
     num_vcpus: 10,
@@ -148,10 +148,10 @@ export const regionUsageExample: Usage = {
     volumes_gb: 128,
   },
   user_quota_usage: {
-    num_vcpus: 0,
-    num_volumes: 0,
-    ram_mb: 0,
-    volumes_gb: 0,
+    num_vcpus: 9,
+    num_volumes: 10,
+    ram_mb: 11 * 1024,
+    volumes_gb: 12,
   },
 };
 

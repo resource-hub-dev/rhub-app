@@ -1,0 +1,26 @@
+.activity-title-text {
+    padding-right: 0.5em;
+    display: inline-block;
+}
+
+.activity-title-info-icon {
+    display: inline-block;
+    color: var(--pf-global--info-color--100);
+}
+
+.activity-charts-card-body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.quickcluster-activity-region-alert-title {
+    margin-right: 0.5em;
+    font-weight: bold;
+}
+
+.activity-alert-icon {
+    color: var(--pf-global--danger-color--100);
+    margin-right: 5px;
+}

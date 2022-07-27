@@ -32,7 +32,7 @@ export interface LabRegionData {
   lifespan_length: number | null;
   user_quota?: Quota | null;
   total_quota?: Quota | null;
-  owner_group: string;
+  owner_group_name: string;
   users_group: string | null;
   tower_id: number;
   openstack: Openstack;
@@ -124,7 +124,7 @@ export interface Usage {
 export interface LabRegionState {
   data: { [key: number]: LabRegionData };
   product_regions: RegionsWithProduct[];
-  usage?: Usage;
+  usage?: Record<number | string, Usage>;
   loading: boolean;
   errMsg: Error | {};
   error: boolean;

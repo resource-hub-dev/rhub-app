@@ -3,11 +3,14 @@ import { useSelector } from 'react-redux';
 import UtilizationChart from '@components/charts/UtilizationChart';
 import { Title } from '@patternfly/react-core';
 import { AppState } from '@store';
+import { round } from '@services/common';
 
 import '../QuickClusterWizard.css';
 import ResourceSummaryTable from './ResourceSummaryTable';
 
 export interface Props {
+  /** ID of Region that Usage is from */
+  regionId: number;
   /** vCPUs used by this QuickCluster */
   vCPUCoreUsed: number;
   /** RAM used by this QuickCluster */
@@ -23,6 +26,7 @@ export interface Props {
 }
 
 const GraphsUtilization: React.FC<Props> = ({
+  regionId,
   vCPUCoreUsed,
   ramMbUsed,
   volumesGbUsed,
@@ -31,13 +35,8 @@ const GraphsUtilization: React.FC<Props> = ({
   volumesGbQuota,
 }: Props) => {
   const userQuotaUsage = useSelector(
-    (state: AppState) => state.labRegion.usage?.user_quota_usage
+    (state: AppState) => state.labRegion.usage?.[regionId].user_quota_usage
   );
-
-  const round = (value: number, precision: number) => {
-    const multiplier = precision ? 10 ** precision : 1; // Math.pow(10, precision || 0);
-    return Math.round(value * multiplier) / multiplier;
-  };
 
   return (
     <div className="summary-charts-container">

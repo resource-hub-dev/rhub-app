@@ -33,7 +33,7 @@ const ClusterEvents: React.FC<Props> = ({ events }: Props) => {
       events.forEach((item) => {
         const row: IRow = [
           new Date(item.date).toLocaleString(),
-          item.user_id || '',
+          item.user_name || '',
           item.status || '',
           item.tower_job_id ? (
             <Link

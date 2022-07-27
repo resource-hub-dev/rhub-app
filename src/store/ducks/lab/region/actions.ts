@@ -31,13 +31,15 @@ export const loadProductRegionsRequest = (productId: number) =>
 export const loadProductRegionsSuccess = (data: RegionsWithProduct[]) =>
   action(LabRegionTypes.LOAD_PRODUCT_REGIONS_SUCCESS, { data });
 
-export const loadUsageRequest = (regionId: number) =>
+export const loadUsageRequest = (regionId: number | 'all') =>
   action(LabRegionTypes.LOAD_USAGE_REQUEST, {
     regionId,
   });
 
-export const loadUsageSuccess = (usage: Usage) =>
-  action(LabRegionTypes.LOAD_USAGE_SUCCESS, { usage });
+export const loadUsageSuccess = (
+  regionId: number | 'all',
+  usage: Usage | { [region: string]: Usage }
+) => action(LabRegionTypes.LOAD_USAGE_SUCCESS, { regionId, usage });
 
 export const loadFailure = (err: Error) =>
   action(LabRegionTypes.LOAD_FAILURE, err);
