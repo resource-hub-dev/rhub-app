@@ -1,4 +1,4 @@
-import { Error } from '@ducks/lab/types';
+import { Error } from '@ducks/types';
 import { action } from 'typesafe-actions';
 import {
   OpenStackCloudData,

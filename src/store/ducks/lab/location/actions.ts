@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 import { LabLocationTypes, LabLocation } from './types';
-import { Error } from '../types';
+import { Error } from '../../types';
 
 export const loadRequest = (
   locationId: number | 'all',
