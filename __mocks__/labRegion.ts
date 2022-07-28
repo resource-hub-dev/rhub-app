@@ -6,7 +6,7 @@ import {
   Usage,
 } from '@ducks/lab/region/types';
 
-import { Error } from '@ducks/lab/types';
+import { Error } from '@ducks/types';
 import { labLocationResponse } from './labLocation';
 
 export const regionExample: LabRegionData = {

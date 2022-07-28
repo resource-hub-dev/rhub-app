@@ -1,4 +1,4 @@
-import { Error } from '../types';
+import { Error } from '../../types';
 
 export enum LabLocationTypes {
   LOAD_REQUEST = '@lab/location/LOAD_REQUEST',

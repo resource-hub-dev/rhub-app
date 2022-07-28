@@ -7,7 +7,7 @@ import {
   RegionsWithProduct,
   Usage,
 } from './types';
-import { Error } from '../types';
+import { Error } from '../../types';
 
 export const loadRequest = (
   regionId: number | 'all',

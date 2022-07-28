@@ -1,4 +1,4 @@
-import { Error } from '@ducks/lab/types';
+import { Error } from '@ducks/types';
 
 // Action Types
 export enum OpenStackCloudTypes {

@@ -1,6 +1,6 @@
 import { LabPolicyData, LabPolicyModel } from '@ducks/lab/policy/types';
 
-import { Error } from '@ducks/lab/types';
+import { Error } from '@ducks/types';
 import { labLocationResponse } from './labLocation';
 
 export const labPolicyExample: LabPolicyData | LabPolicyModel = {
