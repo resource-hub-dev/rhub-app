@@ -11,6 +11,9 @@ import { LabPolicyState } from './ducks/lab/policy/types';
 import { ClusterState } from './ducks/lab/cluster/types';
 import { LabRegionState } from './ducks/lab/region/types';
 import { LabProductState } from './ducks/lab/product/types';
+import { LabLocationState } from './ducks/lab/location/types';
+import { OpenStackCloudState } from './ducks/openstack/cloud/types';
+import { OpenStackProjectState } from './ducks/openstack/project/types';
 
 export interface AppState {
   cowsay: CowsayState;
@@ -19,6 +22,9 @@ export interface AppState {
   cluster: ClusterState;
   labRegion: LabRegionState;
   labProduct: LabProductState;
+  labLocation: LabLocationState;
+  openstackCloud: OpenStackCloudState;
+  openstackProject: OpenStackProjectState;
 }
 
 const sagaMiddleware = createSagaMiddleware();
