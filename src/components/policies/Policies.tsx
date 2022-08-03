@@ -23,23 +23,27 @@ import {
 } from '@patternfly/react-core';
 
 import {
-  loadRequest,
+  loadRequest as loadPolicy,
   createRequest,
   deleteRequest,
   updateRequest,
 } from '@ducks/lab/policy/actions';
+import { loadRequest as loadLocation } from '@ducks/lab/location/actions';
+
 import { SubmitPolicyData } from '@ducks/lab/policy/types';
 
 import { AppState } from '@store';
 
 import PolicyForm, { PolicyFormData } from './PolicyForm';
+import { getDefaultFormValues, getSubmitData } from './helpers';
 
 const Policies: React.FC = () => {
   const dispatch = useDispatch();
   const token = useSelector((state: AppState) => state.user.current.token);
 
-  const policyView = useSelector((state: AppState) => state.labPolicy.data);
+  const policyStore = useSelector((state: AppState) => state.labPolicy.data);
   const errMsg = useSelector((state: AppState) => state.labPolicy.errMsg);
+  const loading = useSelector(
     (state: AppState) => state.labPolicy.loading || state.labLocation.loading
   );
   const error = useSelector((state: AppState) => state.labPolicy.error);
@@ -50,21 +54,26 @@ const Policies: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const [perPage, setPerPage] = useState<number>(10);
 
-  const currentPolicy = policyView[Number(policyId)];
-  const policyList = Object.values(policyView);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+
+  const [defaultValues, setDefaultValues] = useState<PolicyFormData>();
+  const queryPolicy = (): void => {
+    dispatch(loadPolicy('all'));
+    dispatch(loadLocation('all'));
+  };
+  useEffect(queryPolicy, [dispatch, token]);
+  useEffect(() => {
+    if (policyId) {
+      const currentPolicy = policyStore[policyId];
+      setDefaultValues(getDefaultFormValues(currentPolicy));
+    }
+  }, [policyId, policyStore]);
+  const policyList = Object.values(policyStore);
   const policyPaginated = policyList.slice(
     page * perPage - perPage,
     page * perPage
   );
-
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
-
-  const queryPolicy = (): void => {
-    dispatch(loadLocation('all'));
-  };
-  useEffect(queryPolicy, [dispatch, token]);
-
   // API actions
   const createPolicy = (value: SubmitPolicyData): void => {
     setCaptureError(true);
@@ -116,7 +125,7 @@ const Policies: React.FC = () => {
 
   const onSelectDataListItem = (id: string) => {
     setPolicyId(Number(id));
-    dispatch(loadRequest(Number(id)));
+    dispatch(loadPolicy(Number(id)));
     setIsEditModalOpen(true);
   };
 
@@ -155,72 +164,6 @@ const Policies: React.FC = () => {
   };
   useEffect(setError, [loading, errorCallback]);
 
-  const getSubmitData = (formData: PolicyFormData): SubmitPolicyData => ({
-    name: formData.name,
-    department: formData.department,
-    constraint: {
-      sched_avail:
-        formData.constraintsEnabled.schedAvail &&
-        formData.schedAvailFrom &&
-        formData.schedAvailTo
-          ? [formData.schedAvailFrom, formData.schedAvailTo]
-          : null,
-      serv_avail: formData.constraintsEnabled.servAvail
-        ? formData.servAvail
-        : null,
-      limit:
-        formData.constraintsEnabled.limit && formData.limit
-          ? formData.limit.reduce(
-              (result, current) => ({
-                ...result,
-                [current.key]: current.value,
-              }),
-              {}
-            )
-          : null,
-      density: formData.constraintsEnabled.density ? formData.density : null,
-      tag:
-        formData.constraintsEnabled.tag && formData.tag
-          ? formData.tag?.map((item) => item.value)
-          : null,
-      cost: formData.constraintsEnabled.cost ? formData.cost : null,
-      location: formData.constraintsEnabled.location ? formData.location : null,
-    },
-  });
-
-  const getDefaultFormValues = (): PolicyFormData => ({
-    name: currentPolicy.name,
-    department: currentPolicy.department,
-    schedAvailFrom: currentPolicy.constraint.sched_avail
-      ? currentPolicy.constraint.sched_avail[0]
-      : null,
-    schedAvailTo: currentPolicy.constraint.sched_avail
-      ? currentPolicy.constraint.sched_avail[1]
-      : null,
-    servAvail: Number(currentPolicy.constraint.serv_avail),
-    limit: currentPolicy.constraint.limit
-      ? Object.keys(currentPolicy.constraint.limit).map((key: string) => ({
-          key,
-          value: Object(currentPolicy.constraint.limit)[key],
-        }))
-      : null,
-    density: currentPolicy.constraint.density,
-    tag: currentPolicy.constraint.tag
-      ? currentPolicy.constraint.tag.map((value: string) => ({ value }))
-      : null,
-    cost: Number(currentPolicy.constraint.cost),
-    location: currentPolicy.constraint.location || 'AMS2',
-    constraintsEnabled: {
-      schedAvail: currentPolicy.constraint.sched_avail !== null,
-      servAvail: currentPolicy.constraint.serv_avail !== null,
-      limit: currentPolicy.constraint.limit !== null,
-      density: currentPolicy.constraint.density !== null,
-      tag: currentPolicy.constraint.tag !== null,
-      cost: currentPolicy.constraint.cost !== null,
-      location: currentPolicy.constraint.location !== null,
-    },
-  });
-
   const onCreateSubmit = (formData: PolicyFormData) => {
     createPolicy(getSubmitData(formData));
     setIsCreateModalOpen(false);
@@ -231,7 +174,12 @@ const Policies: React.FC = () => {
     setIsEditModalOpen(false);
   };
 
+  if (
+    loading &&
+    !policyStore[Number(policyId)] &&
+    !captureError &&
     !locations
+  ) {
     return (
       <div>
         <h3>Loading...</h3>
@@ -305,7 +253,7 @@ const Policies: React.FC = () => {
           onPerPageSelect={onPerPageSelect}
         />
 
-        {!loading && (
+        {!loading && policyStore[Number(policyId)] && (
           <Modal
             title="Edit Policy"
             isOpen={isEditModalOpen}
@@ -379,6 +327,9 @@ const Policies: React.FC = () => {
             </Button>,
           ]}
         >
+          <PolicyForm
+            onSubmit={onCreateSubmit}
+            type="create"
             locations={locations}
           />
         </Modal>
