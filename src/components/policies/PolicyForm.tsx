@@ -17,6 +17,7 @@ import {
   Controller,
   useFieldArray,
   Control,
+  FormProvider,
   useWatch,
 } from 'react-hook-form';
 import './PolicyForm.css';
@@ -60,17 +61,11 @@ const PolicyForm: React.FC<Props> = ({
   defaultValues,
   locations,
 }: Props) => {
-  const {
-    register,
-    setValue,
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm({
-    mode: 'onBlur',
+  const methods = useForm({
+    mode: 'onSubmit',
     defaultValues,
   });
+  const { control } = methods;
   const {
     fields: limits,
     append: addLimit,
@@ -99,13 +94,13 @@ const PolicyForm: React.FC<Props> = ({
   };
 
   const onDisableAllClick = () => {
-    setValue('constraintsEnabled.schedAvail', false);
-    setValue('constraintsEnabled.servAvail', false);
-    setValue('constraintsEnabled.limit', false);
-    setValue('constraintsEnabled.density', false);
-    setValue('constraintsEnabled.tag', false);
-    setValue('constraintsEnabled.cost', false);
-    setValue('constraintsEnabled.location', false);
+    methods.setValue('constraintsEnabled.schedAvail', false);
+    methods.setValue('constraintsEnabled.servAvail', false);
+    methods.setValue('constraintsEnabled.limit', false);
+    methods.setValue('constraintsEnabled.density', false);
+    methods.setValue('constraintsEnabled.tag', false);
+    methods.setValue('constraintsEnabled.cost', false);
+    methods.setValue('constraintsEnabled.location_id', false);
   };
 
   const today = new Date();
@@ -519,41 +514,56 @@ const PolicyForm: React.FC<Props> = ({
     };
 
   return (
-    <Form id={`${type}-policy-form`} onSubmit={handleSubmit(onSubmit)}>
-      <FormGroup
-        isRequired
-        label="Name"
-        fieldId="name"
-        validated={errors.name ? 'error' : 'default'}
-        helperTextInvalid={errors.name && errors.name.message}
+    <FormProvider {...methods}>
+      <Form
+        id={`${type}-policy-form`}
+        onSubmit={methods.handleSubmit(onSubmit)}
       >
-        <TextInput
-          {...register('name', { required: 'Name is required' })}
+        <FormGroup
           isRequired
-          type="text"
-          aria-labelledby="name"
-          validated={errors.name ? 'error' : 'default'}
-          onChange={() => undefined}
-        />
-      </FormGroup>
-      <FormGroup
-        isRequired
-        label="Department"
-        fieldId="department"
-        validated={errors.department ? 'error' : 'default'}
-        helperTextInvalid={errors.department && errors.department.message}
-      >
-        <TextInput
-          {...register('department', { required: 'Department is required' })}
+          label="Name"
+          fieldId="name"
+          validated={methods.formState.errors.name ? 'error' : 'default'}
+          helperTextInvalid={
+            methods.formState.errors.name &&
+            methods.formState.errors.name.message
+          }
+        >
+          <TextInput
+            {...methods.register('name', { required: 'Name is required' })}
+            isRequired
+            type="text"
+            aria-labelledby="name"
+            validated={methods.formState.errors.name ? 'error' : 'default'}
+            onChange={() => undefined}
+          />
+        </FormGroup>
+        <FormGroup
           isRequired
-          type="text"
-          aria-labelledby="department"
-          validated={errors.department ? 'error' : 'default'}
-          onChange={() => undefined}
-        />
-      </FormGroup>
-      <ConstraintsExpandable control={control} />
-    </Form>
+          label="Department"
+          fieldId="department"
+          validated={methods.formState.errors.department ? 'error' : 'default'}
+          helperTextInvalid={
+            methods.formState.errors.department &&
+            methods.formState.errors.department.message
+          }
+        >
+          <TextInput
+            {...methods.register('department', {
+              required: 'Department is required',
+            })}
+            isRequired
+            type="text"
+            aria-labelledby="department"
+            validated={
+              methods.formState.errors.department ? 'error' : 'default'
+            }
+            onChange={() => undefined}
+          />
+        </FormGroup>
+        <ConstraintsExpandable control={methods.control} />
+      </Form>
+    </FormProvider>
   );
 };
 
