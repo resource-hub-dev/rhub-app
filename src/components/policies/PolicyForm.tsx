@@ -174,21 +174,10 @@ const PolicyForm: React.FC<Props> = ({
             />
           }
         >
-          <FormGroup
-            label="Scheduled Availability"
-            labelInfo={
-              <Controller
-                name="constraintsEnabled.schedAvail"
-                control={control}
-                defaultValue={false}
-                render={({ field: { onChange, value } }) => (
-                  <Switch
-                    isChecked={value}
-                    onChange={onChange}
-                    id="sched-avail-switch"
-                    label="Enabled"
-                    labelOff="Disabled"
-                  />
+          <ScheduledAvailability
+            watchSchedAvailEnabled={watchSchedAvailEnabled}
+            currentDate={currentDate}
+          />
                 )}
               />
             }
