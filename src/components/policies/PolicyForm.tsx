@@ -24,6 +24,7 @@ import './PolicyForm.css';
 import { LabLocation } from '@ducks/lab/location/types';
 import ScheduledAvailability from './formField/ScheduleAvailability';
 import ServiceAvailability from './formField/ServiceAvailability';
+import Location from './formField/Location';
 
 interface ConstraintsEnabled {
   schedAvail: boolean;
@@ -180,6 +181,7 @@ const PolicyForm: React.FC<Props> = ({
             currentDate={currentDate}
           />
           <ServiceAvailability watchServAvailEnabled={watchServAvailEnabled} />
+          <ControlledField
             label="Limit"
             labelInfo={
               <Controller
@@ -333,85 +335,10 @@ const PolicyForm: React.FC<Props> = ({
             >
               Add
             </Button>
-          </FormGroup>
-          <FormGroup
-            label="Cost"
-            labelInfo={
-              <Controller
-                name="constraintsEnabled.cost"
-                control={control}
-                defaultValue={false}
-                render={({ field: { onChange, value } }) => (
-                  <Switch
-                    id="cost-switch"
-                    label="Enabled"
-                    labelOff="Disabled"
-                    isChecked={value}
-                    onChange={onChange}
-                  />
-                )}
-              />
-            }
-            fieldId="cost"
-            validated={errors.cost ? 'error' : 'default'}
-            helperTextInvalid={errors.cost && errors.cost.message}
-          >
-            <TextInput
-              {...register('cost', {
-                min: { value: 0, message: 'Cannot be negative' },
-                valueAsNumber: true,
-                disabled: !watchCostEnabled,
-              })}
-              isDisabled={!watchCostEnabled}
-              type="number"
-              defaultValue={0}
-              aria-labelledby="cost"
-              validated={errors.cost ? 'error' : 'default'}
-              onChange={() => undefined}
-            />
-          </FormGroup>
-          <FormGroup
-            label="Location"
-            labelInfo={
-              <Controller
-                name="constraintsEnabled.location"
-                control={control}
-                defaultValue={false}
-                render={({ field: { onChange, value } }) => (
-                  <Switch
-                    id="location-switch"
-                    label="Enabled"
-                    labelOff="Disabled"
-                    isChecked={value}
-                    onChange={onChange}
-                  />
-                )}
-              />
-            }
-            fieldId="location"
-          >
-            <Controller
-              name="location"
-              control={control}
-              defaultValue="AMS2"
-              render={({ field }) => (
-                <FormSelect
-                  {...field}
-                  isDisabled={!watchLocationEnabled}
-                  id="location-select"
-                >
-                  {locationOptions.map((option) => (
-                    <FormSelectOption
-                      key={`location-${option.value}`}
-                      value={option.value}
-                      label={option.label}
-                      isDisabled={!watchLocationEnabled}
-                    />
-                  ))}
-                </FormSelect>
-              )}
-            />
-          </FormGroup>
+          <Location
+            watchLocationEnabled={watchLocationEnabled}
+            locationOptions={locationOptions}
+          />
         </FormFieldGroupExpandable>
       );
     };
