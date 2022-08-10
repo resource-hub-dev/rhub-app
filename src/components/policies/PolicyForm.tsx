@@ -120,51 +120,34 @@ const PolicyForm: React.FC<Props> = ({
 
   const ConstraintsExpandable: React.FC<{ control: Control<PolicyFormData> }> =
     ({ control }) => {
-      const watchSchedAvailEnabled = useWatch({
-        control,
-        name: 'constraintsEnabled.schedAvail',
-        defaultValue: false,
-      });
-
-      const watchServAvailEnabled = useWatch({
-        control,
-        name: 'constraintsEnabled.servAvail',
-        defaultValue: false,
-      });
-
-      const watchLimitEnabled = useWatch({
-        control,
-        name: 'constraintsEnabled.limit',
-        defaultValue: false,
-      });
-
-      const watchDensityEnabled = useWatch({
-        control,
-        name: 'constraintsEnabled.density',
-        defaultValue: false,
-      });
-
-      const watchTagEnabled = useWatch({
-        control,
-        name: 'constraintsEnabled.tag',
-        defaultValue: false,
-      });
-
-      const watchCostEnabled = useWatch({
-        control,
-        name: 'constraintsEnabled.cost',
-        defaultValue: false,
-      });
-
-      const watchLocationEnabled = useWatch({
-        control,
-        name: 'constraintsEnabled.location',
-        defaultValue: false,
-      });
+      const useWatchFieldWrapper = (name: string) => {
+        return useWatch({
+          control,
+          name: name as any,
+        });
+      };
+      const watchSchedAvailEnabled = useWatchFieldWrapper(
+        'constraintsEnabled.schedAvail'
+      );
+      const watchServAvailEnabled = useWatchFieldWrapper(
+        'constraintsEnabled.servAvail'
+      );
+      const watchLimitEnabled = useWatchFieldWrapper(
+        'constraintsEnabled.limit'
+      );
+      const watchDensityEnabled = useWatchFieldWrapper(
+        'constraintsEnabled.density'
+      );
+      const watchTagEnabled = useWatchFieldWrapper('constraintsEnabled.tag');
+      const watchCostEnabled = useWatchFieldWrapper('constraintsEnabled.cost');
+      const watchLocationEnabled = useWatchFieldWrapper(
+        'constraintsEnabled.location_id'
+      );
 
       return (
         <FormFieldGroupExpandable
           toggleAriaLabel="constraints"
+          isExpanded
           header={
             <FormFieldGroupHeader
               titleText={{
