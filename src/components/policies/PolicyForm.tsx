@@ -23,6 +23,7 @@ import {
 import './PolicyForm.css';
 import { LabLocation } from '@ducks/lab/location/types';
 import ScheduledAvailability from './formField/ScheduleAvailability';
+import ServiceAvailability from './formField/ServiceAvailability';
 
 interface ConstraintsEnabled {
   schedAvail: boolean;
@@ -178,77 +179,7 @@ const PolicyForm: React.FC<Props> = ({
             watchSchedAvailEnabled={watchSchedAvailEnabled}
             currentDate={currentDate}
           />
-                )}
-              />
-            }
-            fieldId="sched-avail"
-          >
-            <Grid hasGutter md={6} sm={12}>
-              <GridItem>
-                <div>From</div>
-                <TextInput
-                  {...register('schedAvailFrom', {
-                    disabled: !watchSchedAvailEnabled,
-                  })}
-                  isDisabled={!watchSchedAvailEnabled}
-                  type="date"
-                  aria-label="sched-avail-from"
-                  defaultValue={currentDate}
-                  onChange={() => undefined}
-                />
-              </GridItem>
-              <GridItem>
-                <div>To</div>
-                <TextInput
-                  {...register('schedAvailTo', {
-                    disabled: !watchSchedAvailEnabled,
-                  })}
-                  isDisabled={!watchSchedAvailEnabled}
-                  type="date"
-                  aria-label="sched-avail-to"
-                  defaultValue={currentDate}
-                  onChange={() => undefined}
-                />
-              </GridItem>
-            </Grid>
-          </FormGroup>
-          <FormGroup
-            label="Service Availability"
-            labelInfo={
-              <Controller
-                name="constraintsEnabled.servAvail"
-                control={control}
-                defaultValue={false}
-                render={({ field: { onChange, value } }) => (
-                  <Switch
-                    id="serv-avail-switch"
-                    label="Enabled"
-                    labelOff="Disabled"
-                    isChecked={value}
-                    onChange={onChange}
-                  />
-                )}
-              />
-            }
-            fieldId="serv-avail"
-            validated={errors.servAvail ? 'error' : 'default'}
-            helperTextInvalid={errors.servAvail && errors.servAvail.message}
-          >
-            <TextInput
-              {...register('servAvail', {
-                min: { value: 0, message: 'Cannot be negative' },
-                valueAsNumber: true,
-                disabled: !watchServAvailEnabled,
-              })}
-              isDisabled={!watchServAvailEnabled}
-              type="number"
-              defaultValue={0}
-              aria-labelledby="serv-avail"
-              validated={errors.servAvail ? 'error' : 'default'}
-              onChange={() => undefined}
-            />
-          </FormGroup>
-          <FormGroup
+          <ServiceAvailability watchServAvailEnabled={watchServAvailEnabled} />
             label="Limit"
             labelInfo={
               <Controller
