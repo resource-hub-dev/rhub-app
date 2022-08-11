@@ -27,6 +27,7 @@ import ServiceAvailability from './formField/ServiceAvailability';
 import Location from './formField/Location';
 import Limit from './formField/Limit';
 import Tag from './formField/Tag';
+import Density from './formField/Density';
 
 interface ConstraintsEnabled {
   schedAvail: boolean;
@@ -208,6 +209,7 @@ const PolicyForm: React.FC<Props> = ({
               Add
             </Button>
           </ControlledField>
+          <Density watchDensityEnabled={watchDensityEnabled} />
           <ControlledField
             label="Tag"
             controllerName="constraintsEnabled.tag"
