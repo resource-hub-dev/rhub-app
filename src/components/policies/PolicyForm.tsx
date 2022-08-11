@@ -26,6 +26,7 @@ import ScheduledAvailability from './formField/ScheduleAvailability';
 import ServiceAvailability from './formField/ServiceAvailability';
 import Location from './formField/Location';
 import Limit from './formField/Limit';
+import Tag from './formField/Tag';
 
 interface ConstraintsEnabled {
   schedAvail: boolean;
@@ -207,51 +208,20 @@ const PolicyForm: React.FC<Props> = ({
               Add
             </Button>
           </ControlledField>
+          <ControlledField
             label="Tag"
-            labelInfo={
-              <Controller
-                name="constraintsEnabled.tag"
-                control={control}
-                defaultValue={false}
-                render={({ field: { onChange, value } }) => (
-                  <Switch
-                    id="tag-switch"
-                    label="Enabled"
-                    labelOff="Disabled"
-                    isChecked={value}
-                    onChange={onChange}
-                  />
-                )}
-              />
-            }
+            controllerName="constraintsEnabled.tag"
+            switchId="tag-switch"
             fieldId="tag"
           >
             <Grid hasGutter className="list-grid">
               {tags.map((tag, index) => (
-                <Fragment key={tag.id}>
-                  <GridItem span={10}>
-                    <TextInput
-                      {...register(`tag.${index}.value` as const, {
-                        disabled: !watchTagEnabled,
-                      })}
-                      isDisabled={!watchTagEnabled}
-                      type="text"
-                      aria-label={`tag-${index}`}
-                      onChange={() => undefined}
-                    />
-                  </GridItem>
-                  <GridItem span={2}>
-                    <Button
-                      isDisabled={!watchTagEnabled}
-                      type="button"
-                      aria-label={`tag-${index}-remove-btn`}
-                      variant="danger"
-                      onClick={() => handleTagRemove(index)}
-                    >
-                      Remove
-                    </Button>
-                  </GridItem>
-                </Fragment>
+                <Tag
+                  watchTagEnabled={watchTagEnabled}
+                  tag={tag}
+                  index={index}
+                  handleLimitRemove={handleTagRemove}
+                />
               ))}
             </Grid>
             <Button
@@ -262,6 +232,7 @@ const PolicyForm: React.FC<Props> = ({
             >
               Add
             </Button>
+          </ControlledField>
           <Location
             watchLocationEnabled={watchLocationEnabled}
             locationOptions={locationOptions}
