@@ -25,6 +25,7 @@ import { LabLocation } from '@ducks/lab/location/types';
 import ScheduledAvailability from './formField/ScheduleAvailability';
 import ServiceAvailability from './formField/ServiceAvailability';
 import Location from './formField/Location';
+import Limit from './formField/Limit';
 
 interface ConstraintsEnabled {
   schedAvail: boolean;
@@ -183,63 +184,18 @@ const PolicyForm: React.FC<Props> = ({
           <ServiceAvailability watchServAvailEnabled={watchServAvailEnabled} />
           <ControlledField
             label="Limit"
-            labelInfo={
-              <Controller
-                name="constraintsEnabled.limit"
-                control={control}
-                defaultValue={false}
-                render={({ field: { onChange, value } }) => (
-                  <Switch
-                    id="limit-switch"
-                    label="Enabled"
-                    labelOff="Disabled"
-                    isChecked={value}
-                    onChange={onChange}
-                  />
-                )}
-              />
-            }
+            controllerName="constraintsEnabled.limit"
+            switchId="limit-switch"
             fieldId="limit"
           >
             <Grid hasGutter className="list-grid">
               {limits.map((limit, index) => (
-                <Fragment key={limit.id}>
-                  <GridItem span={5}>
-                    <TextInput
-                      {...register(`limit.${index}.key` as const, {
-                        disabled: !watchLimitEnabled,
-                      })}
-                      isDisabled={!watchLimitEnabled}
-                      type="text"
-                      aria-label={`limit-${index}`}
-                      onChange={() => undefined}
-                      placeholder="Key"
-                    />
-                  </GridItem>
-                  <GridItem span={5}>
-                    <TextInput
-                      {...register(`limit.${index}.value` as const, {
-                        disabled: !watchLimitEnabled,
-                      })}
-                      isDisabled={!watchLimitEnabled}
-                      type="text"
-                      aria-label={`limit-${index}`}
-                      onChange={() => undefined}
-                      placeholder="Value"
-                    />
-                  </GridItem>
-                  <GridItem span={2}>
-                    <Button
-                      isDisabled={!watchLimitEnabled}
-                      type="button"
-                      aria-label={`limit-${index}-remove-btn`}
-                      variant="danger"
-                      onClick={() => handleLimitRemove(index)}
-                    >
-                      Remove
-                    </Button>
-                  </GridItem>
-                </Fragment>
+                <Limit
+                  watchLimitEnabled={watchLimitEnabled}
+                  limit={limit}
+                  index={index}
+                  handleLimitRemove={handleLimitRemove}
+                />
               ))}
             </Grid>
             <Button
@@ -250,36 +206,7 @@ const PolicyForm: React.FC<Props> = ({
             >
               Add
             </Button>
-          </FormGroup>
-          <FormGroup
-            label="Density"
-            labelInfo={
-              <Controller
-                name="constraintsEnabled.density"
-                control={control}
-                defaultValue={false}
-                render={({ field: { onChange, value } }) => (
-                  <Switch
-                    id="density-switch"
-                    label="Enabled"
-                    labelOff="Disabled"
-                    isChecked={value}
-                    onChange={onChange}
-                  />
-                )}
-              />
-            }
-            fieldId="density"
-          >
-            <TextInput
-              {...register('density', { disabled: !watchDensityEnabled })}
-              isDisabled={!watchDensityEnabled}
-              type="text"
-              aria-labelledby="density"
-              onChange={() => undefined}
-            />
-          </FormGroup>
-          <FormGroup
+          </ControlledField>
             label="Tag"
             labelInfo={
               <Controller
