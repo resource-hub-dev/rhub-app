@@ -24,6 +24,7 @@ import './PolicyForm.css';
 import { LabLocation } from '@ducks/lab/location/types';
 import ScheduledAvailability from './formField/ScheduleAvailability';
 import ServiceAvailability from './formField/ServiceAvailability';
+import Cost from './formField/Cost';
 import Location from './formField/Location';
 import Limit from './formField/Limit';
 import Tag from './formField/Tag';
@@ -235,6 +236,7 @@ const PolicyForm: React.FC<Props> = ({
               Add
             </Button>
           </ControlledField>
+          <Cost watchCostEnabled={watchCostEnabled} />
           <Location
             watchLocationEnabled={watchLocationEnabled}
             locationOptions={locationOptions}
