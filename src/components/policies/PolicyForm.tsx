@@ -1,20 +1,15 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
   Button,
   Form,
   FormGroup,
   FormFieldGroupExpandable,
   FormFieldGroupHeader,
-  Switch,
   TextInput,
-  FormSelect,
-  FormSelectOption,
   Grid,
-  GridItem,
 } from '@patternfly/react-core';
 import {
   useForm,
-  Controller,
   useFieldArray,
   Control,
   FormProvider,
@@ -27,6 +22,7 @@ import ServiceAvailability from './formField/ServiceAvailability';
 import Cost from './formField/Cost';
 import Location from './formField/Location';
 import Limit from './formField/Limit';
+import ControlledField from './formField/ControlledField';
 import Tag from './formField/Tag';
 import Density from './formField/Density';
 
