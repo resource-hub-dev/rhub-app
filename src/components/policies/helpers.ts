@@ -7,7 +7,6 @@ import { PolicyFormData } from './PolicyForm';
 export const getDefaultFormValues = (
   currentPolicy: LabPolicyData
 ): PolicyFormData => {
-  console.log(currentPolicy);
   return {
     name: currentPolicy.name,
     department: currentPolicy.department,
@@ -45,7 +44,6 @@ export const getDefaultFormValues = (
 };
 
 export const getSubmitData = (formData: PolicyFormData): SubmitPolicyData => {
-  console.log(formData);
   return {
     name: formData.name,
     department: formData.department,
