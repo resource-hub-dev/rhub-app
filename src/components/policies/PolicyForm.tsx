@@ -261,6 +261,7 @@ const PolicyForm: React.FC<Props> = ({
             {...methods.register('name', { required: 'Name is required' })}
             isRequired
             type="text"
+            aria-label="name"
             aria-labelledby="name"
             validated={methods.formState.errors.name ? 'error' : 'default'}
             onChange={() => undefined}
@@ -283,6 +284,7 @@ const PolicyForm: React.FC<Props> = ({
             isRequired
             type="text"
             aria-labelledby="department"
+            aria-label="department"
             validated={
               methods.formState.errors.department ? 'error' : 'default'
             }
