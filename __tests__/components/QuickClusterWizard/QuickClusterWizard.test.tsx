@@ -136,7 +136,8 @@ describe('<QuickClusterWizard />', () => {
 
     // Closes the window
     expect(history.action).toBe('POP');
-  });
+    // Increase timeout from 5000ms to 10000ms to avoid memory
+  }, 10000);
 
   test('Next and Back buttons', async () => {
     const { result } = connectedRender(
