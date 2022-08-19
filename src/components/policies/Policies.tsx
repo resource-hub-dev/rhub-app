@@ -174,12 +174,7 @@ const Policies: React.FC = () => {
     setIsEditModalOpen(false);
   };
 
-  if (
-    loading &&
-    !policyStore[Number(policyId)] &&
-    !captureError &&
-    !locations
-  ) {
+  if (loading || (!policyStore[Number(policyId)] && !locations)) {
     return (
       <div>
         <h3>Loading...</h3>
