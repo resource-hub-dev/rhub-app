@@ -1,7 +1,9 @@
+import { LabLocationState } from '@ducks/lab/location/types';
 import { LabPolicyModel, LabPolicyState } from '@ducks/lab/policy/types';
 import { UserState } from '@ducks/user/types';
 
 import { loadedUser } from '@mocks/user';
+import { labLocationResponse } from './labLocation';
 import { labPolicyExample } from './labPolicy';
 
 export const newInvalidPolicy = '{"name": ';
@@ -44,17 +46,26 @@ for (let i = 1; i <= 11; i += 1) {
   };
 }
 
+const labLocation = {
+  data: { [labLocationResponse.id]: labLocationResponse },
+  loading: false,
+  errMsg: {},
+  error: false,
+};
+
 export const manyPoliciesState: exampleState = {
   user: userState,
   labPolicy: {
     ...labPolicyState,
     data: manyPoliciesData,
   },
+  labLocation,
 };
 
 export const loadedState: exampleState = {
   user: userState,
   labPolicy: labPolicyState,
+  labLocation,
 };
 
 export const noPolicyState: exampleState = {
@@ -63,6 +74,7 @@ export const noPolicyState: exampleState = {
     ...labPolicyState,
     data: {},
   },
+  labLocation,
 };
 
 export const loadingState: exampleState = {
@@ -72,6 +84,10 @@ export const loadingState: exampleState = {
   },
   labPolicy: {
     ...labPolicyState,
+    loading: true,
+  },
+  labLocation: {
+    ...labLocation,
     loading: true,
   },
 };
@@ -85,9 +101,11 @@ export const errorState: exampleState = {
       detail: 'error message detail',
     },
   },
+  labLocation,
 };
 
 interface exampleState {
   user: UserState;
   labPolicy: LabPolicyState;
+  labLocation: LabLocationState;
 }
