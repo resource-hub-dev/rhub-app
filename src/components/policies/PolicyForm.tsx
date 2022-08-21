@@ -20,6 +20,8 @@ import {
   useWatch,
 } from 'react-hook-form';
 import './PolicyForm.css';
+import { LabLocation } from '@ducks/lab/location/types';
+import ScheduledAvailability from './formField/ScheduleAvailability';
 
 interface ConstraintsEnabled {
   schedAvail: boolean;
@@ -28,7 +30,7 @@ interface ConstraintsEnabled {
   density: boolean;
   tag: boolean;
   cost: boolean;
-  location: boolean;
+  location_id: boolean;
 }
 
 export interface PolicyFormData {
@@ -41,7 +43,7 @@ export interface PolicyFormData {
   density: string | null;
   tag: { value: string }[] | null;
   cost: number | null;
-  location: string | null;
+  location: string | number | null;
   constraintsEnabled: ConstraintsEnabled;
 }
 
@@ -49,12 +51,14 @@ interface Props {
   onSubmit: (data: PolicyFormData) => void;
   type: 'create' | 'edit';
   defaultValues?: PolicyFormData;
+  locations: { [key: string]: LabLocation };
 }
 
 const PolicyForm: React.FC<Props> = ({
   onSubmit,
   type,
   defaultValues,
+  locations,
 }: Props) => {
   const {
     register,
@@ -112,20 +116,12 @@ const PolicyForm: React.FC<Props> = ({
     day < 10 ? '0' : ''
   }${day}`;
 
-  const locationOptions = [
-    { value: 'AMS2', label: 'Amsterdam' },
-    { value: 'PEK2', label: 'Beijing' },
-    { value: 'BNE', label: 'Brisbane' },
-    { value: 'BRQ', label: 'Brno' },
-    { value: 'FAB', label: 'Farnborough' },
-    { value: 'PHX2', label: 'Phoenix' },
-    { value: 'PNQ2', label: 'Pune' },
-    { value: 'RDU2', label: 'Raleigh' },
-    { value: 'GRU2', label: 'São Paulo' },
-    { value: 'SIN2', label: 'Singapore' },
-    { value: 'TLV', label: 'Tel Aviv' },
-    { value: 'NRT', label: 'Tokyo' },
-  ];
+  const locationOptions = Object.values(locations).map((value: LabLocation) => {
+    return {
+      value: value.id,
+      label: value.description,
+    };
+  });
 
   const ConstraintsExpandable: React.FC<{ control: Control<PolicyFormData> }> =
     ({ control }) => {

@@ -48,16 +48,23 @@ describe('policy saga', () => {
   });
 
   test('creates policy', () => {
+    const apiResponse = {
+      data: { data: [mocks.labPolicyExample] },
+    };
     return expectSaga(rootSaga)
-      .dispatch(actions.createRequest(mocks.labPolicyExample))
-      .provide([[matchers.call.fn(api.post), {}]])
+      .dispatch(actions.createRequest(mocks.policySubmitExample))
+      .provide([
+        [matchers.call.fn(api.post), {}],
+        [matchers.call.fn(api.get), apiResponse],
+      ])
       .put(actions.createSuccess())
+      .put(actions.loadRequest('all'))
       .silentRun();
   });
 
   test('create failure', () => {
     return expectSaga(rootSaga)
-      .dispatch(actions.createRequest(mocks.labPolicyExample))
+      .dispatch(actions.createRequest(mocks.policySubmitExample))
       .provide([[matchers.call.fn(api.post), throwError(error)]])
       .put(actions.createFailure(mocks.errorExample))
       .silentRun();
@@ -65,7 +72,7 @@ describe('policy saga', () => {
 
   test('updates policy', () => {
     return expectSaga(rootSaga)
-      .dispatch(actions.updateRequest(1, mocks.labPolicyExample))
+      .dispatch(actions.updateRequest(1, mocks.policySubmitExample))
       .provide([[matchers.call.fn(api.patch), {}]])
       .put(actions.updateSuccess())
       .silentRun();
@@ -73,7 +80,7 @@ describe('policy saga', () => {
 
   test('update failure', () => {
     return expectSaga(rootSaga)
-      .dispatch(actions.updateRequest(1, mocks.labPolicyExample))
+      .dispatch(actions.updateRequest(1, mocks.policySubmitExample))
       .provide([[matchers.call.fn(api.patch), throwError(error)]])
       .put(actions.updateFailure(mocks.errorExample))
       .silentRun();

@@ -40,9 +40,10 @@ const Policies: React.FC = () => {
 
   const policyView = useSelector((state: AppState) => state.labPolicy.data);
   const errMsg = useSelector((state: AppState) => state.labPolicy.errMsg);
-  const loading = useSelector((state: AppState) => state.labPolicy.loading);
+    (state: AppState) => state.labPolicy.loading || state.labLocation.loading
+  );
   const error = useSelector((state: AppState) => state.labPolicy.error);
-
+  const locations = useSelector((state: AppState) => state.labLocation.data);
   const [policyId, setPolicyId] = useState<number | undefined>(undefined);
   const [captureError, setCaptureError] = useState<boolean>(false);
 
@@ -60,7 +61,7 @@ const Policies: React.FC = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
   const queryPolicy = (): void => {
-    dispatch(loadRequest('all'));
+    dispatch(loadLocation('all'));
   };
   useEffect(queryPolicy, [dispatch, token]);
 
@@ -230,7 +231,7 @@ const Policies: React.FC = () => {
     setIsEditModalOpen(false);
   };
 
-  if (loading && !currentPolicy && !captureError) {
+    !locations
     return (
       <div>
         <h3>Loading...</h3>
@@ -347,7 +348,8 @@ const Policies: React.FC = () => {
             <PolicyForm
               onSubmit={onEditSubmit}
               type="edit"
-              defaultValues={currentPolicy && getDefaultFormValues()}
+              locations={locations}
+              defaultValues={defaultValues}
             />
           </Modal>
         )}
@@ -377,7 +379,8 @@ const Policies: React.FC = () => {
             </Button>,
           ]}
         >
-          <PolicyForm onSubmit={onCreateSubmit} type="create" />
+            locations={locations}
+          />
         </Modal>
       </PageSection>
     </>
