@@ -29,6 +29,7 @@ export interface LabPolicyData {
     tag: string[];
     cost: number;
     location: LabLocation;
+    location_id?: number;
   };
 }
 
@@ -57,7 +58,7 @@ export interface SubmitPolicyData {
     density: string | null;
     tag: string[] | null;
     cost: number | null;
-    location: string | null;
+    location_id: number | null;
   };
 }
 
