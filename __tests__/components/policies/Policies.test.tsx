@@ -1,12 +1,14 @@
 import React from 'react';
 
 import { connectedRender, fireEvent } from '@tests/testUtils';
+import { waitFor } from '@testing-library/react';
 
 import { LabPolicyTypes } from '@ducks/lab/policy/types';
 
 import Policies from '@components/policies/Policies';
 
 import * as mocks from '@mocks/policies';
+import { act } from 'react-dom/test-utils';
 
 describe('<Policies />', () => {
   test('Renders with no policies', async () => {
@@ -23,7 +25,6 @@ describe('<Policies />', () => {
 
   test('Renders loading', async () => {
     const { result } = connectedRender(<Policies />, mocks.loadingState);
-
     expect(result.queryByText(/Loading\.\.\./)).toBeInTheDocument();
 
     expect(result.queryByText(/Manage Policies/)).not.toBeInTheDocument();
@@ -44,70 +45,31 @@ describe('<Policies />', () => {
     expect(result.queryByText(/department/)).toBeInTheDocument();
   });
 
-  test('Displays error', async () => {
-    const { result } = connectedRender(<Policies />, mocks.errorState);
-
-    // Delete policy to change captureError value
-    const policyBtn = result.getByText(/name/);
-    fireEvent.click(policyBtn);
-
-    const deleteBtn = result.getByText(/Delete/);
-    fireEvent.click(deleteBtn);
-
-    expect(result.queryByText(/error message detail/)).toBeInTheDocument();
-  });
-
   test('Creates a policy', async () => {
     const { result, store } = connectedRender(<Policies />, mocks.loadedState);
+    fireEvent.click(result.getByText('Create a Policy'));
+    // Validate date in the modal
+    const departmentText = result.getByRole('textbox', {
+      name: /department/i,
+    }) as HTMLInputElement;
+    const nameTextBox = result.getByRole('textbox', { name: /name/i });
+    fireEvent.blur(nameTextBox, {
+      target: { value: 'policyA' },
+    });
 
-    const createPolicyBtn = result.getByText(/Create a Policy/);
+    fireEvent.blur(departmentText, {
+      target: { value: 'departmentA' },
+    });
 
-    // Open Create Policy modal
-    fireEvent.click(createPolicyBtn);
-
-    expect(result.queryByText(/Create Policy/)).toBeInTheDocument();
-
-    const textArea = result.getByRole('textbox');
+    expect(departmentText.value).toBe('departmentA');
     const submitBtn = result.getByText(/Submit/);
 
-    // Enter invalid policy
-    fireEvent.change(textArea, {
-      target: {
-        value: mocks.newInvalidPolicy,
-      },
+    await act(async () => {
+      fireEvent.click(submitBtn);
     });
-
-    fireEvent.click(submitBtn);
-
-    expect(result.queryByText(/Invalid JSON/)).toBeInTheDocument();
-
-    // One Load Request for loading existing policies
-    expect(store.getActions()).toHaveLength(1);
-
-    // Enter valid policy
-    fireEvent.change(textArea, {
-      target: {
-        value: JSON.stringify(mocks.newValidPolicy),
-      },
-    });
-
-    fireEvent.click(submitBtn);
-
     // Create and Load requests should be dispatched
     const dispatchedActions = store.getActions();
-
-    expect(dispatchedActions[dispatchedActions.length - 2]).toMatchObject({
-      type: LabPolicyTypes.CREATE_REQUEST,
-      payload: mocks.newValidPolicy,
-    });
-
-    expect(dispatchedActions[dispatchedActions.length - 1]).toMatchObject({
-      type: LabPolicyTypes.LOAD_REQUEST,
-      payload: {
-        policyId: 'all',
-        parameters: {},
-      },
-    });
+    expect(dispatchedActions).toHaveLength(3);
   });
 
   test('Edits a policy', async () => {
@@ -120,57 +82,58 @@ describe('<Policies />', () => {
 
     // Validate date in the modal
     const submitBtn = result.getByText(/Submit/);
-    const textArea = result.getByRole(/textbox/);
-    const content = JSON.parse(textArea.textContent as string);
+    const departmentText = result.getByRole('textbox', {
+      name: /department/i,
+    }) as HTMLInputElement;
+    await waitFor(() => {
+      const nameTextBox = result.getByRole('textbox', { name: /name/i });
+      fireEvent.blur(nameTextBox, {
+        target: { value: 'policyA' },
+      });
+    });
 
-    expect(result.queryByText(/Policy data/)).toBeInTheDocument();
-    expect(content).toMatchObject(mocks.existingPolicy);
+    const allSwitches = result.getAllByRole(/checkbox/)!;
+    allSwitches.forEach((elem) => {
+      fireEvent.change(elem, { target: { checked: '' } });
+    });
+    expect(result.getByLabelText(/sched-avail-from/)).not.toBeDisabled();
+    const limitAddButton = result.getByLabelText(/add-limit-button/);
+    fireEvent.click(limitAddButton);
+    expect(result.queryByText(/Scheduled Availability/)).toBeInTheDocument();
+    const [limitKeyInput, limitValueInput] =
+      result.getAllByLabelText(/limit-0/);
+
+    fireEvent.change(limitKeyInput, {
+      target: { value: 'key' },
+    });
+    fireEvent.change(limitValueInput, {
+      target: { value: 'value' },
+    });
+    fireEvent.click(limitAddButton);
+    fireEvent.click(result.getByLabelText(/limit-0-remove-btn/));
 
     // One Load Request for policies and one load request for the policy being edited
-    expect(store.getActions()).toHaveLength(2);
+    expect(store.getActions()).toHaveLength(3);
 
     // Enter invalid data
-    fireEvent.change(textArea, {
-      target: {
-        value: mocks.newInvalidPolicy,
-      },
+    fireEvent.blur(departmentText, {
+      target: { value: '' },
     });
-
-    fireEvent.click(submitBtn);
-
-    expect(result.queryByText(/Invalid JSON/)).toBeInTheDocument();
+    await fireEvent.click(submitBtn);
+    expect(departmentText).toBeInvalid();
 
     // Enter valid policy
-    const newContent = {
-      ...content,
-      name: 'changedName',
-    };
-
-    fireEvent.change(textArea, {
-      target: {
-        value: JSON.stringify(newContent),
-      },
+    fireEvent.blur(departmentText, {
+      target: { value: 'departmentA' },
     });
+    expect(departmentText.value).toBe('departmentA');
 
-    fireEvent.click(submitBtn);
+    await act(async () => {
+      fireEvent.click(submitBtn);
+    });
 
     const dispatchedActions = store.getActions();
-
-    expect(dispatchedActions[dispatchedActions.length - 2]).toMatchObject({
-      type: LabPolicyTypes.UPDATE_REQUEST,
-      payload: {
-        policyId: 1,
-        data: newContent,
-      },
-    });
-
-    expect(dispatchedActions[dispatchedActions.length - 1]).toMatchObject({
-      type: LabPolicyTypes.LOAD_REQUEST,
-      payload: {
-        policyId: 'all',
-        parameters: {},
-      },
-    });
+    expect(dispatchedActions).toHaveLength(5);
   });
 
   test('Deletes a policy', async () => {
@@ -187,14 +150,14 @@ describe('<Policies />', () => {
     const dispatchedActions = store.getActions();
 
     // Dispatches a delete and load request
-    expect(dispatchedActions[dispatchedActions.length - 2]).toMatchObject({
+    expect(dispatchedActions[dispatchedActions.length - 1]).toMatchObject({
       type: LabPolicyTypes.DELETE_REQUEST,
       payload: {
         policyId: 1,
       },
     });
 
-    expect(dispatchedActions[dispatchedActions.length - 1]).toMatchObject({
+    expect(dispatchedActions[0]).toMatchObject({
       type: LabPolicyTypes.LOAD_REQUEST,
       payload: {
         policyId: 'all',
@@ -210,13 +173,13 @@ describe('<Policies />', () => {
     const policyBtn = result.getByText(/name/);
     fireEvent.click(policyBtn);
 
-    expect(result.queryByText(/Policy data/)).toBeInTheDocument();
+    expect(result.queryByText(/Edit Policy/)).toBeInTheDocument();
 
-    let closeBtn = result.getByLabelText(/Close drawer panel/);
+    let closeBtn = result.getByText(/Cancel/);
 
     fireEvent.click(closeBtn);
 
-    expect(result.queryByText(/Policy data/)).not.toBeVisible();
+    expect(result.queryByText(/Edit Policy/)).not.toBeInTheDocument();
 
     // Open and close 'Create policy' modal
     const createBtn = result.getByText(/Create a Policy/);
@@ -224,7 +187,7 @@ describe('<Policies />', () => {
 
     expect(result.queryByText(/Create Policy/)).toBeInTheDocument();
 
-    closeBtn = result.getByLabelText(/^Close$/);
+    closeBtn = result.getByText(/Cancel/);
 
     fireEvent.click(closeBtn);
 
