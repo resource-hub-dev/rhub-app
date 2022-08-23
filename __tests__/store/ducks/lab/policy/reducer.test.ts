@@ -73,15 +73,15 @@ describe('policy reducer', () => {
     });
   });
 
-  // test('handles create request', () => {
-  //   expect(
-  //     reducer(INITIAL_STATE, actions.createRequest(mocks.labPolicyExample))
-  //   ).toEqual({
-  //     ...INITIAL_STATE,
-  //     loading: true,
-  //     error: false,
-  //   });
-  // });
+  test('handles create request', () => {
+    expect(
+      reducer(INITIAL_STATE, actions.createRequest(mocks.policySubmitExample))
+    ).toEqual({
+      ...INITIAL_STATE,
+      loading: true,
+      error: false,
+    });
+  });
 
   test('handles create success', () => {
     expect(
@@ -118,15 +118,18 @@ describe('policy reducer', () => {
     });
   });
 
-  // test('handles update request', () => {
-  //   expect(
-  //     reducer(INITIAL_STATE, actions.updateRequest(1, mocks.labPolicyExample))
-  //   ).toEqual({
-  //     ...INITIAL_STATE,
-  //     loading: true,
-  //     error: false,
-  //   });
-  // });
+  test('handles update request', () => {
+    expect(
+      reducer(
+        INITIAL_STATE,
+        actions.updateRequest(1, mocks.policySubmitExample)
+      )
+    ).toEqual({
+      ...INITIAL_STATE,
+      loading: true,
+      error: false,
+    });
+  });
 
   test('handles update success', () => {
     expect(
