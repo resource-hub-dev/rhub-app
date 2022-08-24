@@ -14,6 +14,7 @@ import { LabProductState } from './ducks/lab/product/types';
 import { LabLocationState } from './ducks/lab/location/types';
 import { OpenStackCloudState } from './ducks/openstack/cloud/types';
 import { OpenStackProjectState } from './ducks/openstack/project/types';
+import { SatelliteState } from './ducks/satellite/types';
 
 export interface AppState {
   cowsay: CowsayState;
@@ -25,6 +26,7 @@ export interface AppState {
   labLocation: LabLocationState;
   openstackCloud: OpenStackCloudState;
   openstackProject: OpenStackProjectState;
+  satellite: SatelliteState;
 }
 
 const sagaMiddleware = createSagaMiddleware();
