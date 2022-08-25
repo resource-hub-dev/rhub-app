@@ -8,6 +8,7 @@ import labRegion from './lab/region';
 import labLocation from './lab/location';
 import openstackCloud from './openstack/cloud';
 import openstackProject from './openstack/project';
+import dns from './dns';
 import satellite from './satellite';
 
 export default combineReducers({
@@ -21,4 +22,5 @@ export default combineReducers({
   openstackCloud,
   openstackProject,
   satellite,
+  dns,
 });

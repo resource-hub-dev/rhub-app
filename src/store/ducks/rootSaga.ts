@@ -11,6 +11,7 @@ import labLocationSagas from './lab/location/sagas';
 import openstackCloudSagas from './openstack/cloud/sagas';
 import openstackProjectSagas from './openstack/project/sagas';
 import satellite from './satellite/sagas';
+import dns from './dns/sagas';
 
 export default function* rootSaga(): Generator {
   return yield all([
@@ -24,5 +25,6 @@ export default function* rootSaga(): Generator {
     ...openstackCloudSagas,
     ...openstackProjectSagas,
     ...satellite,
+    ...dns,
   ]);
 }
