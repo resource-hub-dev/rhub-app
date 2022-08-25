@@ -1,30 +1,30 @@
 /* eslint-disable import/prefer-default-export */
-import { SatelliteData, SatelliteInput } from '@ducks/satellite/types';
+import { DNSData, DNSInput } from '@ducks/dns/types';
 
-export const satelliteDataExample: SatelliteData = {
+export const DNSDataExample: DNSData = {
   credentials: {
-    password: 'password1',
-    username: 'user1',
+    name: 'secret1',
+    secret: '8p1jsmz1j19z1gn7fgcq',
   },
-  description: 'Satellite server for RDU site.',
+  description: 'DNS server for RDU site.',
   hostname: 'host1.example.com',
   id: 1,
-  insecure: true,
-  name: 'satellite-rdu',
+  name: 'dns-rdu',
   owner_group_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
   owner_group_name: 'group1',
+  zone: 'example.com',
 };
 
-export const satelliteInputExample: SatelliteInput = {
+export const DNSInputExample: DNSInput = {
   credentials: {
-    password: 'password1',
-    username: 'user1',
+    name: 'secret1',
+    secret: '8p1jsmz1j19z1gn7fgcq',
   },
-  description: 'Satellite server for RDU site.',
+  description: 'DNS server for RDU site.',
   hostname: 'host1.example.com',
-  insecure: true,
-  name: 'satellite-rdu',
+  name: 'dns-rdu',
   owner_group_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+  zone: 'example.com',
 };
 
 export const errorExample = {
