@@ -117,19 +117,19 @@ const ClusterConfiguration: React.FC<Props> = ({
     <>
       <StepHeader text="Cluster Configuration" />
       <p>Please enter basic configuration for your QuickCluster</p>
-      {regionUsage && quota && flavors && (
-        <>
-          <AlertGroup isToast isLiveRegion>
-            {errors}
-          </AlertGroup>
-          <div className="configuration-step-border">
-            <Questionnaire
-              updateUsage={updateUsage}
-              parameters={parameters}
-              onSubmit={onSubmit}
-              stepId={3}
-            />
-          </div>
+      <>
+        <AlertGroup isToast isLiveRegion>
+          {errors}
+        </AlertGroup>
+        <div className="configuration-step-border">
+          <Questionnaire
+            updateUsage={updateUsage}
+            parameters={parameters}
+            onSubmit={onSubmit}
+            stepId={3}
+          />
+        </div>
+        {regionUsage && flavors && quota && (
           <GraphsUtilization
             regionId={regionId}
             vCPUCoreUsed={totalUsage?.num_vcpus}
@@ -139,8 +139,8 @@ const ClusterConfiguration: React.FC<Props> = ({
             ramMbQuota={quota.ram_mb}
             volumesGbQuota={quota.volumes_gb}
           />
-        </>
-      )}
+        )}
+      </>
     </>
   );
 };
