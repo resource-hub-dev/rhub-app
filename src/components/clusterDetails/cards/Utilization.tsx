@@ -1,9 +1,11 @@
+/* eslint-disable react/no-unused-prop-types */
 import React from 'react';
 import UtilizationChart from '@components/charts/UtilizationChart';
 import { Card, CardBody, CardTitle } from '@patternfly/react-core';
 import { round } from '@services/common';
 import '../ClusterDetails.css';
 
+// TODO: num_volumes is currently an unused prop, future work could include a graph for volume counts
 export interface Props {
   num_vcpus: number;
   ram_mb: number;
