@@ -17,7 +17,7 @@ const Cost: React.FC<Props> = ({ watchCostEnabled }: Props) => {
       switchId="cost-switch"
       controllerName="constraintsEnabled.cost"
       fieldId="cost"
-      validated={-errors.cost ? 'error' : 'default'}
+      validated={errors.cost ? 'error' : 'default'}
       helperTextInvalid={errors.cost && errors.cost.message}
     >
       <TextInput

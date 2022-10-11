@@ -120,126 +120,125 @@ const PolicyForm: React.FC<Props> = ({
     };
   });
 
-  const ConstraintsExpandable: React.FC<{ control: Control<PolicyFormData> }> =
-    ({ control }) => {
-      const useWatchFieldWrapper = (name: string) => {
-        return useWatch({
-          control,
-          name: name as any,
-        });
-      };
-      const watchSchedAvailEnabled = useWatchFieldWrapper(
-        'constraintsEnabled.schedAvail'
-      );
-      const watchServAvailEnabled = useWatchFieldWrapper(
-        'constraintsEnabled.servAvail'
-      );
-      const watchLimitEnabled = useWatchFieldWrapper(
-        'constraintsEnabled.limit'
-      );
-      const watchDensityEnabled = useWatchFieldWrapper(
-        'constraintsEnabled.density'
-      );
-      const watchTagEnabled = useWatchFieldWrapper('constraintsEnabled.tag');
-      const watchCostEnabled = useWatchFieldWrapper('constraintsEnabled.cost');
-      const watchLocationEnabled = useWatchFieldWrapper(
-        'constraintsEnabled.location_id'
-      );
-
-      return (
-        <FormFieldGroupExpandable
-          toggleAriaLabel="constraints"
-          isExpanded
-          header={
-            <FormFieldGroupHeader
-              titleText={{
-                text: 'Constraints',
-                id: 'constraints',
-              }}
-              actions={
-                <Button
-                  variant="secondary"
-                  isDisabled={
-                    !watchSchedAvailEnabled &&
-                    !watchServAvailEnabled &&
-                    !watchLimitEnabled &&
-                    !watchDensityEnabled &&
-                    !watchTagEnabled &&
-                    !watchCostEnabled &&
-                    !watchLocationEnabled
-                  }
-                  onClick={onDisableAllClick}
-                >
-                  Disable All
-                </Button>
-              }
-            />
-          }
-        >
-          <ScheduledAvailability
-            watchSchedAvailEnabled={watchSchedAvailEnabled}
-            currentDate={currentDate}
-          />
-          <ServiceAvailability watchServAvailEnabled={watchServAvailEnabled} />
-          <ControlledField
-            label="Limit"
-            controllerName="constraintsEnabled.limit"
-            switchId="limit-switch"
-            fieldId="limit"
-          >
-            <Grid hasGutter className="list-grid">
-              {limits.map((limit, index) => (
-                <Limit
-                  watchLimitEnabled={watchLimitEnabled}
-                  limit={limit}
-                  index={index}
-                  handleLimitRemove={handleLimitRemove}
-                />
-              ))}
-            </Grid>
-            <Button
-              isDisabled={!watchLimitEnabled}
-              type="button"
-              aria-label="add-limit-button"
-              onClick={handleLimitAdd}
-            >
-              Add
-            </Button>
-          </ControlledField>
-          <Density watchDensityEnabled={watchDensityEnabled} />
-          <ControlledField
-            label="Tag"
-            controllerName="constraintsEnabled.tag"
-            switchId="tag-switch"
-            fieldId="tag"
-          >
-            <Grid hasGutter className="list-grid">
-              {tags.map((tag, index) => (
-                <Tag
-                  watchTagEnabled={watchTagEnabled}
-                  tag={tag}
-                  index={index}
-                  handleLimitRemove={handleTagRemove}
-                />
-              ))}
-            </Grid>
-            <Button
-              isDisabled={!watchTagEnabled}
-              type="button"
-              aria-label="add-tag-button"
-              onClick={handleTagAdd}
-            >
-              Add
-            </Button>
-          </ControlledField>
-          <Cost watchCostEnabled={watchCostEnabled} />
-          <Location
-            watchLocationEnabled={watchLocationEnabled}
-            locationOptions={locationOptions}
-          />
-        </FormFieldGroupExpandable>
-      );
+  const ConstraintsExpandable: React.FC<{
+    control: Control<PolicyFormData>;
+  }> = ({ control }) => {
+    const useWatchFieldWrapper = (name: string) => {
+      return useWatch({
+        control,
+        name: name as any,
+      });
     };
+    const watchSchedAvailEnabled = useWatchFieldWrapper(
+      'constraintsEnabled.schedAvail'
+    );
+    const watchServAvailEnabled = useWatchFieldWrapper(
+      'constraintsEnabled.servAvail'
+    );
+    const watchLimitEnabled = useWatchFieldWrapper('constraintsEnabled.limit');
+    const watchDensityEnabled = useWatchFieldWrapper(
+      'constraintsEnabled.density'
+    );
+    const watchTagEnabled = useWatchFieldWrapper('constraintsEnabled.tag');
+    const watchCostEnabled = useWatchFieldWrapper('constraintsEnabled.cost');
+    const watchLocationEnabled = useWatchFieldWrapper(
+      'constraintsEnabled.location_id'
+    );
+
+    return (
+      <FormFieldGroupExpandable
+        toggleAriaLabel="constraints"
+        isExpanded
+        header={
+          <FormFieldGroupHeader
+            titleText={{
+              text: 'Constraints',
+              id: 'constraints',
+            }}
+            actions={
+              <Button
+                variant="secondary"
+                isDisabled={
+                  !watchSchedAvailEnabled &&
+                  !watchServAvailEnabled &&
+                  !watchLimitEnabled &&
+                  !watchDensityEnabled &&
+                  !watchTagEnabled &&
+                  !watchCostEnabled &&
+                  !watchLocationEnabled
+                }
+                onClick={onDisableAllClick}
+              >
+                Disable All
+              </Button>
+            }
+          />
+        }
+      >
+        <ScheduledAvailability
+          watchSchedAvailEnabled={watchSchedAvailEnabled}
+          currentDate={currentDate}
+        />
+        <ServiceAvailability watchServAvailEnabled={watchServAvailEnabled} />
+        <ControlledField
+          label="Limit"
+          controllerName="constraintsEnabled.limit"
+          switchId="limit-switch"
+          fieldId="limit"
+        >
+          <Grid hasGutter className="list-grid">
+            {limits.map((limit, index) => (
+              <Limit
+                watchLimitEnabled={watchLimitEnabled}
+                limit={limit}
+                index={index}
+                handleLimitRemove={handleLimitRemove}
+              />
+            ))}
+          </Grid>
+          <Button
+            isDisabled={!watchLimitEnabled}
+            type="button"
+            aria-label="add-limit-button"
+            onClick={handleLimitAdd}
+          >
+            Add
+          </Button>
+        </ControlledField>
+        <Density watchDensityEnabled={watchDensityEnabled} />
+        <ControlledField
+          label="Tag"
+          controllerName="constraintsEnabled.tag"
+          switchId="tag-switch"
+          fieldId="tag"
+        >
+          <Grid hasGutter className="list-grid">
+            {tags.map((tag, index) => (
+              <Tag
+                watchTagEnabled={watchTagEnabled}
+                tag={tag}
+                index={index}
+                handleLimitRemove={handleTagRemove}
+              />
+            ))}
+          </Grid>
+          <Button
+            isDisabled={!watchTagEnabled}
+            type="button"
+            aria-label="add-tag-button"
+            onClick={handleTagAdd}
+          >
+            Add
+          </Button>
+        </ControlledField>
+        <Cost watchCostEnabled={watchCostEnabled} />
+        <Location
+          watchLocationEnabled={watchLocationEnabled}
+          locationOptions={locationOptions}
+        />
+      </FormFieldGroupExpandable>
+    );
+  };
 
   return (
     <FormProvider {...methods}>

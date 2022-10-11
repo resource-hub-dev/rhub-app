@@ -15,7 +15,6 @@ const ENDPOINT = process.env.SOCKET_HOST || window.location.origin;
 
 export interface Props {
   clusterId?: number;
-  groupname?: string;
 }
 
 const ToastNotifications: React.FC<Props> = ({ clusterId }: Props) => {

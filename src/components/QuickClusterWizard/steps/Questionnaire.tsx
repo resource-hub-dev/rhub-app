@@ -152,7 +152,7 @@ const Questionnaire: React.FC<Props> = ({
             <FormGroup
               label={question.name}
               fieldId={key}
-              helperTextInvalid={errors[key] && errors[key].message}
+              helperTextInvalid={errors[key] && errors[key]?.message}
               isRequired={question.required}
               helperTextInvalidIcon={<ExclamationCircleIcon />}
               validated={errors[key] ? 'error' : 'default'}
@@ -204,7 +204,7 @@ const Questionnaire: React.FC<Props> = ({
             <FormGroup
               label={question.name}
               fieldId={key}
-              helperTextInvalid={errors[key] && errors[key].message}
+              helperTextInvalid={errors[key] && errors[key]?.message}
               isRequired={question.required}
               helperTextInvalidIcon={<ExclamationCircleIcon />}
               validated={errors[key] ? 'error' : 'default'}
