@@ -79,3 +79,14 @@ export const getSubmitData = (formData: PolicyFormData): SubmitPolicyData => {
     },
   };
 };
+
+export const stringStore = {
+  name: 'Name of Policy',
+  department:
+    'Group of users in this department will be affected by this policy',
+  scheduledAvailability: 'Time period in which users can reserve resources',
+  quota: 'Resource limit',
+  tag: 'Name of Specific hardware/software, could be used to filter',
+  cost: 'Cost of / Budget for resources',
+  location: 'Resource location',
+};
