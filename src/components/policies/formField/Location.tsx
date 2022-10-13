@@ -1,6 +1,7 @@
 import { FormSelect, FormSelectOption } from '@patternfly/react-core';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { stringStore } from '../helpers';
 import ControlledField from './ControlledField';
 
 interface Props {
@@ -21,6 +22,7 @@ const Location: React.FC<Props> = ({
       controllerName="constraintsEnabled.location_id"
       switchId="location-switch"
       fieldId="location"
+      tooltip={stringStore.location}
     >
       <Controller
         name="location"

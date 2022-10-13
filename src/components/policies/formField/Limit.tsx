@@ -27,7 +27,7 @@ const Limit: React.FC<Props> = ({
           type="text"
           aria-label={`limit-${index}`}
           onChange={() => undefined}
-          placeholder="Key"
+          placeholder="Resource (e.g. CPU, RAM, Storage)"
         />
       </GridItem>
       <GridItem span={5}>
