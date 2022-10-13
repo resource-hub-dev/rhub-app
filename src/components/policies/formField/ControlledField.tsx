@@ -1,11 +1,12 @@
-import React from 'react';
-import { FormGroup, Switch } from '@patternfly/react-core';
+import React, { ReactNode } from 'react';
+import { FormGroup, Switch, Tooltip } from '@patternfly/react-core';
 import { Controller, useFormContext } from 'react-hook-form';
 
 interface Props {
   children: React.ReactNode;
   label: string;
   controllerName: string;
+  tooltip?: ReactNode;
   switchId: string;
   fieldId: string;
   validated?: 'error' | 'default' | 'warning' | 'success';
@@ -20,9 +21,10 @@ const ControlledField: React.FC<Props> = ({
   fieldId,
   validated,
   helperTextInvalid,
+  tooltip,
 }: Props) => {
   const { control } = useFormContext();
-  return (
+  const field = (
     <FormGroup
       label={label}
       labelInfo={
@@ -48,6 +50,10 @@ const ControlledField: React.FC<Props> = ({
       {children}
     </FormGroup>
   );
+  if (tooltip) {
+    return <Tooltip content={<div>{tooltip}</div>}>{field}</Tooltip>;
+  }
+  return field;
 };
 
 export default ControlledField;

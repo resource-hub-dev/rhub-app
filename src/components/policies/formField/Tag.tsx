@@ -27,7 +27,7 @@ const Tag: React.FC<Props> = ({
           type="text"
           aria-label={`tag-${index}`}
           onChange={() => undefined}
-          placeholder="Key"
+          placeholder="Specification type (e.g. O.S, Hardware model)"
         />
       </GridItem>
       <GridItem span={5}>

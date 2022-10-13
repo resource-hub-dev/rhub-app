@@ -1,6 +1,7 @@
 import { Grid, GridItem, TextInput } from '@patternfly/react-core';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { stringStore } from '../helpers';
 import ControlledField from './ControlledField';
 
 interface Props {
@@ -18,6 +19,7 @@ const ScheduledAvailability: React.FC<Props> = ({
       switchId="sched-avail-switch"
       controllerName="constraintsEnabled.schedAvail"
       fieldId="sched-avail"
+      tooltip={stringStore.scheduledAvailability}
     >
       <Grid hasGutter md={6} sm={12}>
         <GridItem>

@@ -1,6 +1,7 @@
 import { Grid, GridItem, TextInput } from '@patternfly/react-core';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { stringStore } from '../helpers';
 import ControlledField from './ControlledField';
 
 interface Props {
@@ -19,6 +20,7 @@ const Cost: React.FC<Props> = ({ watchCostEnabled }: Props) => {
       fieldId="cost"
       validated={errors.cost ? 'error' : 'default'}
       helperTextInvalid={errors.cost && errors.cost.message}
+      tooltip={stringStore.cost}
     >
       <TextInput
         {...register('cost', {
