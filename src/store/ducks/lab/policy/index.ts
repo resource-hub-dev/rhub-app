@@ -27,6 +27,7 @@ const labPolicyDataToState = (
         tag: item.constraint?.tag,
         cost: item.constraint?.cost,
         location: item.constraint?.location,
+        location_id: item.constraint?.location_id,
       },
     },
   };
