@@ -38,7 +38,7 @@ export const getDefaultFormValues = (
       density: currentPolicy.constraint.density !== null,
       tag: currentPolicy.constraint.tag !== null,
       cost: currentPolicy.constraint.cost !== null,
-      location_id: currentPolicy.constraint.location !== null,
+      location_id: currentPolicy.constraint.location_id !== null,
     },
   };
 };
