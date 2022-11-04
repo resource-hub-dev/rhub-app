@@ -93,38 +93,31 @@ describe('location reducer', () => {
     });
   });
   test('handles failures for a location', () => {
+    const error = {
+      response: {
+        data: mocks.errorExample,
+      },
+    } as any;
     expect(
-      reducer(
-        { ...INITIAL_STATE, loading: true },
-        actions.loadFailure(mocks.errorExample)
-      )
+      reducer({ ...INITIAL_STATE, loading: true }, actions.loadFailure(error))
     ).toEqual({
       ...INITIAL_STATE,
       ...mocks.errorState,
     });
     expect(
-      reducer(
-        { ...INITIAL_STATE, loading: true },
-        actions.createFailure(mocks.errorExample)
-      )
+      reducer({ ...INITIAL_STATE, loading: true }, actions.createFailure(error))
     ).toEqual({
       ...INITIAL_STATE,
       ...mocks.errorState,
     });
     expect(
-      reducer(
-        { ...INITIAL_STATE, loading: true },
-        actions.updateFailure(mocks.errorExample)
-      )
+      reducer({ ...INITIAL_STATE, loading: true }, actions.updateFailure(error))
     ).toEqual({
       ...INITIAL_STATE,
       ...mocks.errorState,
     });
     expect(
-      reducer(
-        { ...INITIAL_STATE, loading: true },
-        actions.deleteFailure(mocks.errorExample)
-      )
+      reducer({ ...INITIAL_STATE, loading: true }, actions.deleteFailure(error))
     ).toEqual({
       ...INITIAL_STATE,
       ...mocks.errorState,

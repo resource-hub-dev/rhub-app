@@ -62,7 +62,7 @@ export interface SubmitPolicyData {
   };
 }
 
-export interface Error {
+export interface ApiError {
   detail: string;
   status: number;
   title: string;
@@ -72,6 +72,6 @@ export interface Error {
 export interface LabPolicyState {
   readonly data: { [key: number]: LabPolicyModel };
   readonly loading: boolean;
-  readonly errMsg: Error | {};
+  readonly errMsg: Error | ApiError | {};
   readonly error: boolean;
 }

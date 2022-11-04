@@ -43,7 +43,7 @@ describe('policy saga', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.loadRequest(1))
       .provide([[matchers.call.fn(api.get), throwError(error)]])
-      .put(actions.loadFailure(mocks.errorExample))
+      .put(actions.loadFailure(error))
       .silentRun();
   });
 
@@ -66,7 +66,7 @@ describe('policy saga', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.createRequest(mocks.policySubmitExample))
       .provide([[matchers.call.fn(api.post), throwError(error)]])
-      .put(actions.createFailure(mocks.errorExample))
+      .put(actions.createFailure(error))
       .silentRun();
   });
 
@@ -82,7 +82,7 @@ describe('policy saga', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.updateRequest(1, mocks.policySubmitExample))
       .provide([[matchers.call.fn(api.patch), throwError(error)]])
-      .put(actions.updateFailure(mocks.errorExample))
+      .put(actions.updateFailure(error))
       .silentRun();
   });
 
@@ -98,7 +98,7 @@ describe('policy saga', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.deleteRequest(1))
       .provide([[matchers.call.fn(api.delete), throwError(error)]])
-      .put(actions.deleteFailure(mocks.errorExample))
+      .put(actions.deleteFailure(error))
       .silentRun();
   });
 });
