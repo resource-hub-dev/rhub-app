@@ -24,7 +24,7 @@ function* load(action: AnyAction) {
     const data = locationId === 'all' ? response.data.data : response.data;
     yield put(loadSuccess(locationId, data));
   } catch (err) {
-    yield put(loadFailure((err as any).response.data));
+    yield put(loadFailure(err as any));
   }
 }
 
@@ -34,7 +34,7 @@ function* create(action: AnyAction) {
     yield call(api.post, '/lab/location', body);
     yield put(createSuccess());
   } catch (err) {
-    yield put(createFailure((err as any).response.data));
+    yield put(createFailure(err as any));
   }
 }
 
@@ -44,7 +44,7 @@ function* update(action: AnyAction) {
     yield call(api.patch, `/lab/location/${locationId}`, data);
     yield put(updateSuccess());
   } catch (err) {
-    yield put(updateFailure((err as any).response.data));
+    yield put(updateFailure(err as any));
   }
 }
 
@@ -54,7 +54,7 @@ function* remove(action: AnyAction) {
     yield call(api.delete, `/lab/location/${locationId}`);
     yield put(deleteSuccess(locationId));
   } catch (err) {
-    yield put(deleteFailure((err as any).response.data));
+    yield put(deleteFailure(err as any));
   }
 }
 

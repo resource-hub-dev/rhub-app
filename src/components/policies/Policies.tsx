@@ -33,6 +33,7 @@ import { loadRequest as loadLocation } from '@ducks/lab/location/actions';
 import { SubmitPolicyData } from '@ducks/lab/policy/types';
 
 import { AppState } from '@store';
+import PageError from '@components/pageTimedOut/pageError';
 
 import PolicyForm, { PolicyFormData } from './PolicyForm';
 import { getDefaultFormValues, getSubmitData } from './helpers';
@@ -46,7 +47,9 @@ const Policies: React.FC = () => {
   const loading = useSelector(
     (state: AppState) => state.labPolicy.loading || state.labLocation.loading
   );
-  const error = useSelector((state: AppState) => state.labPolicy.error);
+  const error = useSelector(
+    (state: AppState) => state.labPolicy.error || state.labLocation.error
+  );
   const locations = useSelector((state: AppState) => state.labLocation.data);
   const [policyId, setPolicyId] = useState<number | undefined>(undefined);
   const [captureError, setCaptureError] = useState<boolean>(false);
@@ -182,7 +185,9 @@ const Policies: React.FC = () => {
       </div>
     );
   }
-
+  if (error) {
+    return <PageError msg={(errMsg as Error).message} />;
+  }
   return (
     <>
       <PageSection variant={PageSectionVariants.light}>

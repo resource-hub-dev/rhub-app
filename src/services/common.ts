@@ -3,3 +3,7 @@ export const round = (value: number, precision: number) => {
   const multiplier = precision ? 10 ** precision : 1; // Math.pow(10, precision || 0);
   return Math.round(value * multiplier) / multiplier;
 };
+
+export function isAnError(data: any): data is Error {
+  return 'message' in data && 'name' in data;
+}

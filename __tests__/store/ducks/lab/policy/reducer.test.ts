@@ -4,6 +4,11 @@ import * as actions from '@ducks/lab/policy/actions';
 import * as mocks from '@mocks/labPolicy';
 
 describe('policy reducer', () => {
+  const error = {
+    response: {
+      data: mocks.errorExample,
+    },
+  } as any;
   test('returns the initial state', () => {
     expect(reducer(undefined, { type: 'stub' })).toEqual(INITIAL_STATE);
   });
@@ -63,7 +68,7 @@ describe('policy reducer', () => {
     expect(
       reducer(
         { ...INITIAL_STATE, loading: true, error: false },
-        actions.loadFailure(mocks.errorExample)
+        actions.loadFailure(error)
       )
     ).toEqual({
       ...INITIAL_STATE,
@@ -108,7 +113,7 @@ describe('policy reducer', () => {
           loading: true,
           error: false,
         },
-        actions.createFailure(mocks.errorExample)
+        actions.createFailure(error)
       )
     ).toEqual({
       ...INITIAL_STATE,
@@ -152,7 +157,7 @@ describe('policy reducer', () => {
           loading: true,
           error: false,
         },
-        actions.updateFailure(mocks.errorExample)
+        actions.updateFailure(error)
       )
     ).toEqual({
       ...INITIAL_STATE,
@@ -200,7 +205,7 @@ describe('policy reducer', () => {
             [mocks.labPolicyExample.id]: mocks.labPolicyExample,
           },
         },
-        actions.deleteFailure(mocks.errorExample)
+        actions.deleteFailure(error)
       )
     ).toEqual({
       ...INITIAL_STATE,
