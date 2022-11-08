@@ -33,7 +33,7 @@ import { loadRequest as loadLocation } from '@ducks/lab/location/actions';
 import { SubmitPolicyData } from '@ducks/lab/policy/types';
 
 import { AppState } from '@store';
-import PageError from '@components/pageTimedOut/pageError';
+import PageError from '@components/pageError/pageError';
 
 import PolicyForm, { PolicyFormData } from './PolicyForm';
 import { getDefaultFormValues, getSubmitData } from './helpers';
