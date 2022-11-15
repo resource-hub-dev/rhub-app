@@ -93,10 +93,19 @@ const DataTable: React.FC<Props> = ({ columns, rowPairs, loading }: Props) => {
         // eslint-disable-next-line  no-else-return
       } else {
         // string sort
+        const isLink = a.parent[index].type?.displayName === 'Link';
         if (direction === 'asc') {
-          return a.parent[index].localeCompare(b.parent[index]);
+          return isLink
+            ? a.parent[index].props.children.localeCompare(
+                b.parent[index].props.children
+              )
+            : a.parent[index].localeCompare(b.parent[index]);
         }
-        return b.parent[index].localeCompare(a.parent[index]);
+        return isLink
+          ? b.parent[index].props.children.localeCompare(
+              a.parent[index].props.children
+            )
+          : b.parent[index].localeCompare(a.parent[index]);
       }
     });
     setTableRows(updatedRows.slice(0, perPage));
