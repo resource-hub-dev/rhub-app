@@ -1,4 +1,4 @@
-import { Error } from '@ducks/types';
+import { ApiError } from '@ducks/types';
 import { action } from 'typesafe-actions';
 import {
   OpenStackCloudData,
@@ -16,7 +16,7 @@ export const loadSuccess = (
   data: OpenStackCloudData | OpenStackCloudData[]
 ) => action(OpenStackCloudTypes.LOAD_SUCCESS, { cloudId, data });
 
-export const loadFailure = (err: Error) =>
+export const loadFailure = (err: ApiError) =>
   action(OpenStackCloudTypes.LOAD_FAILURE, err);
 
 export const createRequest = (payload: OpenStackCloudInput) =>
@@ -24,7 +24,7 @@ export const createRequest = (payload: OpenStackCloudInput) =>
 
 export const createSuccess = () => action(OpenStackCloudTypes.CREATE_SUCCESS);
 
-export const createFailure = (err: Error) =>
+export const createFailure = (err: ApiError) =>
   action(OpenStackCloudTypes.CREATE_FAILURE, err);
 
 export const updateRequest = (cloudId: number, data: OpenStackCloudInput) =>
@@ -32,7 +32,7 @@ export const updateRequest = (cloudId: number, data: OpenStackCloudInput) =>
 
 export const updateSuccess = () => action(OpenStackCloudTypes.UPDATE_SUCCESS);
 
-export const updateFailure = (err: Error) =>
+export const updateFailure = (err: ApiError) =>
   action(OpenStackCloudTypes.UPDATE_FAILURE, err);
 
 export const deleteRequest = (cloudId: number) =>
@@ -41,5 +41,5 @@ export const deleteRequest = (cloudId: number) =>
 export const deleteSuccess = (cloudId: number) =>
   action(OpenStackCloudTypes.DELETE_SUCCESS, { cloudId });
 
-export const deleteFailure = (err: Error) =>
+export const deleteFailure = (err: ApiError) =>
   action(OpenStackCloudTypes.DELETE_FAILURE, err);

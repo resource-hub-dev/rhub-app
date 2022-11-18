@@ -1,4 +1,4 @@
-import { Error } from '@ducks/types';
+import { ApiError } from '@ducks/types';
 
 // Action Types
 export enum OpenStackProjectTypes {
@@ -38,5 +38,5 @@ export interface OpenStackProjectState {
   data: { [key: string]: OpenStackProjectData };
   loading: boolean;
   error: boolean;
-  errMsg: Error | {};
+  errMsg: ApiError | {};
 }

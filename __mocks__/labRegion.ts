@@ -6,7 +6,7 @@ import {
   Usage,
 } from '@ducks/lab/region/types';
 
-import { Error } from '@ducks/types';
+import { ApiError } from '@ducks/types';
 import { labLocationResponse } from './labLocation';
 
 export const regionExample: LabRegionData = {
@@ -155,7 +155,7 @@ export const regionUsageExample: Usage = {
   },
 };
 
-export const errorExample: Error = {
+export const errorExample: ApiError = {
   detail: 'Invalid token',
   status: 401,
   title: 'Unauthorized',

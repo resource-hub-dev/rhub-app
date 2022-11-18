@@ -7,6 +7,7 @@ import {
   Cluster,
   ClusterEventType,
 } from '@ducks/lab/cluster/types';
+import { ApiError } from '@ducks/types';
 
 export const clusterExample: ClusterData = {
   created: '2022-02-08T13:02:18.851Z',
@@ -197,4 +198,11 @@ export const clusterCreateData: ClusterCreateData = {
   product_id: 1,
   product_params: {},
   reservation_expiration: '2022-02-08T15:05:34.807Z',
+};
+
+export const errorExample: ApiError = {
+  detail: 'Invalid token',
+  status: 401,
+  title: 'Unauthorized',
+  type: 'about:blank',
 };

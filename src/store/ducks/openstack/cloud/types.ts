@@ -1,4 +1,4 @@
-import { Error } from '@ducks/types';
+import { ApiError } from '@ducks/types';
 
 // Action Types
 export enum OpenStackCloudTypes {
@@ -44,5 +44,5 @@ export interface OpenStackCloudState {
   data: { [key: string]: OpenStackCloudData };
   loading: boolean;
   error: boolean;
-  errMsg: Error | {};
+  errMsg: ApiError | {};
 }
