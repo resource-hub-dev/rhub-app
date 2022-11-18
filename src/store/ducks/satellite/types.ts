@@ -1,4 +1,4 @@
-import { Error } from '@ducks/types';
+import { ApiError } from '@ducks/types';
 
 // Action Types
 export enum SatelliteTypes {
@@ -42,5 +42,5 @@ export interface SatelliteState {
   data: { [key: string]: SatelliteData };
   loading: boolean;
   error: boolean;
-  errMsg: Error | {};
+  errMsg: ApiError | {};
 }

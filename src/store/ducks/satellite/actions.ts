@@ -1,4 +1,4 @@
-import { Error } from '@ducks/types';
+import { ApiError } from '@ducks/types';
 import { action } from 'typesafe-actions';
 import { SatelliteData, SatelliteInput, SatelliteTypes } from './types';
 
@@ -12,7 +12,7 @@ export const loadSuccess = (
   data: SatelliteData | SatelliteData[]
 ) => action(SatelliteTypes.LOAD_SUCCESS, { satelliteId, data });
 
-export const loadFailure = (err: Error) =>
+export const loadFailure = (err: ApiError) =>
   action(SatelliteTypes.LOAD_FAILURE, err);
 
 export const createRequest = (payload: SatelliteInput) =>
@@ -20,7 +20,7 @@ export const createRequest = (payload: SatelliteInput) =>
 
 export const createSuccess = () => action(SatelliteTypes.CREATE_SUCCESS);
 
-export const createFailure = (err: Error) =>
+export const createFailure = (err: ApiError) =>
   action(SatelliteTypes.CREATE_FAILURE, err);
 
 export const updateRequest = (satelliteId: number, data: SatelliteInput) =>
@@ -28,7 +28,7 @@ export const updateRequest = (satelliteId: number, data: SatelliteInput) =>
 
 export const updateSuccess = () => action(SatelliteTypes.UPDATE_SUCCESS);
 
-export const updateFailure = (err: Error) =>
+export const updateFailure = (err: ApiError) =>
   action(SatelliteTypes.UPDATE_FAILURE, err);
 
 export const deleteRequest = (satelliteId: number) =>
@@ -37,5 +37,5 @@ export const deleteRequest = (satelliteId: number) =>
 export const deleteSuccess = (satelliteId: number) =>
   action(SatelliteTypes.DELETE_SUCCESS, { satelliteId });
 
-export const deleteFailure = (err: Error) =>
+export const deleteFailure = (err: ApiError) =>
   action(SatelliteTypes.DELETE_FAILURE, err);

@@ -1,4 +1,4 @@
-import { Error } from '@ducks/types';
+import { ApiError } from '@ducks/types';
 
 // Action Types
 export enum DNSTypes {
@@ -39,5 +39,5 @@ export interface DNSState {
   data: { [key: string]: DNSData };
   loading: boolean;
   error: boolean;
-  errMsg: Error | {};
+  errMsg: Error | ApiError | {};
 }

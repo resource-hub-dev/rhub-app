@@ -4,7 +4,7 @@ import {
   SubmitPolicyData,
 } from '@ducks/lab/policy/types';
 
-import { Error } from '@ducks/types';
+import { ApiError } from '@ducks/types';
 import { labLocationResponse } from './labLocation';
 
 export const labPolicyExample: LabPolicyData | LabPolicyModel = {
@@ -36,7 +36,7 @@ export const policySubmitExample: SubmitPolicyData = {
   name: 'name',
 };
 
-export const errorExample: Error = {
+export const errorExample: ApiError = {
   detail: 'Invalid token',
   status: 401,
   title: 'Unauthorized',

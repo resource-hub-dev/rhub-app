@@ -1,4 +1,4 @@
-import { Error } from '../../types';
+import { ApiError } from '../../types';
 
 export enum LabLocationTypes {
   LOAD_REQUEST = '@lab/location/LOAD_REQUEST',
@@ -24,6 +24,6 @@ export interface LabLocation {
 export interface LabLocationState {
   readonly data: { [key: number]: LabLocation };
   readonly loading: boolean;
-  readonly errMsg: Error | {};
+  readonly errMsg: ApiError | {};
   readonly error: boolean;
 }

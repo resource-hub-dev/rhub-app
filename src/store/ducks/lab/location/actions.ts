@@ -1,7 +1,6 @@
 import { action } from 'typesafe-actions';
 import { isAnError } from '@services/common';
 import { LabLocationTypes, LabLocation } from './types';
-import { Error as ApiError } from '../../types';
 
 export const loadRequest = (
   locationId: number | 'all',

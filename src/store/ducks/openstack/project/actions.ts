@@ -1,4 +1,4 @@
-import { Error } from '@ducks/types';
+import { ApiError } from '@ducks/types';
 import { action } from 'typesafe-actions';
 import {
   OpenStackProjectData,
@@ -16,7 +16,7 @@ export const loadSuccess = (
   data: OpenStackProjectData | OpenStackProjectData[]
 ) => action(OpenStackProjectTypes.LOAD_SUCCESS, { projectId, data });
 
-export const loadFailure = (err: Error) =>
+export const loadFailure = (err: ApiError) =>
   action(OpenStackProjectTypes.LOAD_FAILURE, err);
 
 export const createRequest = (payload: OpenStackProjectInput) =>
@@ -24,7 +24,7 @@ export const createRequest = (payload: OpenStackProjectInput) =>
 
 export const createSuccess = () => action(OpenStackProjectTypes.CREATE_SUCCESS);
 
-export const createFailure = (err: Error) =>
+export const createFailure = (err: ApiError) =>
   action(OpenStackProjectTypes.CREATE_FAILURE, err);
 
 export const updateRequest = (projectId: number, data: OpenStackProjectInput) =>
@@ -32,7 +32,7 @@ export const updateRequest = (projectId: number, data: OpenStackProjectInput) =>
 
 export const updateSuccess = () => action(OpenStackProjectTypes.UPDATE_SUCCESS);
 
-export const updateFailure = (err: Error) =>
+export const updateFailure = (err: ApiError) =>
   action(OpenStackProjectTypes.UPDATE_FAILURE, err);
 
 export const deleteRequest = (projectId: number) =>
@@ -41,5 +41,5 @@ export const deleteRequest = (projectId: number) =>
 export const deleteSuccess = (projectId: number) =>
   action(OpenStackProjectTypes.DELETE_SUCCESS, { projectId });
 
-export const deleteFailure = (err: Error) =>
+export const deleteFailure = (err: ApiError) =>
   action(OpenStackProjectTypes.DELETE_FAILURE, err);
