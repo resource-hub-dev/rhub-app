@@ -20,7 +20,7 @@ function* load(action: AnyAction): any {
     } else
       yield put(actions.loadSuccess(clusterId, response.data.data, nameCheck));
   } catch (err) {
-    yield put(actions.loadFailure());
+    yield put(actions.loadFailure(err as any));
   }
 }
 
@@ -30,7 +30,7 @@ function* loadHost(action: AnyAction): any {
     const response = yield call(api.get, `lab/cluster/${clusterId}/hosts`);
     yield put(actions.loadHostSuccess(clusterId, response.data));
   } catch (err) {
-    yield put(actions.loadHostFailure());
+    yield put(actions.loadHostFailure(err as any));
   }
 }
 
@@ -40,7 +40,7 @@ function* loadStdout(action: AnyAction): any {
     const response = yield call(api.get, `lab/cluster_event/${eventId}/stdout`);
     yield put(actions.loadStdoutSuccess(response.data));
   } catch (err) {
-    yield put(actions.loadStdoutFailure());
+    yield put(actions.loadStdoutFailure(err as any));
   }
 }
 
@@ -52,7 +52,7 @@ function* loadClusterEvents(action: AnyAction): any {
     });
     yield put(actions.loadEventSuccess(response.data));
   } catch (err) {
-    yield put(actions.loadEventFailure());
+    yield put(actions.loadEventFailure(err as any));
   }
 }
 
@@ -67,7 +67,7 @@ function* update(action: AnyAction) {
     );
     yield put(actions.updateSuccess(response.data));
   } catch (err) {
-    yield put(actions.updateFailure());
+    yield put(actions.updateFailure(err as any));
   }
 }
 
@@ -78,7 +78,7 @@ function* remove(action: AnyAction) {
     yield put(actions.deleteSuccess(clusterId));
     yield put(actions.loadRequest('all', parameters));
   } catch (err) {
-    yield put(actions.deleteFailure());
+    yield put(actions.deleteFailure(err as any));
   }
 }
 
@@ -88,7 +88,7 @@ function* create(action: AnyAction) {
     yield call(api.post, `lab/cluster/`, payload);
     yield put(actions.createClusterSuccess());
   } catch (err) {
-    yield put(actions.createClusterFailure());
+    yield put(actions.createClusterFailure(err as any));
   }
 }
 
@@ -112,7 +112,7 @@ function* rebootHost(action: AnyAction): any {
     );
     yield put(actions.rebootHostSuccess(clusterId, response.data));
   } catch (err) {
-    yield put(actions.rebootHostFailure());
+    yield put(actions.rebootHostFailure(err as any));
   }
 }
 
