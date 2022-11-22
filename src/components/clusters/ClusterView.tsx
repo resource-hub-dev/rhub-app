@@ -18,6 +18,7 @@ import { Cluster, ClusterHost } from '@ducks/lab/cluster/types';
 import DataTable, { RowPair } from '@components/dataTable/DataTable';
 
 import { Quota } from '@ducks/lab/types';
+import PageError from '@components/pageError/pageError';
 
 import ClusterTableUtilization from './ClusterTableUtilization';
 
@@ -51,6 +52,7 @@ const ClusterView: React.FC<Props> = ({ clusterViewType }: Props) => {
   let rows: RowPair[] = [];
   const clusters = useSelector((state: AppState) => state.cluster.data);
   const loading = useSelector((state: AppState) => state.cluster.loading);
+  const error = useSelector((state: AppState) => state.cluster.error);
   const generateCharts = (hosts: ClusterHost[], quota: Quota) => {
     let num_vcpus = 0;
     let ram_mb = 0;
@@ -78,6 +80,9 @@ const ClusterView: React.FC<Props> = ({ clusterViewType }: Props) => {
         <Spinner />
       </div>
     );
+  }
+  if (error) {
+    return <PageError />;
   }
   const mapRows = (clusterEntries: Cluster[]) => {
     if (clusterViewType === 'shared') {
