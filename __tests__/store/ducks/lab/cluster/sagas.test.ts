@@ -9,6 +9,11 @@ import * as actions from '@ducks/lab/cluster/actions';
 import * as mocks from '@mocks/labCluster';
 
 describe('cluster saga', () => {
+  const error = {
+    response: {
+      data: mocks.errorExample,
+    },
+  } as any;
   test('fetches all lab cluster data', () => {
     const apiResponse = {
       data: { data: [mocks.clusterExample] },
@@ -118,43 +123,43 @@ describe('cluster saga', () => {
   test('sets errors to the store on cluster load ', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.loadRequest(1))
-      .provide([[matchers.call.fn(api.get), throwError(new Error('error'))]])
-      .put(actions.loadFailure())
+      .provide([[matchers.call.fn(api.get), throwError(error)]])
+      .put(actions.loadFailure(error))
       .silentRun();
   });
   test('sets errors to the store on event load ', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.loadEventRequest(1))
-      .provide([[matchers.call.fn(api.get), throwError(new Error('error'))]])
-      .put(actions.loadEventFailure())
+      .provide([[matchers.call.fn(api.get), throwError(error)]])
+      .put(actions.loadEventFailure(error))
       .silentRun();
   });
   test('sets errors to the store on host load ', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.loadHostRequest(1))
-      .provide([[matchers.call.fn(api.get), throwError(new Error('error'))]])
-      .put(actions.loadHostFailure())
+      .provide([[matchers.call.fn(api.get), throwError(error)]])
+      .put(actions.loadHostFailure(error))
       .silentRun();
   });
   test('sets errors to the store on tower stdout load ', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.loadStdoutRequest(1))
-      .provide([[matchers.call.fn(api.get), throwError(new Error('error'))]])
-      .put(actions.loadStdoutFailure())
+      .provide([[matchers.call.fn(api.get), throwError(error)]])
+      .put(actions.loadStdoutFailure(error))
       .silentRun();
   });
   test('sets errors to the store on cluster update ', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.updateRequest(1, {}))
-      .provide([[matchers.call.fn(api.get), throwError(new Error('error'))]])
-      .put(actions.updateFailure())
+      .provide([[matchers.call.fn(api.patch), throwError(error)]])
+      .put(actions.updateFailure(error))
       .silentRun();
   });
   test('sets errors to the store on cluster create ', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.createClusterRequest(mocks.clusterCreateData))
-      .provide([[matchers.call.fn(api.get), throwError(new Error('error'))]])
-      .put(actions.createClusterFailure())
+      .provide([[matchers.call.fn(api.post), throwError(error)]])
+      .put(actions.createClusterFailure(error))
       .silentRun();
   });
 });
