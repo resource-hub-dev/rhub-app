@@ -4,6 +4,12 @@ import * as actions from '@ducks/lab/cluster/actions';
 import * as mocks from '@mocks/labCluster';
 
 describe('cluster reducer', () => {
+  const error = {
+    response: {
+      data: mocks.errorExample,
+    },
+  } as any;
+
   test('returns the initial state', () => {
     expect(reducer(undefined, { type: 'stub' })).toEqual(INITIAL_STATE);
   });
@@ -210,28 +216,37 @@ describe('cluster reducer', () => {
       error: true,
     };
     expect(
-      reducer({ ...INITIAL_STATE, loading: true }, actions.loadFailure())
+      reducer({ ...INITIAL_STATE, loading: true }, actions.loadFailure(error))
     ).toEqual(errState);
     expect(
-      reducer({ ...INITIAL_STATE, loading: true }, actions.deleteFailure())
+      reducer({ ...INITIAL_STATE, loading: true }, actions.deleteFailure(error))
     ).toEqual(errState);
     expect(
       reducer(
         { ...INITIAL_STATE, loading: true },
-        actions.createClusterFailure()
+        actions.createClusterFailure(error)
       )
     ).toEqual(errState);
     expect(
-      reducer({ ...INITIAL_STATE, loading: true }, actions.loadHostFailure())
+      reducer(
+        { ...INITIAL_STATE, loading: true },
+        actions.loadHostFailure(error)
+      )
     ).toEqual(errState);
     expect(
-      reducer({ ...INITIAL_STATE, loading: true }, actions.loadEventFailure())
+      reducer(
+        { ...INITIAL_STATE, loading: true },
+        actions.loadEventFailure(error)
+      )
     ).toEqual(errState);
     expect(
-      reducer({ ...INITIAL_STATE, loading: true }, actions.updateFailure())
+      reducer({ ...INITIAL_STATE, loading: true }, actions.updateFailure(error))
     ).toEqual(errState);
     expect(
-      reducer({ ...INITIAL_STATE, loading: true }, actions.rebootHostFailure())
+      reducer(
+        { ...INITIAL_STATE, loading: true },
+        actions.rebootHostFailure(error)
+      )
     ).toEqual(errState);
   });
 });
