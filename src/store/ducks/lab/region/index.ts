@@ -1,5 +1,6 @@
 /* eslint-disable no-case-declarations */
 
+import { isAnError } from '@services/common';
 import { Reducer } from 'redux';
 import { LabRegionTypes, LabRegionData, LabRegionState } from './types';
 
@@ -130,13 +131,22 @@ const reducer: Reducer<LabRegionState> = (state = INITIAL_STATE, action) => {
     case LabRegionTypes.LOAD_FAILURE:
     case LabRegionTypes.CREATE_FAILURE:
     case LabRegionTypes.UPDATE_FAILURE:
-    case LabRegionTypes.DELETE_FAILURE:
+    case LabRegionTypes.DELETE_FAILURE: {
+      if (isAnError(action.payload)) {
+        return {
+          ...state,
+          errMsg: action.payload,
+          loading: false,
+          error: true,
+        };
+      }
       return {
         ...state,
-        errMsg: action.payload,
+        errMsg: action.payload.response.data, // API error
         loading: false,
         error: true,
       };
+    }
     default:
       return state;
   }

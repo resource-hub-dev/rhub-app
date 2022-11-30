@@ -31,7 +31,7 @@ function* load(action: AnyAction) {
       )
     );
   } catch (err) {
-    yield put(loadFailure((err as any).response.data));
+    yield put(loadFailure(err as any));
   }
 }
 
@@ -44,7 +44,7 @@ function* load_product_regions(action: AnyAction) {
     );
     yield put(loadProductRegionsSuccess(response.data));
   } catch (err) {
-    yield put(loadFailure((err as any).response.data));
+    yield put(loadFailure(err as any));
   }
 }
 
@@ -57,7 +57,7 @@ function* load_region_usage(action: AnyAction) {
     );
     yield put(loadUsageSuccess(regionId, response.data));
   } catch (err) {
-    yield put(loadFailure((err as any).response.data));
+    yield put(loadFailure(err as any));
   }
 }
 

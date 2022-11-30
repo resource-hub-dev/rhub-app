@@ -18,6 +18,8 @@ import {
   Tooltip,
 } from '@patternfly/react-core';
 import UtilizationChart from '@components/charts/UtilizationChart';
+import PageError from '@components/pageError/pageError';
+
 import { loadRequest as loadCluster } from '@ducks/lab/cluster/actions';
 import './QuickClusterUserActivity.css';
 import { InfoCircleIcon } from '@patternfly/react-icons';
@@ -36,6 +38,8 @@ const QuickClusterUserActivity: React.FC = () => {
   const isLoading = useSelector(
     (state: AppState) => state.labRegion.loading || state.cluster.loading
   );
+  const regionErr = useSelector((state: AppState) => state.labRegion.error);
+  const clusterErr = useSelector((state: AppState) => state.cluster.error);
   const allRegionUsage = regionUsage?.all;
 
   useEffect(() => {
@@ -47,14 +51,7 @@ const QuickClusterUserActivity: React.FC = () => {
     dispatch(loadRegion('all'));
   }, [dispatch, regionUsage]);
 
-  if (
-    isLoading ||
-    !regionUsage ||
-    !allRegionUsage ||
-    !regions ||
-    !clusters ||
-    clusterCount === undefined
-  ) {
+  if (isLoading) {
     return (
       <>
         <h3>Loading...</h3>
@@ -62,7 +59,6 @@ const QuickClusterUserActivity: React.FC = () => {
       </>
     );
   }
-  const { user_quota, user_quota_usage } = allRegionUsage;
 
   return (
     <>
@@ -79,37 +75,47 @@ const QuickClusterUserActivity: React.FC = () => {
                   <InfoCircleIcon className="activity-title-info-icon" />
                 </Tooltip>
               </CardTitle>
-              <CardBody>
-                <div className="activity-cluster-count">
-                  {`Total Cluster(s): ${clusterCount}`}
-                </div>
-                <div className="activity-charts-card-body">
-                  <UtilizationChart
-                    title="CPU"
-                    used={user_quota_usage.num_vcpus}
-                    total={user_quota.num_vcpus}
-                    unit="Cores"
-                    height="225px"
-                    width="200px"
-                  />
-                  <UtilizationChart
-                    title="RAM"
-                    used={round(user_quota_usage.ram_mb / 1024, 1)}
-                    total={round(user_quota.ram_mb / 1024, 1)}
-                    unit="GBs"
-                    height="225px"
-                    width="200px"
-                  />
-                  <UtilizationChart
-                    title="Storage"
-                    used={user_quota_usage.volumes_gb}
-                    total={user_quota.volumes_gb}
-                    unit="GBs"
-                    height="225px"
-                    width="200px"
-                  />
-                </div>
-              </CardBody>
+              {clusterErr ||
+              !clusters ||
+              !allRegionUsage ||
+              clusterCount === undefined ? (
+                <PageError />
+              ) : (
+                <CardBody>
+                  <div className="activity-cluster-count">
+                    {`Total Cluster(s): ${clusterCount}`}
+                  </div>
+                  <div className="activity-charts-card-body">
+                    <UtilizationChart
+                      title="CPU"
+                      used={allRegionUsage.user_quota_usage.num_vcpus}
+                      total={allRegionUsage.user_quota.num_vcpus}
+                      unit="Cores"
+                      height="225px"
+                      width="200px"
+                    />
+                    <UtilizationChart
+                      title="RAM"
+                      used={round(
+                        allRegionUsage.user_quota_usage.ram_mb / 1024,
+                        1
+                      )}
+                      total={round(allRegionUsage.user_quota.ram_mb / 1024, 1)}
+                      unit="GBs"
+                      height="225px"
+                      width="200px"
+                    />
+                    <UtilizationChart
+                      title="Storage"
+                      used={allRegionUsage.user_quota_usage.volumes_gb}
+                      total={allRegionUsage.user_quota.volumes_gb}
+                      unit="GBs"
+                      height="225px"
+                      width="200px"
+                    />
+                  </div>
+                </CardBody>
+              )}
             </Card>
           </GridItem>
           <GridItem>
@@ -120,13 +126,17 @@ const QuickClusterUserActivity: React.FC = () => {
                   <InfoCircleIcon className="activity-title-info-icon" />
                 </Tooltip>
               </CardTitle>
-              <CardBody>
-                <RegionalUsageTable
-                  regions={regions}
-                  allUsage={regionUsage}
-                  clusters={clusters}
-                />
-              </CardBody>
+              {regionErr || !regionUsage || !allRegionUsage || !regions ? (
+                <PageError />
+              ) : (
+                <CardBody>
+                  <RegionalUsageTable
+                    regions={regions}
+                    allUsage={regionUsage}
+                    clusters={clusters}
+                  />
+                </CardBody>
+              )}
             </Card>
           </GridItem>
         </Grid>

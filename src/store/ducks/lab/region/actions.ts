@@ -7,7 +7,6 @@ import {
   RegionsWithProduct,
   Usage,
 } from './types';
-import { ApiError } from '../../types';
 
 export const loadRequest = (
   regionId: number | 'all',
@@ -41,7 +40,7 @@ export const loadUsageSuccess = (
   usage: Usage | { [region: string]: Usage }
 ) => action(LabRegionTypes.LOAD_USAGE_SUCCESS, { regionId, usage });
 
-export const loadFailure = (err: ApiError) =>
+export const loadFailure = (err: any) =>
   action(LabRegionTypes.LOAD_FAILURE, err);
 
 export const createRequest = (payload: LabRegionCreate) =>
@@ -49,7 +48,7 @@ export const createRequest = (payload: LabRegionCreate) =>
 
 export const createSuccess = () => action(LabRegionTypes.CREATE_SUCCESS);
 
-export const createFailure = (err: ApiError) =>
+export const createFailure = (err: any) =>
   action(LabRegionTypes.CREATE_FAILURE, err);
 
 export const updateRequest = (regionId: number, data: LabRegionUpdate) =>
@@ -57,7 +56,7 @@ export const updateRequest = (regionId: number, data: LabRegionUpdate) =>
 
 export const updateSuccess = () => action(LabRegionTypes.UPDATE_SUCCESS);
 
-export const updateFailure = (err: ApiError) =>
+export const updateFailure = (err: any) =>
   action(LabRegionTypes.UPDATE_FAILURE, err);
 
 export const deleteRequest = (regionId: number) =>
@@ -66,5 +65,5 @@ export const deleteRequest = (regionId: number) =>
 export const deleteSuccess = (regionId: number) =>
   action(LabRegionTypes.DELETE_SUCCESS, { regionId });
 
-export const deleteFailure = (err: ApiError) =>
+export const deleteFailure = (err: any) =>
   action(LabRegionTypes.DELETE_FAILURE, err);
