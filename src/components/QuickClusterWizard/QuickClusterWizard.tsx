@@ -134,7 +134,6 @@ const QuickClusterWizard: React.FC = () => {
                 </div>,
                 true
               );
-              console.log(param.condition?.msg);
             } else
               removeWizardErrors(
                 wizardErrors,
