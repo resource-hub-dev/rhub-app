@@ -98,7 +98,7 @@ describe('region reducer', () => {
   });
 
   test('handles load failure', () => {
-    const apiResponseData = mocks.errorExample;
+    const apiResponseData = { response: { data: mocks.errorExample } };
 
     expect(
       reducer(
@@ -139,7 +139,7 @@ describe('region reducer', () => {
   });
 
   test('handles create failure', () => {
-    const apiResponseData = mocks.errorExample;
+    const apiResponseData = { response: { data: mocks.errorExample } };
 
     expect(
       reducer(
@@ -180,7 +180,7 @@ describe('region reducer', () => {
   });
 
   test('handles update failure', () => {
-    const apiResponseData = mocks.errorExample;
+    const apiResponseData = { response: { data: mocks.errorExample } };
 
     expect(
       reducer(
@@ -223,7 +223,7 @@ describe('region reducer', () => {
   });
 
   test('handles delete failure', () => {
-    const apiResponseData = mocks.errorExample;
+    const apiResponseData = { response: { data: mocks.errorExample } };
 
     expect(
       reducer(
