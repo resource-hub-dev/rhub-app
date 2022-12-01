@@ -101,9 +101,8 @@ describe('<QuickClusterUserActivity />', () => {
 
     const { result } = connectedRender(<QuickClusterUserActivity />, {
       ...noRegionState,
-      cluster: mockClusterState.loadingState,
     });
-    expect(result.queryByText(/Loading/)).toBeInTheDocument();
+    expect(result.queryAllByText(/error/).length).toBeGreaterThanOrEqual(1);
   });
 
   test('Renders <RegionalUsageTable />', async () => {
