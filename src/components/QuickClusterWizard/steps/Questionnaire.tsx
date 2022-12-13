@@ -14,6 +14,7 @@ import { AppState } from '@store';
 import { LabProductParams } from '@ducks/lab/product/types';
 import { ExclamationCircleIcon } from '@patternfly/react-icons';
 import { loadRequest as checkNameExists } from '@ducks/lab/cluster/actions';
+import PageError from '@components/pageError/pageError';
 
 import {
   addWizardErrors,
@@ -78,7 +79,6 @@ const Questionnaire: React.FC<Props> = ({
     reValidateMode: 'onChange',
     defaultValues,
   });
-
   useEffect(() => {
     if (!isValid) {
       addWizardErrors(wizardErrors, setWizardErrors, `step-${stepId}-valid`);
@@ -86,7 +86,7 @@ const Questionnaire: React.FC<Props> = ({
       removeWizardErrors(wizardErrors, setWizardErrors, `step-${stepId}-valid`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isValid, isDirty, stepId, setWizardErrors]);
+  }, [isValid, isDirty, setWizardErrors]);
 
   useEffect(() => {
     if (clusterExists !== undefined) {
@@ -321,7 +321,7 @@ const Questionnaire: React.FC<Props> = ({
       </Form>
     );
   }
-  return <p>Loading</p>;
+  return <PageError />;
 };
 
 export default Questionnaire;

@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { AppState } from '@store';
 import { loadProductRegionsRequest } from '@ducks/lab/region/actions';
+import PageError from '@components/pageError/pageError';
+
 import { wizardContext } from '../QuickClusterWizard';
 import { StepHeader } from '../helpers';
 
@@ -37,11 +39,16 @@ const Region: React.FC<Props> = ({ productId, addWizardValues }: Props) => {
   );
 
   const [selected, setSelected] = useState(0);
+  const error = useSelector((state: AppState) => state.labRegion.error);
 
   const loading = useSelector((state: AppState) => state.labRegion.loading);
   useEffect(() => {
     if (productId !== 0) dispatch(loadProductRegionsRequest(productId));
   }, [productId, dispatch]);
+
+  if (error) {
+    return <PageError />;
+  }
 
   if (!productRegions || loading) {
     return (

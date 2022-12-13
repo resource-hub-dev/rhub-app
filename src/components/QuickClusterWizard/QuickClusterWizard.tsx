@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Alert,
   Button,
+  Spinner,
   Wizard,
   WizardContextConsumer,
   WizardFooter,
@@ -13,6 +14,7 @@ import { AppState } from '@store';
 import { loadRequest as loadProducts } from '@ducks/lab/product/actions';
 import { Quota } from '@ducks/lab/types';
 import { createClusterRequest } from '@ducks/lab/cluster/actions';
+import PageError from '@components/pageError/pageError';
 
 import Products from './steps/Products';
 import Region from './steps/Regions';
@@ -58,6 +60,7 @@ const QuickClusterWizard: React.FC = () => {
   const token = useSelector((state: AppState) => state.user.current.token);
   const products = useSelector((state: AppState) => state.labProduct.data);
   const isLoading = useSelector((state: AppState) => state.labProduct.loading);
+  const isError = useSelector((state: AppState) => state.labProduct.error);
 
   const history = useHistory();
 
@@ -305,7 +308,15 @@ const QuickClusterWizard: React.FC = () => {
     },
   ];
   if (isLoading) {
-    return <>Loading....</>;
+    return (
+      <>
+        Loading
+        <Spinner />
+      </>
+    );
+  }
+  if (isError) {
+    return <PageError />;
   }
   return (
     <wizardContext.Provider value={[wizardErrors, setWizardErrors, values]}>
