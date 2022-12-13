@@ -34,7 +34,7 @@ describe('<QuickClusterWizard />', () => {
       mocks.loadingState
     );
 
-    expect(result.queryByText(/Loading.../)).toBeInTheDocument();
+    expect(result.queryByText(/Loading/)).toBeInTheDocument();
   });
 
   test('Renders the inital wizard menu', async () => {
