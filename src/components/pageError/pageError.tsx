@@ -17,9 +17,8 @@ const PageError: React.FC<Props> = ({ msg }) => {
   return (
     <EmptyState>
       <EmptyStateIcon icon={OutlinedMehIcon} />
-      {msg && <Text component={TextVariants.h3}>{msg}</Text>}
       <Title size="lg" headingLevel="h1">
-        Oops. An error has occured
+        {msg || 'Oops. An error has occured'}
       </Title>
       <EmptyStateBody>
         Please refresh the page. If the issue persists, please contact our team
