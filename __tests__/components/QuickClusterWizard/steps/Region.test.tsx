@@ -47,13 +47,14 @@ describe('<Region />', () => {
     expect(result.queryByText(/Select a Region/)).not.toBeInTheDocument();
   });
 
-  test('Renders with no product regions', async () => {
+  test('Renders no regions', async () => {
     const { result } = connectedRender(
       <Region productId={1} addWizardValues={addWizardValuesMock} />,
       mocks.noProductRegionsState
     );
-
-    expect(result.queryByText(/Select a Region/)).toBeInTheDocument();
+    expect(
+      result.queryByText(/No region is available for the selected product./)
+    ).toBeInTheDocument();
   });
 
   test('Renders with no product region location', async () => {

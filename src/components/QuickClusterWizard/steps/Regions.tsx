@@ -49,8 +49,15 @@ const Region: React.FC<Props> = ({ productId, addWizardValues }: Props) => {
   if (error) {
     return <PageError />;
   }
+  if (!productRegions || !productRegions.length) {
+    return (
+      <>
+        <PageError msg="No region is available for the selected product." />
+      </>
+    );
+  }
 
-  if (!productRegions || loading) {
+  if (loading) {
     return (
       <>
         <Spinner /> ...Loading
