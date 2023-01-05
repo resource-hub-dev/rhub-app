@@ -11,7 +11,8 @@ import {
 import { AppState } from '@store';
 import { loadRequest as clusterloadRequest } from '@ducks/lab/cluster/actions';
 
-const ENDPOINT = process.env.RHUB_STOMP_SERVER || 'ws://localhost:15674/ws';
+const ENDPOINT =
+  `ws://${process.env.RHUB_BROKER_HOST}:15674/ws` || 'ws://localhost:15674/ws';
 
 export interface Props {
   clusterId?: number;
@@ -63,35 +64,48 @@ const ToastNotifications: React.FC<Props> = ({ clusterId }: Props) => {
   client.heartbeat.outgoing = 20000;
   client.heartbeat.incoming = 20000;
   const headers = {
-    login: 'guest',
-    passcode: 'guest',
+    login: process.env.RHUB_BROKER_USERNAME,
+    passcode: process.env.RHUB_BROKER_PASSWORD,
     durable: 'true',
     'auto-delete': 'false',
   };
 
   useEffect(() => {
+    const notify = (message: Record<string, string>) => {
+      // check if user owns this cluster
+      const updatedCluster = clusters[Number(message.cluster_id)];
+      if (updatedCluster) {
+        const isSuccess = message.job_status === 'successful';
+        const alertId = getUniqueId();
+        const titleName = isSuccess ? 'Success' : 'Failed';
+        addAlert(
+          titleName,
+          isSuccess,
+          alertId,
+          message.cluster_name,
+          message.msg
+        );
+      }
+      if (clusterId && clusterId === Number(message.cluster_id)) {
+        dispatch(clusterloadRequest(clusterId));
+      }
+    };
     client.connect(headers, (frame: any) => {
-      const subscription = client.subscribe(
-        '/exchange/messaging',
+      const createSub = client.subscribe(
+        '/exchange/messaging/lab.cluster.create',
         (message: any) => {
-          const msgObj = JSON.parse(message.body);
-          const isSuccess = msgObj.job_status === 'successful';
-          const alertId = getUniqueId();
-          const titleName = isSuccess ? 'Success' : 'Failed';
-          addAlert(
-            titleName,
-            isSuccess,
-            alertId,
-            msgObj.cluster_name,
-            msgObj.msg
-          );
-          if (clusterId && clusterId === Number(message.cluster_id)) {
-            dispatch(clusterloadRequest(clusterId));
-          }
+          notify(message.body);
+        }
+      );
+      const deleteSub = client.subscribe(
+        '/exchange/messaging/lab.cluster.delete',
+        (message: any) => {
+          notify(message.body);
         }
       );
       return () => {
-        subscription.unsubscribe();
+        createSub.unsubscribe();
+        deleteSub.unsubscribe();
       };
     });
   }, [loading, alerts, clusterId, dispatch, client, token]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -111,9 +125,7 @@ const ToastNotifications: React.FC<Props> = ({ clusterId }: Props) => {
             />
           }
         >
-          <p>
-            {`Status of ${alert.clusterName} has been updated to ${alert.status}.`}
-          </p>
+          <p>{`Status update: ${alert.status}.`}</p>
         </Alert>
       ))}
     </AlertGroup>
