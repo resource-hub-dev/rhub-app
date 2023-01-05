@@ -5,6 +5,7 @@ import { PageSection, PageSectionVariants } from '@patternfly/react-core';
 import { useKeycloak } from '@react-keycloak/web';
 
 import { AppState } from '@store';
+import ToastNotifications from '@components/toastNotifications/ToastNotifications';
 
 import { loadRequest as loadClusters } from '@ducks/lab/cluster/actions';
 
@@ -23,6 +24,7 @@ const MyClusters: React.FC = () => {
 
   return (
     <PageSection variant={PageSectionVariants.light}>
+      <ToastNotifications />
       <ClusterView clusterViewType="user" />
     </PageSection>
   );
