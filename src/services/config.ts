@@ -3,6 +3,7 @@ interface AppConfig {
   authUrl: string;
   keycloakRealm: string;
   keycloakClient: string;
+  rhubSsoEndpoint: string;
 }
 
 interface AppWindow extends Window {
@@ -17,6 +18,7 @@ window.appConfig = window.appConfig || {
   authUrl: '',
   keycloakRealm: '',
   keycloakClient: '',
+  rhubSsoEndpoint: '',
 };
 
 export default window.appConfig;
