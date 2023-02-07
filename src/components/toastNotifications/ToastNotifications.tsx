@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import socketIOClient from 'socket.io-client';
+import Stomp from 'stompjs';
 
 import {
   Alert,
@@ -11,7 +11,8 @@ import {
 import { AppState } from '@store';
 import { loadRequest as clusterloadRequest } from '@ducks/lab/cluster/actions';
 
-const ENDPOINT = process.env.SOCKET_HOST || window.location.origin;
+const ENDPOINT =
+  `ws://${process.env.RHUB_BROKER_HOST}:15674/ws` || 'ws://localhost:15674/ws';
 
 export interface Props {
   clusterId?: number;
@@ -58,33 +59,56 @@ const ToastNotifications: React.FC<Props> = ({ clusterId }: Props) => {
 
   const removeAlert = (key: number) =>
     setAlerts([...alerts.filter((x) => x.key !== key)]);
-  const socket = socketIOClient(ENDPOINT);
+  const ws = new WebSocket(ENDPOINT);
+  const client = Stomp.over(ws);
+  client.heartbeat.outgoing = 20000;
+  client.heartbeat.incoming = 20000;
+  const headers = {
+    login: process.env.RHUB_BROKER_USERNAME,
+    passcode: process.env.RHUB_BROKER_PASSWORD,
+    durable: 'true',
+    'auto-delete': 'false',
+  };
+
   useEffect(() => {
-    socket.on('message', (message: any) => {
-      if (message.event === 'clusterStatusUpdated') {
-        // First confirm that this update is the user's
-        const updatedCluster = clusters[Number(message.cluster_id)];
-        if (updatedCluster) {
-          const isSuccess = message.cluster_status.indexOf('Failed') === -1;
-          const alertId = getUniqueId();
-          const titleName = isSuccess ? 'Success' : 'Failed';
-          addAlert(
-            titleName,
-            isSuccess,
-            alertId,
-            updatedCluster.name,
-            message.cluster_status
-          );
-        }
+    const notify = (message: Record<string, string>) => {
+      // check if user owns this cluster
+      const updatedCluster = clusters[Number(message.cluster_id)];
+      if (updatedCluster) {
+        const isSuccess = message.job_status === 'successful';
+        const alertId = getUniqueId();
+        const titleName = isSuccess ? 'Success' : 'Failed';
+        addAlert(
+          titleName,
+          isSuccess,
+          alertId,
+          message.cluster_name,
+          message.msg
+        );
       }
       if (clusterId && clusterId === Number(message.cluster_id)) {
         dispatch(clusterloadRequest(clusterId));
       }
-    });
-    return () => {
-      socket.disconnect();
     };
-  }, [loading, alerts, clusterId, dispatch, socket, token]); // eslint-disable-line react-hooks/exhaustive-deps
+    client.connect(headers, (frame: any) => {
+      const createSub = client.subscribe(
+        '/exchange/messaging/lab.cluster.create',
+        (message: any) => {
+          notify(message.body);
+        }
+      );
+      const deleteSub = client.subscribe(
+        '/exchange/messaging/lab.cluster.delete',
+        (message: any) => {
+          notify(message.body);
+        }
+      );
+      return () => {
+        createSub.unsubscribe();
+        deleteSub.unsubscribe();
+      };
+    });
+  }, [loading, alerts, clusterId, dispatch, client, token]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <AlertGroup isToast>
       {alerts.map((alert) => (
@@ -101,9 +125,7 @@ const ToastNotifications: React.FC<Props> = ({ clusterId }: Props) => {
             />
           }
         >
-          <p>
-            {`Status of ${alert.clusterName} has been updated to ${alert.status}.`}
-          </p>
+          <p>{`Status update: ${alert.status}.`}</p>
         </Alert>
       ))}
     </AlertGroup>
