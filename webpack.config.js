@@ -152,6 +152,9 @@ const config = {
       chunkFilename: '[name].bundle.css',
     }),
     new webpack.EnvironmentPlugin({ ...process.env }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
   ],
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -208,6 +211,9 @@ module.exports = (env, argv) => {
       RHUB_KEYCLOAK_URL: isProductionMode
         ? '${RHUB_KEYCLOAK_URL}'
         : process.env.RHUB_KEYCLOAK_URL,
+      RHUB_SSO_ENDPOINT: isProductionMode
+        ? '${RHUB_SSO_ENDPOINT}'
+        : process.env.RHUB_SSO_ENDPOINT,
       KEYCLOAK_REALM: isProductionMode
         ? '${KEYCLOAK_REALM}'
         : process.env.KEYCLOAK_REALM,
