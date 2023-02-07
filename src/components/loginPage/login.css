@@ -1,0 +1,13 @@
+.login-menu-btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.login-card {
+    background-color: var(--pf-global--BackgroundColor--150);
+    margin-top: 10px;
+}
+
+.login-form {
+    padding: 10px;
+}
