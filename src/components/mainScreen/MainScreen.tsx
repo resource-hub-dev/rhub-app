@@ -13,8 +13,7 @@ import {
   PageSidebar,
 } from '@patternfly/react-core';
 
-import { loginRequest, updateToken } from '@ducks/user/actions';
-import { UserData } from '@ducks/user/types';
+import { loadCurrentUserRequest, updateToken } from '@ducks/user/actions';
 import ClusterDetails from '@components/clusterDetails/ClusterDetails';
 import SharedClusters from '@components/clusters/SharedClusters';
 import MyClusters from '@components/clusters/MyClusters';
@@ -22,8 +21,9 @@ import ResourcesDashboard from '@components/ResourcesDashboard/ResourcesDashboar
 import QuickClusterWizard from '@components/QuickClusterWizard/QuickClusterWizard';
 import TowerOutput from '@components/TowerOutput/TowerOutput';
 import QuickClusterUserActivity from '@components/quickClusterUserActivity/QuickClusterUserActivity';
+import RhubLoginPage from '@components/loginPage/Login';
 
-import { Login, PrivateRoute, PublicRoute } from './CustomRoutes';
+import { PrivateRoute, PublicRoute } from './CustomRoutes';
 
 import Cowsay from '../cowsay/Cowsay';
 import Policies from '../policies/Policies';
@@ -53,14 +53,8 @@ const MainScreen: React.FC = () => {
   };
   useEffect(() => {
     if (keycloak.authenticated) {
-      const userProfile: any = keycloak.tokenParsed; // type is any because Keycloak defines this very loosely
-      const user: UserData = {
-        name: userProfile.name,
-        email: userProfile.email,
-        id: userProfile.sub,
-        token: keycloak.token!,
-      };
-      dispatch(loginRequest(user));
+      dispatch(updateToken(keycloak.token));
+      dispatch(loadCurrentUserRequest());
     }
   }, [dispatch, keycloak.token, keycloak.authenticated, keycloak.tokenParsed]);
 
@@ -163,7 +157,7 @@ const MainScreen: React.FC = () => {
           <LandingPage />
         </Route>
         <PublicRoute exact path="/login">
-          <Login />
+          <RhubLoginPage />
         </PublicRoute>
         <PrivateRoute
           roles={[]}
