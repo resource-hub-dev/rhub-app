@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading, import/prefer-default-export, no-nested-ternary, react/jsx-curly-newline  */
 
 import { useKeycloak } from '@react-keycloak/web';
+import { AuthorizedFunction } from '@services/user';
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 
@@ -8,14 +9,6 @@ interface Props {
   children: React.ReactNode;
   roles?: string[];
 }
-
-export const Login: React.FC = () => {
-  // dummy component for keycloak login
-  const { keycloak } = useKeycloak();
-
-  keycloak.login();
-  return <></>;
-};
 
 export const PublicRoute: React.FC<Props & Record<string, any>> = ({
   children,
@@ -48,21 +41,9 @@ export const PrivateRoute: React.FC<Props & Record<string, any>> = ({
 }: Props) => {
   const { keycloak } = useKeycloak();
 
-  const isAuthorized = (roleList: string[]) => {
-    if (roleList.length === 0) return true;
-    if (keycloak && roleList) {
-      return roleList.some((r) => {
-        const realm = keycloak.hasRealmRole(r);
-        const resource = keycloak.hasResourceRole(r);
-        return realm || resource;
-      });
-    }
-    return false;
-  };
-
   return (
     <Route {...rest}>
-      {roles && keycloak.authenticated && isAuthorized(roles) ? (
+      {roles && keycloak.authenticated && AuthorizedFunction(roles) ? (
         children
       ) : !keycloak.authenticated ? (
         <Redirect to={{ pathname: '/login' }} />

@@ -39,10 +39,7 @@ const LandingPage: React.FC = () => {
           Welcome to the Resource Hub
         </Title>
         {!keycloak.authenticated && initialized && (
-          <Button
-            className="welcome-login-btn"
-            onClick={() => keycloak.login()}
-          >
+          <Button className="welcome-login-btn" component="a" href="/login">
             Log In To Your Account
           </Button>
         )}
