@@ -1,16 +1,13 @@
 /* eslint-disable import/prefer-default-export  */
 
-import { useKeycloak } from '@react-keycloak/web';
+import { AppState } from '@store';
+import { useSelector } from 'react-redux';
 
-export const AuthorizedFunction = (roles: string[]) => {
-  const { keycloak } = useKeycloak();
-  if (roles.length === 0) return true;
-  else if (keycloak && roles) {
-    return roles.some((r) => {
-      const realm = keycloak.hasRealmRole(r);
-      const resource = keycloak.hasResourceRole(r);
-      return realm || resource;
-    });
+export const AuthorizedFunction = (requiredRoles: string[]) => {
+  const userRoles = useSelector((state: AppState) => state.user.current.roles);
+  if (requiredRoles.length === 0) return true;
+  else if (requiredRoles && userRoles) {
+    return requiredRoles.some((r) => userRoles.indexOf(r) !== -1);
   }
   return false;
 };
