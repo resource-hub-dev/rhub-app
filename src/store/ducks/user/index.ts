@@ -1,10 +1,16 @@
 import { Reducer } from 'redux';
-import { UserModel, UserState, UserTypes, UserData } from './types';
+import { UserState, UserTypes, UserData } from './types';
 
-const DEFAULT_USER: UserModel = {
+const DEFAULT_USER: UserData = {
   id: '',
-  email: '',
   token: '',
+  ldap_dn: '',
+  external_uuid: '',
+  ssh_keys: [],
+  manager_id: null,
+  roles: null,
+  name: '',
+  email: '',
 };
 
 export const INITIAL_STATE: UserState = {
@@ -18,7 +24,13 @@ export const INITIAL_STATE: UserState = {
 const modelMapper = (item: UserData) => ({
   id: item.id,
   email: item.email,
+  ssh_keys: item.ssh_keys,
+  external_uuid: item.external_uuid,
+  roles: item.roles,
+  manager_id: item.manager_id,
+  ldap_dn: item.ldap_dn,
   token: item.token,
+  name: item.name,
 });
 
 const modelReducer = (data: {}, item: UserData) => ({
@@ -28,17 +40,17 @@ const modelReducer = (data: {}, item: UserData) => ({
 
 const reducer: Reducer<UserState> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case UserTypes.LOGIN_REQUEST:
+    case UserTypes.LOAD_CURRUSR_REQUEST:
       return {
         ...state,
         loading: true,
         error: false,
       };
-    case UserTypes.LOGIN_SUCCESS:
+    case UserTypes.LOAD_CURRUSR_SUCCESS:
       return {
         ...state,
         loading: false,
-        current: modelMapper(action.payload),
+        current: action.payload,
         loggedIn: true,
       };
     case UserTypes.TOKEN_UPDATE:
@@ -48,10 +60,12 @@ const reducer: Reducer<UserState> = (state = INITIAL_STATE, action) => {
         error: false,
       };
     case UserTypes.TOKEN_UPDATE_SUCCESS:
+    case UserTypes.PUT_TOKEN_REQUEST:
       return {
         ...state,
         loading: false,
         error: false,
+        loggedIn: true,
         current: {
           ...state.current,
           token: action.payload,
@@ -68,7 +82,7 @@ const reducer: Reducer<UserState> = (state = INITIAL_STATE, action) => {
       };
     case UserTypes.LOAD_FAILURE:
     case UserTypes.TOKEN_UPDATE_FAILURE:
-    case UserTypes.LOGIN_FAILURE:
+    case UserTypes.LOAD_CURRUSR_FAILURE:
       return { ...state, error: true };
     default:
       return state;
