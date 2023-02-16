@@ -5,19 +5,19 @@ import api from '@services/api';
 import {
   loadSuccess,
   loadFailure,
-  loginSuccess,
-  loginFailure,
+  loadCurrentUserSuccess,
+  loadCurrentUserFailure,
   updateTokenSuccess,
   updateTokenFailure,
 } from './actions';
 import { UserTypes } from './types';
 
-function* login(action: AnyAction) {
+function* loadCurrent(): any {
   try {
-    yield put(loginSuccess(action.payload));
-    api.defaults.headers.Authorization = `Bearer ${action.payload.token}`;
+    const response = yield call(api.get, 'me');
+    yield put(loadCurrentUserSuccess(response.data));
   } catch (err) {
-    yield put(loginFailure());
+    yield put(loadCurrentUserFailure());
   }
 }
 
@@ -45,7 +45,7 @@ function* load(action: AnyAction) {
 const userSagas = [
   takeLatest(UserTypes.LOAD_REQUEST, load),
   takeLatest(UserTypes.TOKEN_UPDATE, tokenUpdate),
-  takeLatest(UserTypes.LOGIN_REQUEST, login),
+  takeLatest(UserTypes.LOAD_CURRUSR_REQUEST, loadCurrent),
 ];
 
 export default userSagas;

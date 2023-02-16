@@ -1,13 +1,17 @@
 import { action } from 'typesafe-actions';
 import { UserTypes, UserData } from './types';
 
-export const loginRequest = (payload: UserData) =>
-  action(UserTypes.LOGIN_REQUEST, payload);
+export const loadCurrentUserRequest = () =>
+  action(UserTypes.LOAD_CURRUSR_REQUEST);
 
-export const loginSuccess = (payload: UserData) =>
-  action(UserTypes.LOGIN_SUCCESS, payload);
+export const loadCurrentUserSuccess = (payload: UserData) =>
+  action(UserTypes.LOAD_CURRUSR_SUCCESS, payload);
 
-export const loginFailure = () => action(UserTypes.LOGIN_FAILURE);
+export const loadCurrentUserFailure = () =>
+  action(UserTypes.LOAD_CURRUSR_FAILURE);
+
+export const putTokenRequest = (token?: string) =>
+  action(UserTypes.PUT_TOKEN_REQUEST, token);
 
 export const updateToken = (payload?: string) =>
   action(UserTypes.TOKEN_UPDATE, payload);
