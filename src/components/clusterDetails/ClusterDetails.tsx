@@ -13,10 +13,9 @@ import {
   Modal,
   ModalVariant,
 } from '@patternfly/react-core';
-import { useKeycloak } from '@react-keycloak/web';
 
 import { AppState } from '@store';
-
+import { AuthorizedFunction } from '@services/user';
 import {
   loadRequest,
   deleteRequest,
@@ -44,7 +43,6 @@ const ClusterDetails: React.FC = () => {
   const routerHistory = useHistory();
 
   const { clusterId } = useParams<Props>();
-  const { keycloak } = useKeycloak();
   const id = Number(clusterId);
 
   const [openModal, setOpenModal] = useState('');
@@ -203,7 +201,7 @@ const ClusterDetails: React.FC = () => {
                     // user.isAdmin ||
                     reservation_expiration !== null && clusterAccess
                   }
-                  showLifespanBtn={keycloak.hasRealmRole('rhub-admin')}
+                  showLifespanBtn={AuthorizedFunction(['rhub-admin'])}
                 />
               </GridItem>
               <GridItem span={3} rowSpan={8} className="ql-card-layout">

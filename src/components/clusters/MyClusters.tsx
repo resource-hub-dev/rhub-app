@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { PageSection, PageSectionVariants } from '@patternfly/react-core';
-import { useKeycloak } from '@react-keycloak/web';
 
 import { AppState } from '@store';
 import ToastNotifications from '@components/toastNotifications/ToastNotifications';
@@ -15,8 +14,7 @@ const MyClusters: React.FC = () => {
   const dispatch = useDispatch();
   const token = useSelector((state: AppState) => state.user.current.token);
 
-  const { keycloak } = useKeycloak();
-  const userId = keycloak.subject;
+  const userId = useSelector((state: AppState) => state.user.current.id);
 
   useEffect(() => {
     if (userId) dispatch(loadClusters('all', { 'filter[user_id]': userId }));
