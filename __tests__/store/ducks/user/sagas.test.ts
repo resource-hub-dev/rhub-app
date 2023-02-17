@@ -10,6 +10,22 @@ import * as actions from '@ducks/user/actions';
 import * as mocks from '@mocks/user';
 
 describe('user saga', () => {
+  test('loads current user to the store', () => {
+    const apiResponse = {
+      data: [mocks.responseAPI],
+    };
+    return expectSaga(rootSaga)
+      .dispatch(actions.loadCurrentUserRequest())
+      .provide([[matchers.call.fn(api.get), apiResponse]])
+      .silentRun();
+  });
+
+  test('updates token to the store', () => {
+    return expectSaga(rootSaga)
+      .dispatch(actions.updateToken('abc'))
+      .silentRun();
+  });
+
   test('loads users information to the store', () => {
     const apiResponse = {
       data: [mocks.responseAPI, mocks.responseAPI],
@@ -22,6 +38,14 @@ describe('user saga', () => {
         [matchers.select(getToken), 'abcd'],
         [matchers.call.fn(api.get), apiResponse],
       ])
+      .silentRun();
+  });
+
+  test('sets errors to the store on load current user failure', () => {
+    return expectSaga(rootSaga)
+      .dispatch(actions.loadCurrentUserRequest())
+      .provide([[matchers.call.fn(api.get), throwError(new Error('error'))]])
+      .put(actions.loadCurrentUserFailure())
       .silentRun();
   });
 

@@ -1,13 +1,28 @@
 import React from 'react';
+import * as keycloakpackage from '@react-keycloak/web';
 
 import { connectedRender, fireEvent, waitFor } from '@tests/testUtils';
 
-import * as mocks from '@mocks/policies';
+import * as keycloakMock from '@mocks/services';
+
 import RhubLoginPage from '@components/loginPage/Login';
 
-describe('<Policies />', () => {
+jest.mock('@react-keycloak/web');
+const useKeycloakMock = keycloakpackage as jest.Mocked<any>;
+
+describe('<RhubLoginPage />', () => {
+  beforeAll(() => {
+    useKeycloakMock.useKeycloak.mockImplementation(() =>
+      keycloakMock.authenticated()
+    );
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('Expects all buttons to render correctly', async () => {
-    const { result } = connectedRender(<RhubLoginPage />, mocks.noPolicyState);
+    const { result } = connectedRender(<RhubLoginPage />);
 
     expect(result.queryByText(/Loading\.\.\./)).not.toBeInTheDocument();
 
@@ -15,7 +30,7 @@ describe('<Policies />', () => {
     expect(result.queryByText(/Resource Hub Login/)).toBeInTheDocument();
   });
   test('Handles logging in using Resource Hub Login Form (LDAP)', async () => {
-    const { result } = connectedRender(<RhubLoginPage />, mocks.noPolicyState);
+    const { result } = connectedRender(<RhubLoginPage />);
 
     expect(result.queryByText(/Loading\.\.\./)).not.toBeInTheDocument();
     const loginFormToggleBtn = result.getByText(/Resource Hub Login/);
@@ -38,7 +53,7 @@ describe('<Policies />', () => {
     fireEvent.click(logintn);
   });
   test('Handles error in Resource Hub Login Form (LDAP)', async () => {
-    const { result } = connectedRender(<RhubLoginPage />, mocks.noPolicyState);
+    const { result } = connectedRender(<RhubLoginPage />);
 
     expect(result.queryByText(/Loading\.\.\./)).not.toBeInTheDocument();
     const loginFormToggleBtn = result.getByText(/Resource Hub Login/);
@@ -48,5 +63,19 @@ describe('<Policies />', () => {
     const logintn = result.getByRole('button', { name: 'Log in' });
     fireEvent.click(logintn);
     expect(result.queryByText(/Invalid login credentials/)).toBeInTheDocument();
+  });
+
+  test('login button calls the keycloak.login method', async () => {
+    const unauthenticatedMock = keycloakMock.unauthenticated();
+    const loginSpy = jest.spyOn(unauthenticatedMock.keycloak, 'login');
+
+    useKeycloakMock.useKeycloak.mockImplementation(() => unauthenticatedMock);
+
+    const { result } = connectedRender(<RhubLoginPage />);
+    const loginBtn = result.getByRole('button', {
+      name: 'Red Hat SSO (recommended)',
+    });
+    fireEvent.click(loginBtn);
+    expect(loginSpy).toHaveBeenCalled();
   });
 });

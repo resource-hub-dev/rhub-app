@@ -1,16 +1,14 @@
 import React from 'react';
 import * as keycloakpackage from '@react-keycloak/web';
+import * as mocks from '@mocks/landingPage';
+
 import { Switch } from 'react-router-dom';
 
 import { connectedRender } from '@tests/testUtils';
 
 import * as keycloakMock from '@mocks/services';
 
-import {
-  PublicRoute,
-  PrivateRoute,
-  Login,
-} from '@components/mainScreen/CustomRoutes';
+import { PublicRoute, PrivateRoute } from '@components/mainScreen/CustomRoutes';
 
 jest.mock('@react-keycloak/web');
 const useKeycloakMock = keycloakpackage as jest.Mocked<any>;
@@ -63,7 +61,8 @@ describe('<PrivateRoute />', () => {
         <PrivateRoute roles={[]} path="/">
           mock-children
         </PrivateRoute>
-      </Switch>
+      </Switch>,
+      mocks.initialState
     );
 
     // shows the component if the user is authorized and authenticated
@@ -81,7 +80,7 @@ describe('<PrivateRoute />', () => {
           mock-children
         </PrivateRoute>
       </Switch>,
-      {},
+      mocks.initialState,
       '/mockpath'
     );
 
@@ -110,14 +109,5 @@ describe('<PrivateRoute />', () => {
     // redirects to the login page
     expect(result.queryByText(/mock-children/)).not.toBeInTheDocument();
     expect(history.location.pathname).toBe('/login');
-  });
-});
-
-describe('<Login />', () => {
-  test('Renders the component', async () => {
-    const { result } = connectedRender(<Login />);
-
-    // renders an empty component
-    expect(result.queryByText(/.+/)).not.toBeInTheDocument();
   });
 });
