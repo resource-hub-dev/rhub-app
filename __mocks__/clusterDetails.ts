@@ -70,7 +70,17 @@ export const noEventsClusterState: ClusterState = {
 
 export const initialExampleState: ExampleState = {
   user: {
-    current: { id: '', token: '', email: '' },
+    current: {
+      id: '',
+      token: '',
+      ldap_dn: '',
+      external_uuid: '',
+      ssh_keys: [],
+      manager_id: null,
+      roles: null,
+      name: '',
+      email: '',
+    },
     data: {},
     loggedIn: true,
     loading: false,

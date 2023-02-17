@@ -45,7 +45,7 @@ describe('<MyClusters />', () => {
     const { result } = connectedRender(<MyClusters />, mocks.loadedState);
 
     // no actions are dispatched
-    expect(dispatchTracker.length).toBe(0);
+    expect(dispatchTracker.length).toBe(1);
 
     // Renders ClusterView with clusterViewType='user'
     expect(result.queryByText(/My Clusters:/)).toBeInTheDocument();

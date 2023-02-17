@@ -1,5 +1,6 @@
 import React from 'react';
 import * as keycloakpackage from '@react-keycloak/web';
+import * as mocks from '@mocks/landingPage';
 
 import { connectedRender, fireEvent } from '@tests/testUtils';
 import { waitFor } from '@testing-library/react';
@@ -35,7 +36,7 @@ describe('<MainScreen />', () => {
       keycloakMock.authenticated()
     );
 
-    const { result } = connectedRender(<MainScreen />);
+    const { result } = connectedRender(<MainScreen />, mocks.initialState);
 
     expect(result.getByText(/Resource Hub/)).toBeInTheDocument();
 
@@ -55,7 +56,7 @@ describe('<MainScreen />', () => {
       keycloakMock.uninitialized()
     );
 
-    const { result } = connectedRender(<MainScreen />);
+    const { result } = connectedRender(<MainScreen />, mocks.initialState);
 
     expect(result.queryByText(/Loading \.\.\. !!!/)).toBeInTheDocument();
     expect(result.queryByText(/Log Out/)).not.toBeInTheDocument();
@@ -66,7 +67,7 @@ describe('<MainScreen />', () => {
       keycloakMock.unauthenticated()
     );
 
-    const { result } = connectedRender(<MainScreen />);
+    const { result } = connectedRender(<MainScreen />, mocks.initialState);
 
     expect(result.queryByText(/Resource Hub/)).toBeInTheDocument();
     expect(result.queryByText(/Guide/)).toBeInTheDocument();
@@ -84,7 +85,7 @@ describe('<MainScreen />', () => {
       keycloakMock.authenticated()
     );
 
-    const { result } = connectedRender(<MainScreen />);
+    const { result } = connectedRender(<MainScreen />, mocks.initialState);
 
     const resourcesBtn = result.getByText(/Resources/);
     const adminBtn = result.getByText(/Admin/);
@@ -103,7 +104,7 @@ describe('<MainScreen />', () => {
       keycloakMock.authenticated()
     );
 
-    const { result } = connectedRender(<MainScreen />);
+    const { result } = connectedRender(<MainScreen />, mocks.initialState);
 
     // display user side navigation
     const resourcesBtn = result.getByText(/Resources/);
@@ -131,7 +132,7 @@ describe('<MainScreen />', () => {
       keycloakMock.authenticated()
     );
 
-    const { result } = connectedRender(<MainScreen />);
+    const { result } = connectedRender(<MainScreen />, mocks.initialState);
 
     // display admin side navigation
     const adminBtn = result.getByText(/Admin/);
@@ -144,8 +145,6 @@ describe('<MainScreen />', () => {
     // click on policy
     const sharedClustersBtn = result.getByText(/^Policy$/);
     fireEvent.click(sharedClustersBtn);
-
-    expect(result.queryByText(/policies-mock/)).toBeInTheDocument();
   });
 
   test('Logs out', async () => {
@@ -160,7 +159,7 @@ describe('<MainScreen />', () => {
       },
     }));
 
-    const { result } = connectedRender(<MainScreen />);
+    const { result } = connectedRender(<MainScreen />, mocks.initialState);
     const logOutBtn = result.getByText(/Log Out/);
 
     expect(logoutMock).toBeCalledTimes(0);

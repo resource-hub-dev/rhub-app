@@ -7,12 +7,50 @@ describe('user reducer', () => {
     expect(reducer(undefined, { type: 'stub' })).toEqual(INITIAL_STATE);
   });
 
-  test('handles login request', () => {
-    expect(
-      reducer(INITIAL_STATE, actions.loginRequest(mocks.responseAPI))
-    ).toEqual({
+  test('handles load current user request', () => {
+    expect(reducer(INITIAL_STATE, actions.loadCurrentUserRequest())).toEqual({
       current: mocks.emptyUser,
       loggedIn: false,
+      loading: true,
+      error: false,
+      data: {},
+    });
+  });
+  test('handles load current user success', () => {
+    expect(
+      reducer(INITIAL_STATE, actions.loadCurrentUserSuccess(mocks.responseAPI))
+    ).toEqual({
+      current: mocks.loadedUser,
+      loggedIn: true,
+      loading: false,
+      error: false,
+      data: {},
+    });
+  });
+  test('handles token put', () => {
+    expect(reducer(INITIAL_STATE, actions.putTokenRequest('abc'))).toEqual({
+      current: { ...mocks.emptyUser, token: 'abc' },
+      loggedIn: true,
+      loading: false,
+      error: false,
+      data: {},
+    });
+  });
+  test('handles token update request', () => {
+    expect(
+      reducer(
+        {
+          current: mocks.loadedUser,
+          loggedIn: true,
+          loading: false,
+          error: false,
+          data: {},
+        },
+        actions.updateToken('abc')
+      )
+    ).toEqual({
+      current: mocks.loadedUser,
+      loggedIn: true,
       loading: true,
       error: false,
       data: {},

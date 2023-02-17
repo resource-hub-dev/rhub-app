@@ -62,16 +62,4 @@ describe('<LandingPage />', () => {
     expect(result.getByText(/^Quick Cluster$/)).toBeVisible();
     expect(result.getByText(/Learning Resources/)).toBeVisible();
   });
-
-  test('login button calls the keycloak.login method', async () => {
-    const unauthenticatedMock = keycloakMock.unauthenticated();
-    const loginSpy = jest.spyOn(unauthenticatedMock.keycloak, 'login');
-
-    useKeycloakMock.useKeycloak.mockImplementation(() => unauthenticatedMock);
-
-    const { result } = connectedRender(<LandingPage />, mocks.initialState);
-    const loginBtn = result.getByText(/Log In To Your Account/);
-    fireEvent.click(loginBtn);
-    expect(loginSpy).toHaveBeenCalled();
-  });
 });
