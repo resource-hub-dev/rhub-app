@@ -8,8 +8,8 @@ import {
   Button,
   Card,
 } from '@patternfly/react-core';
-import config from '@services/config';
 import { ExclamationCircleIcon } from '@patternfly/react-icons';
+import { useKeycloak } from '@react-keycloak/web';
 
 import './login.css';
 
@@ -21,6 +21,7 @@ const RhubLoginPage: React.FC = () => {
   const [password, setPassword] = React.useState('');
   const [isValidPassword, setIsValidPassword] = React.useState(true);
 
+  const { keycloak, initialized } = useKeycloak();
   const handleUsernameChange = (value: string) => {
     setUsername(value);
   };
@@ -53,10 +54,12 @@ const RhubLoginPage: React.FC = () => {
   const loginForm = (
     <>
       <Button
-        component="a"
-        href={config.rhubSsoEndpoint}
         variant="secondary"
         className="login-menu-btn"
+        onClick={() => {
+          if (!keycloak.authenticated && initialized) return keycloak.login();
+          return null;
+        }}
       >
         Red Hat SSO (recommended)
       </Button>
