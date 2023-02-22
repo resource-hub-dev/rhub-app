@@ -58,8 +58,8 @@ const ClusterDetails: React.FC = () => {
   const events = useSelector((state: AppState) => state.cluster.events);
   // const hosts = useSelector((state: AppState) => state.cluster.data[id].hosts);
   const isLoading = useSelector((state: AppState) => state.cluster.loading);
-
   const user = useSelector((state: AppState) => state.user.current);
+  const authorized = AuthorizedFunction(['rhub-admin']);
   const closeModal = () => {
     setOpenModal('');
   };
@@ -161,7 +161,6 @@ const ClusterDetails: React.FC = () => {
     num_volumes += host.num_volumes;
     volumes_gb += host.volumes_gb;
   });
-
   return (
     <>
       <PageSection variant={PageSectionVariants.light}>
@@ -201,7 +200,7 @@ const ClusterDetails: React.FC = () => {
                     // user.isAdmin ||
                     reservation_expiration !== null && clusterAccess
                   }
-                  showLifespanBtn={AuthorizedFunction(['rhub-admin'])}
+                  showLifespanBtn={authorized}
                 />
               </GridItem>
               <GridItem span={3} rowSpan={8} className="ql-card-layout">
