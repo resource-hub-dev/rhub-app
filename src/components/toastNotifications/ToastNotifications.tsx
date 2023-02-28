@@ -45,8 +45,8 @@ const ToastNotifications: React.FC<Props> = ({ clusterId }: Props) => {
     clusterName: string,
     status: string
   ) => {
-    setAlerts([
-      ...alerts,
+    setAlerts((currAlerts) => [
+      ...currAlerts,
       {
         title,
         variant: isSuccess ? 'success' : 'danger',
@@ -63,6 +63,8 @@ const ToastNotifications: React.FC<Props> = ({ clusterId }: Props) => {
   const client = Stomp.over(ws);
   client.heartbeat.outgoing = 20000;
   client.heartbeat.incoming = 20000;
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  client.debug = () => {}; // do nothing
   const headers = {
     login: process.env.RHUB_BROKER_USERNAME,
     passcode: process.env.RHUB_BROKER_PASSWORD,
@@ -88,19 +90,19 @@ const ToastNotifications: React.FC<Props> = ({ clusterId }: Props) => {
       }
       if (clusterId && clusterId === Number(message.cluster_id)) {
         dispatch(clusterloadRequest(clusterId));
-      }
+      } else dispatch(clusterloadRequest('all'));
     };
     client.connect(headers, (frame: any) => {
       const createSub = client.subscribe(
         '/exchange/messaging/lab.cluster.create',
         (message: any) => {
-          notify(message.body);
+          notify(JSON.parse(message.body));
         }
       );
       const deleteSub = client.subscribe(
         '/exchange/messaging/lab.cluster.delete',
         (message: any) => {
-          notify(message.body);
+          notify(JSON.parse(message.body));
         }
       );
       return () => {
