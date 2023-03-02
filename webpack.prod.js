@@ -14,11 +14,11 @@ module.exports = merge(common, {
       filename: './index.template.html',
     }),
     new InterpolateHtmlPlugin({
-      RHUB_API_URL: `${RHUB_API_URL}`,
-      RHUB_KEYCLOAK_URL: `${RHUB_KEYCLOAK_URL}`,
-      RHUB_SSO_ENDPOINT: `${RHUB_SSO_ENDPOINT}`,
-      KEYCLOAK_REALM: `${KEYCLOAK_REALM}`,
-      KEYCLOAK_CLIENT: `${KEYCLOAK_CLIENT}`,
+      RHUB_API_URL: '${RHUB_API_URL}',
+      RHUB_KEYCLOAK_URL: '${RHUB_KEYCLOAK_URL}',
+      RHUB_SSO_ENDPOINT: '${RHUB_SSO_ENDPOINT}',
+      KEYCLOAK_REALM: '${KEYCLOAK_REALM}',
+      KEYCLOAK_CLIENT: '${KEYCLOAK_CLIENT}',
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
