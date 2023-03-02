@@ -12,6 +12,7 @@ import {
 import { LabProductData } from '@ducks/lab/product/types';
 import { wizardContext } from '../QuickClusterWizard';
 import { StepHeader } from '../helpers';
+import '../QuickClusterWizard.css';
 
 // Requirements for images in Product selection:
 // Under assets/images, you must provide images with the same names as the products
@@ -55,7 +56,7 @@ const Products: React.FC<Props> = ({ products, addWizardValues }: Props) => {
         return `assets/images/${prodName}.png`;
       }
     }
-    return '';
+    return `assets/images/default.png`;
   };
 
   const onSelect = (checked: boolean, e: FormEvent<HTMLInputElement>) => {
@@ -69,18 +70,23 @@ const Products: React.FC<Props> = ({ products, addWizardValues }: Props) => {
       <StepHeader text="Select a Product" />
       <Grid hasGutter md={6} lg={3}>
         {productList.map((prod) => {
-          const filePath = genImgSrc(prod.name);
+          const filePath = genImgSrc(prod.name.replace(/\s/g, ''));
           const prevSelection = values.product_id;
           if (prod.enabled) {
             const selection = selected || prevSelection;
             return (
               <Card key={prod.id}>
                 <CardTitle>
-                  {filePath !== '' ? (
-                    <img src={filePath} alt={prod.name} height="50px" />
-                  ) : (
-                    prod.name
-                  )}
+                  <div>
+                    {filePath !== '' && (
+                      <img
+                        src={filePath}
+                        alt={prod.name}
+                        className="prod-img"
+                      />
+                    )}
+                  </div>
+                  <div>{prod.name}</div>
                 </CardTitle>
                 <CardBody>{prod.description}</CardBody>
                 <CardFooter>
