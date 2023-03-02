@@ -150,7 +150,7 @@ const QuickClusterWizard: React.FC = () => {
   };
 
   const onClose = () => {
-    history.goBack();
+    history.push('/resources/quickcluster/clusters');
   };
 
   const onFinish = () => {
@@ -176,7 +176,7 @@ const QuickClusterWizard: React.FC = () => {
       product_params,
     };
     dispatch(createClusterRequest(newCluster));
-    history.goBack();
+    history.push('/resources/quickcluster/clusters');
   };
 
   const CustomFooter = (
@@ -206,7 +206,9 @@ const QuickClusterWizard: React.FC = () => {
                         `step-${activeStep.id}-form`
                       );
                       if (form !== null)
-                        form.dispatchEvent(new Event('submit'));
+                        form.dispatchEvent(
+                          new Event('submit', { cancelable: true })
+                        );
                     }
                     setStepIdReached(stepIdReached + 1);
                     return onNext();
