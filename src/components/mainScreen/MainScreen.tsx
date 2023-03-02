@@ -23,6 +23,7 @@ import TowerOutput from '@components/TowerOutput/TowerOutput';
 import QuickClusterUserActivity from '@components/quickClusterUserActivity/QuickClusterUserActivity';
 import RhubLoginPage from '@components/loginPage/Login';
 import { AuthorizedFunction } from '@services/user';
+import { stringStore } from '@services/common';
 
 import { PrivateRoute, PublicRoute } from './CustomRoutes';
 
@@ -31,6 +32,15 @@ import Policies from '../policies/Policies';
 import LandingPage from '../landingPage/LandingPage';
 import PageNotFound from '../pageNotFound/PageNotFound';
 import { AdminNav, UserNav } from './Navigation';
+
+const TopNavLink: React.FC<{ link: string; title: string }> = ({
+  link,
+  title,
+}) => (
+  <Button variant="link" component="a" href={link} target="_blank">
+    {title}
+  </Button>
+);
 
 const MainScreen: React.FC = () => {
   const [isSideNavOpen, setIsSideNavOpen] = useState(true);
@@ -82,12 +92,11 @@ const MainScreen: React.FC = () => {
   if (!initialized) {
     return <h3>Loading ... !!!</h3>;
   }
-
   const Toolbar = (
     <PageHeaderTools>
-      <Button variant="link">Guide</Button>
-      <Button variant="link">Contact</Button>
-      <Button variant="link">Report Issue</Button>
+      <TopNavLink link={stringStore.guideLink} title="Guide" />
+      <TopNavLink link={stringStore.contactLink} title="Contact" />
+      <TopNavLink link={stringStore.supportLink} title="Report Issue" />
       {keycloak.authenticated && initialized && (
         <Button variant="secondary" onClick={() => keycloak.logout()}>
           Log Out
@@ -133,12 +142,10 @@ const MainScreen: React.FC = () => {
     <Nav onSelect={onSideNavSelect} theme="dark">
       <NavList>
         {topNavActive === 2 ? (
-          isAdmin && (
-            <AdminNav
-              activeGroup={`${activeGroup}`}
-              activeItem={`${activeItem}`}
-            />
-          )
+          <AdminNav
+            activeGroup={`${activeGroup}`}
+            activeItem={`${activeItem}`}
+          />
         ) : (
           <UserNav
             activeGroup={`${activeGroup}`}
