@@ -76,7 +76,7 @@ const ClusterDetails: React.FC = () => {
       routerHistory.goBack();
     } else {
       dispatch(deleteRequest(id, { username: user.email }));
-      routerHistory.push('/');
+      routerHistory.push('/resources/quickcluster/clusters');
     }
   };
   const dispatchNodeReboot = () => {
