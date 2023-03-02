@@ -41,7 +41,7 @@ export const UserNav: React.FC<NavProps> = ({
       isActive={activeGroup === 'dev_itm-1'}
       groupId="dev_itm-1"
     >
-      <NavItem
+      {/* <NavItem
         groupId="dev_itm-1"
         itemId="dev_subitm-1"
         key="dev_subitm-1"
@@ -54,7 +54,7 @@ export const UserNav: React.FC<NavProps> = ({
         >
           Shared Clusters
         </NavLink>
-      </NavItem>
+      </NavItem> */}
       <NavItem
         groupId="dev_itm-2"
         itemId="dev_subitm-2"
