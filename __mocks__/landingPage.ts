@@ -9,7 +9,7 @@ export const initialState: ExampleState = {
       external_uuid: '',
       ssh_keys: [],
       manager_id: null,
-      roles: ['rhub-admin, policy-owner'],
+      roles: ['rhub-admin', 'policy-owner'],
       name: '',
       email: '',
     },

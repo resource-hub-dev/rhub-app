@@ -203,7 +203,7 @@ describe('<ClusterDetails />', () => {
 
     // Check the history
     const lastEntry = history.entries[history.entries.length - 1];
-    expect(lastEntry.pathname).toBe('/');
+    expect(lastEntry.pathname).toBe('/resources/quickcluster/clusters');
   });
 
   test('Dispatches the deleteRequest by group', async () => {
