@@ -22,6 +22,7 @@ import QuickClusterWizard from '@components/QuickClusterWizard/QuickClusterWizar
 import TowerOutput from '@components/TowerOutput/TowerOutput';
 import QuickClusterUserActivity from '@components/quickClusterUserActivity/QuickClusterUserActivity';
 import RhubLoginPage from '@components/loginPage/Login';
+import { AuthorizedFunction } from '@services/user';
 
 import { PrivateRoute, PublicRoute } from './CustomRoutes';
 
@@ -58,6 +59,7 @@ const MainScreen: React.FC = () => {
     }
   }, [dispatch, keycloak.token, keycloak.authenticated, keycloak.tokenParsed]);
 
+  const isAdmin = AuthorizedFunction(['rhub-admin']);
   const onSideNavToggle = (): void => setIsSideNavOpen(!isSideNavOpen);
   const onTopNavSelect = (selectedItem: {
     groupId: number | string;
@@ -103,11 +105,13 @@ const MainScreen: React.FC = () => {
           </NavLink>
         </NavItem>
 
-        <NavItem key={2} itemId={2} isActive={topNavActive === 2}>
-          <NavLink exact to="/admin">
-            Admin
-          </NavLink>
-        </NavItem>
+        {isAdmin && (
+          <NavItem key={2} itemId={2} isActive={topNavActive === 2}>
+            <NavLink exact to="/admin">
+              Admin
+            </NavLink>
+          </NavItem>
+        )}
       </NavList>
     </Nav>
   );
@@ -129,10 +133,12 @@ const MainScreen: React.FC = () => {
     <Nav onSelect={onSideNavSelect} theme="dark">
       <NavList>
         {topNavActive === 2 ? (
-          <AdminNav
-            activeGroup={`${activeGroup}`}
-            activeItem={`${activeItem}`}
-          />
+          isAdmin && (
+            <AdminNav
+              activeGroup={`${activeGroup}`}
+              activeItem={`${activeItem}`}
+            />
+          )
         ) : (
           <UserNav
             activeGroup={`${activeGroup}`}
