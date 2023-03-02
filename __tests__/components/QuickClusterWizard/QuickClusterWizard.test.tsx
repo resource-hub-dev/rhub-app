@@ -135,7 +135,7 @@ describe('<QuickClusterWizard />', () => {
     });
 
     // Closes the window
-    expect(history.action).toBe('POP');
+    expect(history.action).toBe('PUSH');
     // Increase timeout from 5000ms to 10000ms to avoid memory
   }, 10000);
 
@@ -192,6 +192,6 @@ describe('<QuickClusterWizard />', () => {
     const cancelBtn = result.getByText(/^Cancel$/);
 
     fireEvent.click(cancelBtn);
-    expect(history.action).toBe('POP');
+    expect(history.action).toBe('PUSH');
   });
 });
