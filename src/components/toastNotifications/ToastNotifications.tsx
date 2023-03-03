@@ -11,8 +11,10 @@ import {
 import { AppState } from '@store';
 import { loadRequest as clusterloadRequest } from '@ducks/lab/cluster/actions';
 
+const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
 const ENDPOINT =
-  `ws://${process.env.RHUB_BROKER_HOST}:15674/ws` || 'ws://localhost:15674/ws';
+  `${protocol}://${process.env.RHUB_BROKER_HOST}:15674/ws` ||
+  `${protocol}://localhost:15674/ws`;
 
 export interface Props {
   clusterId?: number;
