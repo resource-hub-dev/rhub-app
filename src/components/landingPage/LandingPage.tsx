@@ -25,15 +25,17 @@ const CustomLink: React.FC<{ link: string; children: ReactNode }> = ({
   link,
   children,
 }) => (
-  <Button
-    variant="link"
-    component="a"
-    href={link}
-    target="_blank"
-    className="info-link"
-  >
-    {children}
-  </Button>
+  <div>
+    <Button
+      variant="link"
+      component="a"
+      href={link}
+      target="_blank"
+      className="info-link"
+    >
+      {children}
+    </Button>
+  </div>
 );
 
 const LandingPage: React.FC = () => {
@@ -78,13 +80,13 @@ const LandingPage: React.FC = () => {
               </div>
               {/* TODO: Add links to Documentations in the future */}
               <CustomLink link={stringStore.releaseLink}>
-                See our release history
+                See our release history <ExternalLinkAltIcon />
               </CustomLink>
               <CustomLink link={stringStore.dataRententionLink}>
-                Data Retention Policy
+                Data Retention Policy <ExternalLinkAltIcon />
               </CustomLink>
               <CustomLink link={stringStore.privacyPolicyLink}>
-                Privacy Policy
+                Privacy Policy <ExternalLinkAltIcon />
               </CustomLink>
             </GridItem>
             <GridItem className="grid-card" span={4}>
@@ -103,13 +105,9 @@ const LandingPage: React.FC = () => {
                   </Link>
                 </Button>
               </div> */}
-              <div>
-                <Button variant="link" className="info-link">
-                  <Link to="/resources/quickcluster/clusters">
-                    My Clusters <ArrowRightIcon />
-                  </Link>
-                </Button>
-              </div>
+              <CustomLink link="/resources/quickcluster/clusters">
+                My Clusters <ArrowRightIcon />
+              </CustomLink>
             </GridItem>
             <GridItem className="grid-card last-card" span={4}>
               <div className="info-title-box learning-resources">
@@ -117,21 +115,9 @@ const LandingPage: React.FC = () => {
                 Learning Resources
               </div>
               <div>Getting started with documentation</div>
-              <div>
-                <CustomLink link={stringStore.guideLink}>
-                  View All Documentation <ArrowRightIcon />
-                </CustomLink>
-              </div>
-              <div>
-                <Button variant="link" className="info-link">
-                  OpenShift 4.7: How to Install <ExternalLinkAltIcon />
-                </Button>
-              </div>
-              <div>
-                <Button variant="link" className="info-link">
-                  See resource <ArrowRightIcon />
-                </Button>
-              </div>
+              <CustomLink link={stringStore.guideLink}>
+                View All Documentation <ExternalLinkAltIcon />
+              </CustomLink>
             </GridItem>
           </Grid>
         </ExpandableSection>
