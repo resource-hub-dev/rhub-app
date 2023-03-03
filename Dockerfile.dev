@@ -1,4 +1,4 @@
-FROM node:16.14.2
+FROM node:18
 # Keep the cache for node packages...
 WORKDIR /opt/app-root/src
 COPY package*.json ./
