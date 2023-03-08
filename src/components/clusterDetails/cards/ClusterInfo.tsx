@@ -108,8 +108,7 @@ const ClusterInfo: React.FC<Props> = ({
         )}
         <div dangerouslySetInnerHTML={markup} /> {/* eslint-disable-line */}
         <div>
-          If SSH access to hosts in your cluster is needed, please download this
-          key. See{' '}
+          If SSH access to hosts in your cluster is needed, please see{' '}
           <a
             href="https://gitlab.cee.redhat.com/cee_ops/quicklab/-/wikis/access#accessing-the-cluster-hosts-via-ssh"
             rel="noreferrer"
@@ -117,16 +116,7 @@ const ClusterInfo: React.FC<Props> = ({
           >
             here
           </a>{' '}
-          for how to use this key.
-          <br />
-          <a
-            href="https://gitlab.cee.redhat.com/cee_ops/quicklab/raw/master/docs/quicklab.key"
-            download
-            rel="noreferrer"
-            target="_blank"
-          >
-            <Button title="Click to download key">quicklab.key</Button>
-          </a>
+          for documentation.
         </div>
       </CardBody>
     </Card>
