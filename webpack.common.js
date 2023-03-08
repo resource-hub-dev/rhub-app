@@ -1,16 +1,22 @@
 const path = require('path');
 
 const webpack = require('webpack');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const InterpolateHtmlPlugin = require('interpolate-html-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
-const config = {
+module.exports = {
   entry: './src/index.tsx',
+  output: {
+    filename: 'main.js',
+    path: path.resolve(__dirname, 'dist'),
+    assetModuleFilename: 'assets/[hash][ext][query]',
+  },
   module: {
     rules: [
       {
@@ -82,13 +88,9 @@ const config = {
           ),
         ],
         exclude: [path.resolve(__dirname, 'assets/images')],
-        use: {
-          loader: 'file-loader',
-          options: {
-            limit: 5000,
-            outputPath: 'fonts',
-            name: '[name].[ext]',
-          },
+        type: 'asset/resource',
+        generator: {
+          filename: 'font/[hash][ext][query]',
         },
       },
       {
@@ -103,7 +105,7 @@ const config = {
         ],
       },
       {
-        test: /\.(jpg|jpeg|png|gif)$/i,
+        test: /\.(jpg|png|jpeg|gif)$/i,
         include: [
           path.resolve(__dirname, 'src'),
           path.resolve(__dirname, 'node_modules/patternfly'),
@@ -133,16 +135,10 @@ const config = {
             'node_modules/@patternfly/react-inline-edit-extension/node_modules/@patternfly/react-styles/css/assets/images'
           ),
         ],
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 5000,
-              outputPath: 'images',
-              name: '[name].[ext]',
-            },
-          },
-        ],
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/images/[hash][ext][query]',
+        },
       },
     ],
   },
@@ -155,6 +151,9 @@ const config = {
     new webpack.ProvidePlugin({
       process: 'process/browser',
     }),
+    new CopyPlugin({
+      patterns: [{ from: 'assets', to: 'assets' }],
+    }),
   ],
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -166,21 +165,6 @@ const config = {
     symlinks: false,
     cacheWithContext: false,
   },
-  devServer: {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-      'Access-Control-Allow-Headers':
-        'X-Requested-With, content-type, Authorization',
-    },
-    historyApiFallback: true,
-    host: "0.0.0.0",
-    static: {
-      directory: path.join(__dirname, 'assets'),
-      publicPath: '/assets',
-    },
-    port: 3000,
-  },
   optimization: {
     minimizer: [new CssMinimizerPlugin()],
   },
@@ -190,47 +174,4 @@ const config = {
       path.resolve(__dirname, 'node_modules'),
     ],
   },
-};
-
-module.exports = (env, argv) => {
-  const isProductionMode = argv.mode === 'production';
-  config.mode = isProductionMode ? 'production' : 'development';
-
-  config.plugins.push(
-    new HtmlWebPackPlugin({
-      template: './src/index.html',
-      filename: isProductionMode ? './index.template.html' : './index.html',
-    })
-  );
-
-  config.plugins.push(
-    new InterpolateHtmlPlugin({
-      RHUB_API_URL: isProductionMode
-        ? '${RHUB_API_URL}'
-        : process.env.RHUB_API_URL,
-      RHUB_KEYCLOAK_URL: isProductionMode
-        ? '${RHUB_KEYCLOAK_URL}'
-        : process.env.RHUB_KEYCLOAK_URL,
-      RHUB_SSO_ENDPOINT: isProductionMode
-        ? '${RHUB_SSO_ENDPOINT}'
-        : process.env.RHUB_SSO_ENDPOINT,
-      KEYCLOAK_REALM: isProductionMode
-        ? '${KEYCLOAK_REALM}'
-        : process.env.KEYCLOAK_REALM,
-      KEYCLOAK_CLIENT: isProductionMode
-        ? '${KEYCLOAK_CLIENT}'
-        : process.env.KEYCLOAK_CLIENT,
-    })
-  );
-
-  if (isProductionMode) {
-    config.plugins.push(
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        reportFilename: '../report.html',
-      })
-    );
-  }
-
-  return config;
 };
