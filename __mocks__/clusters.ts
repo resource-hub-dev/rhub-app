@@ -2,7 +2,7 @@ import { ClusterState } from '@ducks/lab/cluster/types';
 import { UserState } from '@ducks/user/types';
 
 import { loadedCluster, loadedEventsState } from '@mocks/labCluster';
-import { loadedUser } from '@mocks/user';
+import { loadedUser, loadedUserWithSSHKey } from '@mocks/user';
 
 export const cluster = {
   ...loadedCluster,
@@ -17,6 +17,14 @@ export const cluster = {
 
 const userState: UserState = {
   current: loadedUser,
+  data: {},
+  loggedIn: true,
+  loading: false,
+  error: false,
+};
+
+const userStateWithSSHKey: UserState = {
+  current: loadedUserWithSSHKey,
   data: {},
   loggedIn: true,
   loading: false,
@@ -60,6 +68,11 @@ export const loadingState: ExampleState = {
 export const loadedState: ExampleState = {
   cluster: loadedClusterState,
   user: userState,
+};
+
+export const loadedStateWithSSHKey: ExampleState = {
+  cluster: loadedClusterState,
+  user: userStateWithSSHKey,
 };
 
 export const noHostState: ExampleState = {

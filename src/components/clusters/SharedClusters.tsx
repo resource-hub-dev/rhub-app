@@ -11,6 +11,7 @@ import {
 import { AppState } from '@store';
 import { loadRequest as loadClusters } from '@ducks/lab/cluster/actions';
 
+import GeneralNotifications from '@components/generalNotifications/GeneralNotifications';
 import ClusterView from './ClusterView';
 import './Clusters.css';
 
@@ -53,6 +54,7 @@ const SharedClusters: React.FC = () => {
   );
   return (
     <PageSection variant={PageSectionVariants.light}>
+      <GeneralNotifications />
       <ClusterView clusterViewType="shared" />
       {info}
     </PageSection>
