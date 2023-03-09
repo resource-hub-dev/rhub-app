@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-import React, { FormEvent, useContext, useState } from 'react';
+import React, { FormEvent, useContext, useMemo, useState } from 'react';
 import {
   Card,
   CardBody,
@@ -28,36 +27,9 @@ interface Props {
 const Products: React.FC<Props> = ({ products, addWizardValues }: Props) => {
   const [, , values] = useContext(wizardContext);
   const [selected, setSelected] = useState<number | string>('');
-  let productList: LabProductData[] = [];
-  if (Object.keys(products).length > 0) {
-    productList = Object.values(products);
-  }
-
-  // Functions to check image file exists for products and return appropriate path
-  const doesFileExist = (path: string) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('HEAD', path, false);
-    xhr.send();
-    if (xhr.status === 404) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
-  const genImgSrc = (prodName: string) => {
-    const svgExists = doesFileExist(`assets/images/${prodName}.svg`);
-    const pngExists = doesFileExist(`assets/images/${prodName}.png`);
-    const fileExists = svgExists || pngExists;
-    if (fileExists) {
-      if (svgExists) {
-        return `assets/images/${prodName}.svg`;
-      } else {
-        return `assets/images/${prodName}.png`;
-      }
-    }
-    return `assets/images/default.png`;
-  };
+  const productList: LabProductData[] = useMemo(() => {
+    return Object.values(products);
+  }, [products]);
 
   const onSelect = (checked: boolean, e: FormEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
@@ -70,31 +42,30 @@ const Products: React.FC<Props> = ({ products, addWizardValues }: Props) => {
       <StepHeader text="Select a Product" />
       <Grid hasGutter md={6} lg={3}>
         {productList.map((prod) => {
-          const filePath = genImgSrc(prod.name.replace(/\s/g, ''));
+          const filePath = `assets/images/${prod.name.replace(/\s/g, '')}.png`;
           const prevSelection = values.product_id;
           if (prod.enabled) {
             const selection = selected || prevSelection;
             return (
-              <Card key={prod.id}>
+              <Card key={prod.id} className="center">
                 <CardTitle>
-                  <div>
-                    {filePath !== '' && (
-                      <img
-                        src={filePath}
-                        alt={prod.name}
-                        className="prod-img"
-                      />
-                    )}
-                  </div>
+                  <img
+                    src={filePath}
+                    alt={prod.name}
+                    className="prod-img"
+                    onError={(e) => {
+                      e.currentTarget.src = `assets/images/default.png`;
+                    }}
+                  />
                   <div>{prod.name}</div>
                 </CardTitle>
                 <CardBody>{prod.description}</CardBody>
                 <CardFooter>
                   <Radio
+                    aria-label={`${prod.id}`}
                     isChecked={Number(selection) === prod.id}
                     name={prod.name}
                     onChange={onSelect}
-                    label="Select"
                     id="radio-controlled"
                     value={prod.id}
                   />
