@@ -70,7 +70,7 @@ describe('<QuickClusterWizard />', () => {
     const backBtn = result.getByText(/^Back$/);
 
     // Product
-    fireEvent.click(result.getByText(/^Select$/));
+    fireEvent.click(result.getByLabelText(/^1$/));
     fireEvent.click(nextBtn);
 
     // Region
@@ -147,7 +147,7 @@ describe('<QuickClusterWizard />', () => {
 
     const nextBtn = result.getByText(/^Next$/);
     const backBtn = result.getByText(/^Back$/);
-    const productSelectBtn = result.getByText(/^Select$/);
+    const productSelectBtn = result.getByLabelText(/^1$/);
 
     expect(result.queryByRole('button', { name: 'Product' })).toHaveClass(
       'pf-m-current'

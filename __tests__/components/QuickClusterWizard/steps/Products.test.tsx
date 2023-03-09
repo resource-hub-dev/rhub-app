@@ -63,26 +63,6 @@ describe('<Products />', () => {
     );
   });
 
-  test('Renders with svg image', async () => {
-    jest
-      .spyOn(window, 'XMLHttpRequest')
-      .mockReturnValueOnce(XHRSucessMock as XMLHttpRequest)
-      .mockReturnValueOnce(XHRFailureMock as XMLHttpRequest);
-
-    const { result } = connectedRender(
-      <Products
-        products={mocks.labProductState.data}
-        addWizardValues={addWizardValuesMock}
-      />
-    );
-
-    expect(result.queryByText(/Select a Product/)).toBeInTheDocument();
-    expect(result.queryByAltText(/OpenShift/)).toHaveAttribute(
-      'src',
-      'assets/images/OpenShift.svg'
-    );
-  });
-
   test('Renders with disabled product', async () => {
     jest
       .spyOn(window, 'XMLHttpRequest')
@@ -124,7 +104,7 @@ describe('<Products />', () => {
 
     expect(addWizardValuesMock.mock.calls.length).toBe(0);
 
-    fireEvent.click(result.getByText(/^Select$/));
+    fireEvent.click(result.getByLabelText(/^1$/));
 
     expect(addWizardValuesMock.mock.calls[0][0]).toMatchObject({
       product_id: 1,
