@@ -1,5 +1,5 @@
-# https://catalog.redhat.com/software/containers/ubi8/nodejs-14/5ed7887dd70cc50e69c2fabb
-FROM node:16.14.2 as build
+# https://catalog.redhat.com/software/containers/ubi8/nodejs-18/6278e5c078709f5277f26998
+FROM node:18  as build
 WORKDIR /opt/app-root/src
 COPY . .
 RUN npm install
