@@ -35,3 +35,15 @@ export const emptyUser: UserData = {
   name: '',
   email: '',
 };
+
+export const loadedUserWithSSHKey: UserData = {
+  id: '12345678-lol-lmao-1234-567890lmfao',
+  token: 'abcdedaff-dsdasbadsd',
+  ldap_dn: '',
+  external_uuid: '',
+  ssh_keys: ['ssh-rsa testpubkey'],
+  manager_id: '',
+  roles: [],
+  name: 'johnny',
+  email: 'johnny@email.example',
+};
