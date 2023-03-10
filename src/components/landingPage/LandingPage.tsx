@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import {
   BackgroundImage,
   Button,
@@ -19,6 +19,22 @@ import { useKeycloak } from '@react-keycloak/web';
 import { Link } from 'react-router-dom';
 
 import './LandingPage.css';
+import { stringStore } from '@services/common';
+
+const CustomLink: React.FC<{ link: string; children: ReactNode }> = ({
+  link,
+  children,
+}) => (
+  <Button
+    variant="link"
+    component="a"
+    href={link}
+    target="_blank"
+    className="info-link"
+  >
+    {children}
+  </Button>
+);
 
 const LandingPage: React.FC = () => {
   const [expanded, setExpanded] = useState(true);
@@ -60,11 +76,16 @@ const LandingPage: React.FC = () => {
                 <TachometerAltIcon className="info-title-icon quick-start" />
                 Quick Starts
               </div>
-              <div>Get started with our documentations</div>
               {/* TODO: Add links to Documentations in the future */}
-              <Button variant="link" className="info-link">
-                View All Documentation <ArrowRightIcon />
-              </Button>
+              <CustomLink link={stringStore.releaseLink}>
+                See our release history
+              </CustomLink>
+              <CustomLink link={stringStore.dataRententionLink}>
+                Data Retention Policy
+              </CustomLink>
+              <CustomLink link={stringStore.privacyPolicyLink}>
+                Privacy Policy
+              </CustomLink>
             </GridItem>
             <GridItem className="grid-card" span={4}>
               <div className="info-title-box quick-cluster">
@@ -75,13 +96,13 @@ const LandingPage: React.FC = () => {
                 Quick Cluster provides quick, ready-to-use clusters with Red Hat
                 products preinstalled
               </div>
-              <div>
+              {/* <div>
                 <Button variant="link" className="info-link">
                   <Link to="/resources/quickcluster/shared">
                     Shared Clusters <ArrowRightIcon />
                   </Link>
                 </Button>
-              </div>
+              </div> */}
               <div>
                 <Button variant="link" className="info-link">
                   <Link to="/resources/quickcluster/clusters">
@@ -97,9 +118,9 @@ const LandingPage: React.FC = () => {
               </div>
               <div>Getting started with documentation</div>
               <div>
-                <Button variant="link" className="info-link">
-                  See our release history
-                </Button>
+                <CustomLink link={stringStore.guideLink}>
+                  View All Documentation <ArrowRightIcon />
+                </CustomLink>
               </div>
               <div>
                 <Button variant="link" className="info-link">
