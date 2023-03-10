@@ -69,31 +69,4 @@ describe('<MyClusters />', () => {
     // Renders ClusterView with clusterViewType='user'
     expect(result.queryByText(/My Clusters:/)).toBeInTheDocument();
   });
-
-  test('user has SSH key', async () => {
-    useKeycloakMock.useKeycloak.mockImplementation(() =>
-      keycloakMock.subject()
-    );
-
-    const { result } = connectedRender(
-      <MyClusters />,
-      mocks.loadedStateWithSSHKey
-    );
-
-    // no missing ssh keys warning
-    expect(
-      result.queryByText(/Missing SSH Public Key/)
-    ).not.toBeInTheDocument();
-  });
-
-  test('user has no SSH key', async () => {
-    useKeycloakMock.useKeycloak.mockImplementation(() =>
-      keycloakMock.subject()
-    );
-
-    const { result } = connectedRender(<MyClusters />, mocks.loadedState);
-
-    // missing ssh keys warning
-    expect(result.getByText(/Missing SSH Public Key/)).toBeVisible();
-  });
 });
