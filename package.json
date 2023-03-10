@@ -12,8 +12,8 @@
     "url": "https://github.com/beaker-project/beaker-dashboard/issues"
   },
   "scripts": {
-    "start": "webpack serve --open --mode development",
-    "build": "webpack --mode production",
+    "start": "webpack serve --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js --stats-modules-space 999",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
     "prettier": "prettier --check \"./src/**/*.{js,jsx,ts,tsx}\"",
     "prettier:fix": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
@@ -32,6 +32,7 @@
     "@types/webpack": "^4.41.25",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
+    "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^3.4.1",
     "eslint": "^6.8.0",
@@ -61,10 +62,11 @@
     "tsconfig-paths-webpack-plugin": "^3.5.2",
     "typescript": "~4.4.0",
     "url-loader": "^4.1.1",
-    "webpack": "^5.72.0",
+    "webpack": "^5.75.0",
     "webpack-bundle-analyzer": "^4.3.0",
-    "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.8.1"
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.11.1",
+    "webpack-merge": "^5.8.0"
   },
   "dependencies": {
     "@patternfly/react-charts": "^6.92.0",
