@@ -42,7 +42,9 @@ const Products: React.FC<Props> = ({ products, addWizardValues }: Props) => {
       <StepHeader text="Select a Product" />
       <Grid hasGutter md={6} lg={3}>
         {productList.map((prod) => {
-          const filePath = `assets/images/${prod.name.replace(/\s/g, '')}.png`;
+          const filePath = `assets/images/${prod.name
+            .replace(/\s/g, '')
+            .toLowerCase()}.png`;
           const prevSelection = values.product_id;
           if (prod.enabled) {
             const selection = selected || prevSelection;
