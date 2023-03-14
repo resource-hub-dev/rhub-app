@@ -59,7 +59,7 @@ describe('<Products />', () => {
     expect(result.queryByText(/Select a Product/)).toBeInTheDocument();
     expect(result.queryByAltText(/OpenShift/)).toHaveAttribute(
       'src',
-      'assets/images/OpenShift.png'
+      'assets/images/openshift.png'
     );
   });
 
