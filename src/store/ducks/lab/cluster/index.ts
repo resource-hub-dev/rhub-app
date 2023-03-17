@@ -15,6 +15,7 @@ export const INITIAL_STATE: ClusterState = {
   events: [],
   loading: false,
   error: false,
+  errMsg: {},
 };
 
 const clusterDataToState = (data = {}, item: ClusterData) => ({
@@ -152,8 +153,6 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
         loading: false,
         error: false,
       };
-    case ClusterTypes.LOAD_FAILURE:
-      return { ...state, loading: false, error: true };
     case ClusterTypes.UPDATE_REQUEST:
       return { ...state, loading: true };
     case ClusterTypes.UPDATE_SUCCESS: {
@@ -164,24 +163,28 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
         data: clusterDataToState(state.data, action.payload),
       };
     }
-    case ClusterTypes.UPDATE_FAILURE:
-      return { ...state, loading: false, error: true };
     case ClusterTypes.DELETE_REQUEST:
       return { ...state, loading: true, error: false };
     case ClusterTypes.DELETE_SUCCESS:
       return { ...state, loading: false, error: false };
-    case ClusterTypes.DELETE_FAILURE:
-      return { ...state, loading: false, error: true };
+
     case ClusterTypes.CREATE_REQUEST:
       return { ...state, loading: true, error: false };
     case ClusterTypes.CREATE_SUCCESS:
-      return { ...state, loading: false, error: false };
-    case ClusterTypes.CREATE_FAILURE:
-      return { ...state, loading: false, error: true };
+      return { ...state, loading: false, error: false, errMsg: {} };
+    case ClusterTypes.LOAD_FAILURE:
+    case ClusterTypes.UPDATE_FAILURE:
+    case ClusterTypes.DELETE_FAILURE:
     case ClusterTypes.LOAD_HOST_FAILURE:
     case ClusterTypes.LOAD_EVENTS_FAILURE:
     case ClusterTypes.REBOOT_HOST_FAILURE:
-      return { ...state, loading: false, error: true };
+      return { ...state, loading: false, error: true, errMsg: action.payload };
+    case ClusterTypes.CREATE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        errMsg: { ...action.payload, type: 'createfail' },
+      };
     default:
       return state;
   }
