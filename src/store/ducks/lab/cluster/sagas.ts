@@ -88,7 +88,7 @@ function* create(action: AnyAction) {
     yield call(api.post, `lab/cluster/`, payload);
     yield put(actions.createClusterSuccess());
   } catch (err) {
-    yield put(actions.createClusterFailure(err as any));
+    yield put(actions.createClusterFailure((err as any).response.data));
   }
 }
 

@@ -83,10 +83,7 @@ export const createClusterRequest = (
 export const createClusterSuccess = () => action(ClusterTypes.CREATE_SUCCESS);
 
 export const createClusterFailure = (err: Error | { [key: string]: any }) => {
-  if (isAnError(err)) {
-    return action(ClusterTypes.CREATE_FAILURE, err);
-  }
-  return action(ClusterTypes.CREATE_FAILURE, err.response.data);
+  return action(ClusterTypes.CREATE_FAILURE, err);
 };
 
 export const loadHostRequest = (clusterId: number) =>

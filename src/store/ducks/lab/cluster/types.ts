@@ -1,3 +1,4 @@
+import { ApiError } from '@ducks/types';
 import { Quota } from '../types';
 
 // Action Types
@@ -140,4 +141,5 @@ export interface ClusterState {
   readonly events: ClusterEvent[];
   readonly loading: boolean;
   readonly error: boolean;
+  readonly errMsg?: ApiError | {};
 }
