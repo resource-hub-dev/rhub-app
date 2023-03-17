@@ -22,6 +22,8 @@ import {
   rebootHostRequest,
 } from '@ducks/lab/cluster/actions';
 import { ClusterHost } from '@ducks/lab/cluster/types';
+import ToastNotifications from '@components/toastNotifications/ToastNotifications';
+
 import ClusterLifespan from './cards/ClusterLifespan';
 import OverView from './cards/OverView';
 import ClusterInfo from './cards/ClusterInfo';
@@ -163,6 +165,7 @@ const ClusterDetails: React.FC = () => {
   });
   return (
     <>
+      <ToastNotifications />
       <PageSection variant={PageSectionVariants.light}>
         {!isDeleted ? (
           <Title headingLevel="h2">
