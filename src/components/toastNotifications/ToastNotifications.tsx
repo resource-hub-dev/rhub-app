@@ -10,6 +10,7 @@ import {
 
 import { AppState } from '@store';
 import { loadRequest as clusterloadRequest } from '@ducks/lab/cluster/actions';
+import { ApiError } from '@ducks/types';
 
 const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
 const ENDPOINT =
@@ -35,6 +36,7 @@ const ToastNotifications: React.FC<Props> = ({ clusterId }: Props) => {
 
   const clusters = useSelector((state: AppState) => state.cluster.data);
   const loading = useSelector((state: AppState) => state.cluster.loading);
+  const clusterErrMsg = useSelector((state: AppState) => state.cluster.errMsg);
 
   const token = useSelector((state: AppState) => state.user.current.token);
 
@@ -73,6 +75,21 @@ const ToastNotifications: React.FC<Props> = ({ clusterId }: Props) => {
     durable: 'true',
     'auto-delete': 'false',
   };
+
+  useEffect(() => {
+    if (clusterErrMsg && Object.keys(clusterErrMsg).length) {
+      const alertId = getUniqueId();
+      addAlert(
+        (clusterErrMsg as ApiError).type === 'createfail'
+          ? 'Create Failure'
+          : (clusterErrMsg as ApiError).title,
+        false,
+        alertId,
+        'none',
+        (clusterErrMsg as ApiError).detail
+      );
+    }
+  }, [clusterErrMsg]);
 
   useEffect(() => {
     const notify = (message: Record<string, string>) => {
