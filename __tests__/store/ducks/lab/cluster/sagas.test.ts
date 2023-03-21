@@ -159,7 +159,7 @@ describe('cluster saga', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.createClusterRequest(mocks.clusterCreateData))
       .provide([[matchers.call.fn(api.post), throwError(error)]])
-      .put(actions.createClusterFailure(error))
+      .put(actions.createClusterFailure(error.response.data))
       .silentRun();
   });
 });
