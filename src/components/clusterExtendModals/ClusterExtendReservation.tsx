@@ -20,6 +20,13 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
 }
+/** returns days and time of expiration to the UI */
+const getExpDates = (days: number) => {
+  const today = new Date();
+  today.setTime(today.getTime() + 86400000);
+  today.setUTCHours(0, 0, 0, 0);
+  return new Date(today.getTime() + days * 86400000).toLocaleString();
+};
 
 const ClusterExtendReservation: React.FC<Props> = ({
   id,
@@ -28,7 +35,9 @@ const ClusterExtendReservation: React.FC<Props> = ({
 }: Props) => {
   const dispatch = useDispatch();
   const [extendAmount, setExtendAmount] = useState(1);
-  const [expDate, setExpDate] = useState('');
+  const [expDate, setExpDate] = useState(
+    new Date(getExpDates(Number(1))).toISOString()
+  );
 
   const admin = AuthorizedFunction(['rhub-admin', 'lab-owner']);
 
@@ -36,14 +45,6 @@ const ClusterExtendReservation: React.FC<Props> = ({
     /** TODO: render error when ID is invalid */
     return <></>;
   }
-
-  /** returns days and time of expiration to the UI */
-  const getExpDates = (days: number) => {
-    const today = new Date();
-    today.setTime(today.getTime() + 86400000);
-    today.setUTCHours(0, 0, 0, 0);
-    return new Date(today.getTime() + days * 86400000).toLocaleString();
-  };
 
   const handleExtendAmount = (value: string) => {
     setExpDate(new Date(getExpDates(Number(value))).toISOString());
@@ -74,6 +75,7 @@ const ClusterExtendReservation: React.FC<Props> = ({
       reservation_expiration: expDate,
     };
     dispatch(updateRequest(id, savePayload));
+    onClose();
   };
 
   const footer = (
