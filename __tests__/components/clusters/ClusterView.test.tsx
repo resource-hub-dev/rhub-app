@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { connectedRender } from '@tests/testUtils';
+import { connectedRender, fireEvent } from '@tests/testUtils';
 
 import ClusterView from '@components/clusters/ClusterView';
 
 import * as mocks from '@mocks/clusters';
+import { AppState } from '@store';
 
 describe('<ClusterView />', () => {
   test('Renders loading', async () => {
@@ -60,12 +61,6 @@ describe('<ClusterView />', () => {
     // Links
     expect(result.baseElement).toContainHTML(
       `href="/resources/quickcluster/clusters/${mocks.cluster.id}"`
-    );
-    expect(result.baseElement).not.toContainHTML(
-      `href="/resources/quickcluster/clusters/${mocks.cluster.id}/extend"`
-    );
-    expect(result.baseElement).not.toContainHTML(
-      `href="/resources/quickcluster/clusters/${mocks.cluster.id}/lifespan/extend"`
     );
 
     // Lifespan and reservation expiration is not shown for shared clusters
@@ -150,12 +145,6 @@ describe('<ClusterView />', () => {
     expect(result.baseElement).toContainHTML(
       `href="/resources/quickcluster/clusters/${mocks.cluster.id}"`
     );
-    expect(result.baseElement).toContainHTML(
-      `href="/resources/quickcluster/clusters/${mocks.cluster.id}/extend"`
-    );
-    expect(result.baseElement).toContainHTML(
-      `href="/resources/quickcluster/clusters/${mocks.cluster.id}/lifespan/extend"`
-    );
 
     expect(result.queryByText(/^New Cluster$/)).toBeInTheDocument();
   });
@@ -211,12 +200,6 @@ describe('<ClusterView />', () => {
     // Only some links are shown
     expect(result.baseElement).toContainHTML(
       `href="/resources/quickcluster/clusters/${mocks.cluster.id}"`
-    );
-    expect(result.baseElement).toContainHTML(
-      `href="/resources/quickcluster/clusters/${mocks.cluster.id}/extend"`
-    );
-    expect(result.baseElement).not.toContainHTML(
-      `href="/resources/quickcluster/clusters/${mocks.cluster.id}/lifespan/extend"`
     );
 
     // Host info
@@ -274,12 +257,6 @@ describe('<ClusterView />', () => {
     expect(result.baseElement).toContainHTML(
       `href="/resources/quickcluster/clusters/${mocks.cluster.id}"`
     );
-    expect(result.baseElement).toContainHTML(
-      `href="/resources/quickcluster/clusters/${mocks.cluster.id}/extend"`
-    );
-    expect(result.baseElement).not.toContainHTML(
-      `href="/resources/quickcluster/clusters/${mocks.cluster.id}/lifespan/extend"`
-    );
 
     // Host info
     expect(result.queryByText(/^Utilization-CPU$/)).toBeInTheDocument();
@@ -310,12 +287,6 @@ describe('<ClusterView />', () => {
     expect(result.baseElement).toContainHTML(
       `href="/resources/quickcluster/clusters/${mocks.cluster.id}"`
     );
-    expect(result.baseElement).toContainHTML(
-      `href="/resources/quickcluster/clusters/${mocks.cluster.id}/extend"`
-    );
-    expect(result.baseElement).toContainHTML(
-      `href="/resources/quickcluster/clusters/${mocks.cluster.id}/lifespan/extend"`
-    );
   });
 
   test("Renders with clusterViewType = 'user' and no cluster expiration", async () => {
@@ -327,11 +298,29 @@ describe('<ClusterView />', () => {
     expect(result.baseElement).toContainHTML(
       `href="/resources/quickcluster/clusters/${mocks.cluster.id}"`
     );
-    expect(result.baseElement).toContainHTML(
-      `href="/resources/quickcluster/clusters/${mocks.cluster.id}/extend"`
+  });
+
+  test("Renders with clusterViewType = 'user' and extend reservation", async () => {
+    const { result, store } = connectedRender(
+      <ClusterView clusterViewType="user" />,
+      mocks.loadedState
     );
-    expect(result.baseElement).not.toContainHTML(
-      `href="/resources/quickcluster/clusters/${mocks.cluster.id}/lifespan/extend"`
+    const expDate = (store.getState() as AppState).cluster.data[1]
+      .reservation_expiration;
+    const expButton = result.getByText(expDate!.toLocaleString());
+    fireEvent.click(expButton);
+    expect(result.getByText(/^Reservation extension$/)).toBeInTheDocument();
+  });
+
+  test("Renders with clusterViewType = 'admin' and extend lifespan", async () => {
+    const { result, store } = connectedRender(
+      <ClusterView clusterViewType="admin" />,
+      mocks.loadedState
     );
+    const expDate = (store.getState() as AppState).cluster.data[1]
+      .lifespan_expiration;
+    const expButton = result.getByText(expDate!.toLocaleString());
+    fireEvent.click(expButton);
+    expect(result.getByText(/^Lifespan extension$/)).toBeInTheDocument();
   });
 });
