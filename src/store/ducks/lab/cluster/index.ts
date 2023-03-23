@@ -15,7 +15,7 @@ export const INITIAL_STATE: ClusterState = {
   events: [],
   loading: false,
   error: false,
-  errMsg: {},
+  errMsg: null,
 };
 
 const clusterDataToState = (data = {}, item: ClusterData) => ({
@@ -102,6 +102,7 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
             ...state,
             loading: false,
             clusterExists,
+            errMsg: null,
           };
         }
         return {
@@ -109,6 +110,7 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
           loading: false,
           error: false,
           data: clusters.reduce(clusterDataToState, {}),
+          errMsg: null,
         };
       }
       return {
@@ -116,6 +118,7 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
         loading: false,
         error: false,
         data: clusterDataToState(state.data, action.payload.data),
+        errMsg: null,
       };
     }
     case ClusterTypes.LOAD_EVENTS_SUCCESS: {
@@ -124,17 +127,20 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         events: newEvents.map(clusterEventDataToState),
+        errMsg: null,
       };
     }
     case ClusterTypes.REBOOT_HOST_SUCCESS:
       return {
         ...state,
         loading: false,
+        errMsg: null,
       };
     case ClusterTypes.LOAD_HOST_SUCCESS: {
       const { clusterId, hosts } = action.payload;
       return {
         ...state,
+        errMsg: null,
         loading: false,
         data: {
           ...state.data,
@@ -152,6 +158,7 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
         stdOutput: action.payload,
         loading: false,
         error: false,
+        errMsg: null,
       };
     case ClusterTypes.UPDATE_REQUEST:
       return { ...state, loading: true };
@@ -161,30 +168,33 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
         loading: false,
         error: false,
         data: clusterDataToState(state.data, action.payload),
+        errMsg: null,
       };
     }
     case ClusterTypes.DELETE_REQUEST:
       return { ...state, loading: true, error: false };
     case ClusterTypes.DELETE_SUCCESS:
-      return { ...state, loading: false, error: false };
+      return { ...state, loading: false, error: false, errMsg: null };
 
     case ClusterTypes.CREATE_REQUEST:
       return { ...state, loading: true, error: false };
     case ClusterTypes.CREATE_SUCCESS:
-      return { ...state, loading: false, error: false, errMsg: {} };
+      return { ...state, loading: false, error: false, errMsg: null };
     case ClusterTypes.LOAD_FAILURE:
     case ClusterTypes.UPDATE_FAILURE:
-    case ClusterTypes.DELETE_FAILURE:
     case ClusterTypes.LOAD_HOST_FAILURE:
     case ClusterTypes.LOAD_EVENTS_FAILURE:
     case ClusterTypes.REBOOT_HOST_FAILURE:
       return { ...state, loading: false, error: true, errMsg: action.payload };
     case ClusterTypes.CREATE_FAILURE:
+    case ClusterTypes.DELETE_FAILURE: {
       return {
         ...state,
+        error: true,
         loading: false,
-        errMsg: { ...action.payload, type: 'createfail' },
+        errMsg: { ...action.payload },
       };
+    }
     default:
       return state;
   }

@@ -141,5 +141,5 @@ export interface ClusterState {
   readonly events: ClusterEvent[];
   readonly loading: boolean;
   readonly error: boolean;
-  readonly errMsg?: ApiError | {};
+  readonly errMsg?: ApiError | null;
 }
