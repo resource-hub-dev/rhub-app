@@ -23,10 +23,7 @@ export const deleteSuccess = (payload: number) =>
   action(ClusterTypes.DELETE_SUCCESS, payload);
 
 export const deleteFailure = (err: Error | { [key: string]: any }) => {
-  if (isAnError(err)) {
-    return action(ClusterTypes.DELETE_FAILURE, err);
-  }
-  return action(ClusterTypes.DELETE_FAILURE, err.response.data);
+  return action(ClusterTypes.DELETE_FAILURE, err);
 };
 
 export const loadRequest = (
