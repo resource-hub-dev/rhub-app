@@ -86,11 +86,10 @@
     "react-redux": "^7.2.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
+    "react-stomp-hooks": "^2.1.0",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.9",
     "redux-saga": "^1.1.3",
-    "socket.io-client": "^4.5.1",
-    "stompjs": "^2.3.3",
     "typesafe-actions": "^5.1.0"
   },
   "optionalDependencies": {
