@@ -48,6 +48,7 @@ const ResourcesDashboard: React.FC = () => {
     },
   ];
 
+  const getUniqueId = () => new Date().getTime();
   return (
     <>
       <PageSection variant={PageSectionVariants.light}>
@@ -62,7 +63,7 @@ const ResourcesDashboard: React.FC = () => {
       <PageSection variant={PageSectionVariants.default}>
         <Grid hasGutter md={6} lg={3}>
           {dashboardItems.map((item) => (
-            <GridItem>
+            <GridItem key={getUniqueId()}>
               <ResourcesDashboardCard
                 logoLink={item.logoLink}
                 logoAlt={item.logoAlt}

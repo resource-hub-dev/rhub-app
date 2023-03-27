@@ -74,10 +74,10 @@ const ClusterDetails: React.FC = () => {
     const flatten = prevPath.split('/');
     if (flatten.indexOf('groups') !== -1) {
       const groupname = flatten[flatten.indexOf('groups') + 1];
-      dispatch(deleteRequest(id, { groupname }));
+      dispatch(deleteRequest(id));
       routerHistory.goBack();
     } else {
-      dispatch(deleteRequest(id, { username: user.email }));
+      dispatch(deleteRequest(id));
       routerHistory.push('/resources/quickcluster/clusters');
     }
   };
@@ -165,7 +165,6 @@ const ClusterDetails: React.FC = () => {
   });
   return (
     <>
-      <ToastNotifications />
       <PageSection variant={PageSectionVariants.light}>
         {!isDeleted ? (
           <Title headingLevel="h2">

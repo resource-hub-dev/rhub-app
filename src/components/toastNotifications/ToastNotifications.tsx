@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Stomp from 'stompjs';
-
+import { useSubscription } from 'react-stomp-hooks';
 import {
   Alert,
   AlertActionCloseButton,
@@ -11,18 +10,16 @@ import {
 import { AppState } from '@store';
 import { loadRequest as clusterloadRequest } from '@ducks/lab/cluster/actions';
 import { ApiError } from '@ducks/types';
+import { useParams } from 'react-router';
 
-const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-const ENDPOINT =
-  `${protocol}://${process.env.RHUB_BROKER_HOST}:15674/ws` ||
-  `${protocol}://localhost:15674/ws`;
-
-export interface Props {
-  clusterId?: number;
+export interface UrlProps {
+  clusterId: string;
 }
 
-const ToastNotifications: React.FC<Props> = ({ clusterId }: Props) => {
+const ToastNotifications: React.FC = () => {
   const dispatch = useDispatch();
+  const { clusterId } = useParams<UrlProps>();
+  const id = Number(clusterId);
 
   const [alerts, setAlerts] = useState<
     {
@@ -34,11 +31,9 @@ const ToastNotifications: React.FC<Props> = ({ clusterId }: Props) => {
     }[]
   >([]);
 
-  const clusters = useSelector((state: AppState) => state.cluster.data);
-  const loading = useSelector((state: AppState) => state.cluster.loading);
   const clusterErrMsg = useSelector((state: AppState) => state.cluster.errMsg);
-
-  const token = useSelector((state: AppState) => state.user.current.token);
+  const error = useSelector((state: AppState) => state.cluster.error);
+  const username = useSelector((state: AppState) => state.user.current.id);
 
   const getUniqueId = () => new Date().getTime();
 
@@ -63,78 +58,72 @@ const ToastNotifications: React.FC<Props> = ({ clusterId }: Props) => {
 
   const removeAlert = (key: number) =>
     setAlerts([...alerts.filter((x) => x.key !== key)]);
-  const ws = new WebSocket(ENDPOINT);
-  const client = Stomp.over(ws);
-  client.heartbeat.outgoing = 20000;
-  client.heartbeat.incoming = 20000;
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  client.debug = () => {}; // do nothing
-  const headers = {
-    login: process.env.RHUB_BROKER_USERNAME,
-    passcode: process.env.RHUB_BROKER_PASSWORD,
-    durable: 'true',
-    'auto-delete': 'false',
-  };
+  // const ws = new WebSocket(ENDPOINT);
 
   useEffect(() => {
-    if (clusterErrMsg && Object.keys(clusterErrMsg).length) {
+    if (error && clusterErrMsg && Object.keys(clusterErrMsg).length) {
       const alertId = getUniqueId();
       addAlert(
-        (clusterErrMsg as ApiError).type === 'createfail'
-          ? 'Create Failure'
-          : (clusterErrMsg as ApiError).title,
+        (clusterErrMsg as ApiError).title,
         false,
         alertId,
         'none',
         (clusterErrMsg as ApiError).detail
       );
     }
-  }, [clusterErrMsg]);
+  }, [clusterErrMsg, error]);
 
-  useEffect(() => {
-    const notify = (message: Record<string, string>) => {
-      // check if user owns this cluster
-      const updatedCluster = clusters[Number(message.cluster_id)];
-      if (updatedCluster) {
-        const isSuccess = message.job_status === 'successful';
-        const alertId = getUniqueId();
-        const titleName = isSuccess ? 'Success' : 'Failed';
-        addAlert(
-          titleName,
-          isSuccess,
-          alertId,
-          message.cluster_name,
-          message.msg
-        );
-      }
-      if (clusterId && clusterId === Number(message.cluster_id)) {
-        dispatch(clusterloadRequest(clusterId));
-      } else dispatch(clusterloadRequest('all'));
-    };
-    client.connect(headers, (frame: any) => {
-      const createSub = client.subscribe(
-        '/exchange/messaging/lab.cluster.create',
-        (message: any) => {
-          notify(JSON.parse(message.body));
+  useSubscription(
+    [
+      '/exchange/messaging/lab.cluster.create',
+      '/exchange/messaging/lab.cluster.delete',
+    ],
+    (message) => {
+      const notify = (message: Record<string, string>) => {
+        // check if user owns this cluster
+        const ownerId = Number(message.owner_id);
+        if (ownerId && username && ownerId === Number(username)) {
+          // if clusterId is set then only update statuses of one cluster
+          const isSuccess = message.job_status === 'successful';
+          const alertId = getUniqueId();
+          const titleName = isSuccess ? 'Success' : 'Failed';
+          if (id) {
+            if (id === Number(message.cluster_id)) {
+              addAlert(
+                titleName,
+                isSuccess,
+                alertId,
+                message.cluster_name,
+                message.msg
+              );
+              dispatch(clusterloadRequest(id));
+            }
+          } else {
+            addAlert(
+              titleName,
+              isSuccess,
+              alertId,
+              message.cluster_name,
+              message.msg
+            );
+            dispatch(clusterloadRequest('all'));
+          }
         }
-      );
-      const deleteSub = client.subscribe(
-        '/exchange/messaging/lab.cluster.delete',
-        (message: any) => {
-          notify(JSON.parse(message.body));
-        }
-      );
-      return () => {
-        createSub.unsubscribe();
-        deleteSub.unsubscribe();
       };
-    });
-  }, [loading, alerts, clusterId, dispatch, client, token]); // eslint-disable-line react-hooks/exhaustive-deps
+      notify(JSON.parse(message.body));
+    },
+    {
+      login: process.env.RHUB_BROKER_USERNAME || '',
+      passcode: process.env.RHUB_BROKER_PASSWORD || '',
+      durable: 'false',
+      'auto-delete': 'false',
+    }
+  );
   return (
     <AlertGroup isToast>
       {alerts.map((alert) => (
         <Alert
-          timeout
+          timeout={30000}
           variant={alert.variant}
           title={alert.title}
           key={alert.key}
@@ -146,7 +135,7 @@ const ToastNotifications: React.FC<Props> = ({ clusterId }: Props) => {
             />
           }
         >
-          <p>{`Status update: ${alert.status}.`}</p>
+          <p>{`${alert.status}`}</p>
         </Alert>
       ))}
     </AlertGroup>
