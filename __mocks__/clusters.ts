@@ -70,6 +70,20 @@ export const loadedState: ExampleState = {
   user: userState,
 };
 
+export const errorState: ExampleState = {
+  cluster: {
+    ...loadedClusterState,
+    error: true,
+    errMsg: {
+      detail: 'Cannot proceed',
+      type: 'example',
+      status: 400,
+      title: 'Server error',
+    },
+  },
+  user: userState,
+};
+
 export const loadedStateWithSSHKey: ExampleState = {
   cluster: loadedClusterState,
   user: userStateWithSSHKey,

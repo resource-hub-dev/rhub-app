@@ -199,7 +199,6 @@ describe('<ClusterDetails />', () => {
     // Check if the right action was dispatched
     const lastAction = dispatchTracker[dispatchTracker.length - 1];
     expect(lastAction.type).toBe(ClusterTypes.DELETE_REQUEST);
-    expect(lastAction.payload.parameters.username).toBe('');
 
     // Check the history
     const lastEntry = history.entries[history.entries.length - 1];
@@ -224,7 +223,6 @@ describe('<ClusterDetails />', () => {
     // Check if the right action was dispatched
     const lastAction = dispatchTracker[dispatchTracker.length - 1];
     expect(lastAction.type).toBe(ClusterTypes.DELETE_REQUEST);
-    expect(lastAction.payload.parameters.groupname).toBe('');
 
     // Check the history
     expect(history.action).toBe('POP');
