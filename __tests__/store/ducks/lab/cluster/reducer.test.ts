@@ -220,7 +220,10 @@ describe('cluster reducer', () => {
       reducer({ ...INITIAL_STATE, loading: true }, actions.loadFailure(error))
     ).toEqual(errState);
     expect(
-      reducer({ ...INITIAL_STATE, loading: true }, actions.deleteFailure(error))
+      reducer(
+        { ...INITIAL_STATE, loading: true },
+        actions.deleteFailure(error.response.data)
+      )
     ).toEqual(errState);
     expect(
       reducer(
@@ -231,9 +234,7 @@ describe('cluster reducer', () => {
       ...errState,
       errMsg: {
         ...errState.errMsg,
-        type: 'createfail',
       },
-      error: false,
     });
     expect(
       reducer(
