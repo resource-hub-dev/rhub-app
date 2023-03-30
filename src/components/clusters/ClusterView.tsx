@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 
@@ -20,6 +20,8 @@ import DataTable, { RowPair } from '@components/dataTable/DataTable';
 import { Quota } from '@ducks/lab/types';
 import PageError from '@components/pageError/pageError';
 
+import ClusterExtendReservation from '@components/clusterExtendModals/ClusterExtendReservation';
+import ClusterExtendLifespan from '@components/clusterExtendModals/ClusterExtendLifespan';
 import ClusterTableUtilization from './ClusterTableUtilization';
 
 interface Props {
@@ -36,6 +38,9 @@ const ClusterView: React.FC<Props> = ({ clusterViewType }: Props) => {
     2. they get rebuilt every weekend, so the rsvp and lifespan expirations are irrelevant
     */
   const { groupname } = useParams<Params>();
+  const [openModal, setOpenModal] = useState('');
+  const [clusterId, setClusterId] = useState(-1);
+  const [lifeSpanExp, setLifespanExp] = useState<Date | null>(null);
   const columns =
     clusterViewType === 'shared'
       ? ['Name', 'Template', 'Region', 'Status']
@@ -53,6 +58,20 @@ const ClusterView: React.FC<Props> = ({ clusterViewType }: Props) => {
   const clusters = useSelector((state: AppState) => state.cluster.data);
   const loading = useSelector((state: AppState) => state.cluster.loading);
   const error = useSelector((state: AppState) => state.cluster.error);
+  const handleReservationClick = (id: number) => {
+    setOpenModal('rsvp-modal');
+    setClusterId(id);
+  };
+
+  const handleLifespanClick = (id: number, lifeSpanExp: Date | null) => {
+    setOpenModal('lifespan-modal');
+    setClusterId(id);
+    setLifespanExp(lifeSpanExp);
+  };
+  const handleModalClose = () => {
+    setOpenModal('');
+  };
+
   const generateCharts = (hosts: ClusterHost[], quota: Quota) => {
     let num_vcpus = 0;
     let ram_mb = 0;
@@ -116,29 +135,27 @@ const ClusterView: React.FC<Props> = ({ clusterViewType }: Props) => {
         item.group_name || '',
         item.region_name,
         item.status,
-        <Link
-          to={{
-            pathname: `/resources/quickcluster/clusters/${item.id}/extend`,
-            // eslint-disable-next-line no-restricted-globals
-            state: { prevPath: location.pathname },
-          }}
-        >
+        <Button variant="link" onClick={() => handleReservationClick(item.id)}>
           {(item.reservation_expiration &&
             String(item.reservation_expiration.toLocaleString())) ||
             ''}
-        </Link>,
+        </Button>,
         clusterViewType === 'admin' ? (
-          <Link
-            to={{
-              pathname: `/resources/quickcluster/clusters/${item.id}/lifespan/extend`,
-              // eslint-disable-next-line no-restricted-globals
-              state: { prevPath: location.pathname },
-            }}
+          <Button
+            variant="link"
+            onClick={
+              () =>
+                handleLifespanClick(
+                  item.id,
+                  item.lifespan_expiration ? item.lifespan_expiration : null
+                )
+              // eslint-disable-next-line react/jsx-curly-newline
+            }
           >
             {(item.lifespan_expiration &&
               String(item.lifespan_expiration.toLocaleString())) ||
               ''}
-          </Link>
+          </Button>
         ) : (
           (item.lifespan_expiration &&
             String(item.lifespan_expiration.toLocaleString())) ||
@@ -169,6 +186,17 @@ const ClusterView: React.FC<Props> = ({ clusterViewType }: Props) => {
   }
   return (
     <Card isCompact>
+      <ClusterExtendReservation
+        id={clusterId}
+        isOpen={openModal === 'rsvp-modal'}
+        onClose={handleModalClose}
+      />
+      <ClusterExtendLifespan
+        id={clusterId}
+        prevExpDate={lifeSpanExp}
+        isOpen={openModal === 'lifespan-modal'}
+        onClose={handleModalClose}
+      />
       <CardTitle>
         {title}
         {clusterViewType !== 'shared' && (
