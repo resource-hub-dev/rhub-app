@@ -27,24 +27,24 @@ describe('<AdminNav />', () => {
 });
 
 describe('<UserNav />', () => {
-  // test("Renders the 'Shared Clusters' button", async () => {
-  //   const { history, result } = connectedRender(
-  //     <Nav>
-  //       <UserNav activeGroup="" activeItem="" />
-  //     </Nav>
-  //   );
+  test("Renders the 'Shared Clusters' button", async () => {
+    const { history, result } = connectedRender(
+      <Nav>
+        <UserNav activeGroup="" activeItem="" />
+      </Nav>
+    );
 
-  //   expect(result.queryByText(/QuickCluster/)).toBeInTheDocument();
-  //   expect(result.queryByText(/Shared Clusters/)).toBeInTheDocument();
+    expect(result.queryByText(/QuickCluster/)).toBeInTheDocument();
+    expect(result.queryByText(/Shared Clusters/)).toBeInTheDocument();
 
-  //   const quickclusterBtn = result.getByText(/QuickCluster/);
-  //   fireEvent.click(quickclusterBtn);
+    const quickclusterBtn = result.getByText(/QuickCluster/);
+    fireEvent.click(quickclusterBtn);
 
-  //   const sharedBtn = result.getByText(/Shared Clusters/);
-  //   fireEvent.click(sharedBtn);
+    const sharedBtn = result.getByText(/Shared Clusters/);
+    fireEvent.click(sharedBtn);
 
-  //   expect(history.location.pathname).toBe('/resources/quickcluster/shared');
-  // });
+    expect(history.location.pathname).toBe('/resources/quickcluster/shared');
+  });
 
   test("Renders the 'My Clusters' button", async () => {
     const { history, result } = connectedRender(

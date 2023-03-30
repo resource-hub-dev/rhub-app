@@ -115,10 +115,10 @@ describe('<MainScreen />', () => {
     fireEvent.click(quickClusterBtn);
 
     // click on shared clusters
-    // const sharedClustersBtn = result.getByText(/^Shared Clusters$/);
-    // fireEvent.click(sharedClustersBtn);
+    const sharedClustersBtn = result.getByText(/^Shared Clusters$/);
+    fireEvent.click(sharedClustersBtn);
 
-    // expect(result.queryByText(/shared-clusters-mock/)).toBeInTheDocument();
+    expect(result.queryByText(/shared-clusters-mock/)).toBeInTheDocument();
 
     // click on my clusters
     const myClustersBtn = result.getByText(/^My Clusters$/);
