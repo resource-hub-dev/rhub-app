@@ -78,7 +78,7 @@ function* remove(action: AnyAction) {
     yield put(actions.deleteSuccess(clusterId));
     yield put(actions.loadRequest('all', parameters));
   } catch (err) {
-    yield put(actions.deleteFailure(err as any));
+    yield put(actions.deleteFailure((err as any).response.data));
   }
 }
 

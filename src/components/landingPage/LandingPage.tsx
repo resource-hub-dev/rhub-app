@@ -98,13 +98,13 @@ const LandingPage: React.FC = () => {
                 Quick Cluster provides quick, ready-to-use clusters with Red Hat
                 products preinstalled
               </div>
-              {/* <div>
+              <div>
                 <Button variant="link" className="info-link">
                   <Link to="/resources/quickcluster/shared">
                     Shared Clusters <ArrowRightIcon />
                   </Link>
                 </Button>
-              </div> */}
+              </div>
               <CustomLink link="/resources/quickcluster/clusters">
                 My Clusters <ArrowRightIcon />
               </CustomLink>

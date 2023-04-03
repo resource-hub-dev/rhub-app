@@ -22,6 +22,8 @@ import QuickClusterWizard from '@components/QuickClusterWizard/QuickClusterWizar
 import TowerOutput from '@components/TowerOutput/TowerOutput';
 import QuickClusterUserActivity from '@components/quickClusterUserActivity/QuickClusterUserActivity';
 import RhubLoginPage from '@components/loginPage/Login';
+import ToastNotifications from '@components/toastNotifications/ToastNotifications';
+
 import { AuthorizedFunction } from '@services/user';
 import { stringStore } from '@services/common';
 
@@ -177,6 +179,7 @@ const MainScreen: React.FC = () => {
           exact
           path="/resources/quickcluster/clusters/:clusterId"
         >
+          <ToastNotifications />
           <ClusterDetails />
         </PrivateRoute>
         <PrivateRoute
