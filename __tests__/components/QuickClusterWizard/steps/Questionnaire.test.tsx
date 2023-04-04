@@ -137,6 +137,34 @@ describe('<Questionnaire />', () => {
     expect(onSubmitMock.mock.calls[0][0].num_workers).toBe(4);
   });
 
+  test('Handles invalid integer values', async () => {
+    const { result } = renderQuestionnaire(
+      mocks.loadedState,
+      mocks.labProductParams,
+      3
+    );
+
+    await setClusterName(result);
+
+    const numWorkersInput = result.getByLabelText(/num_workers/);
+
+    await waitFor(() => {
+      fireEvent.change(numWorkersInput, {
+        target: {
+          value: '',
+        },
+      });
+
+      fireEvent.blur(numWorkersInput);
+    });
+
+    expect(numWorkersInput).toHaveValue(3);
+
+    await submitForm(result);
+
+    expect(onSubmitMock.mock.calls[0][0].num_workers).toBe(3);
+  });
+
   test('Handles string values', async () => {
     const { result } = renderQuestionnaire(
       mocks.loadedState,

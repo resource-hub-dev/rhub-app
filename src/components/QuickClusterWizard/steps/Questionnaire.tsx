@@ -219,8 +219,9 @@ const Questionnaire: React.FC<Props> = ({
                     value: question.max,
                     message: `Maximum ${question.max} allowed`,
                   },
+                  valueAsNumber: true,
                   required: question.required && `${question.name} is required`,
-                  setValueAs: (v) => parseInt(v, 10),
+                  // setValueAs: (v) => parseInt(v, 10),
                 })}
                 name={key}
                 key={`${key}-input`}
@@ -229,9 +230,26 @@ const Questionnaire: React.FC<Props> = ({
                 aria-label={key}
                 type="number"
                 onChange={(value) => {
-                  updateNodeUsage(key, value);
-                  setValue(key, parseInt(value, 10));
+                  if (Number.isNaN(parseInt(value, 10))) {
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    updateNodeUsage(key, Number(question.default!));
+                  } else {
+                    updateNodeUsage(key, value);
+                  }
                 }} // place holder function (required by PF)
+                onBlur={(e) => {
+                  const { value } = e.target;
+                  if (Number.isNaN(parseInt(value, 10))) {
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    setValue(key, parseInt(question.default!.toString(), 10), {
+                      shouldValidate: true,
+                    });
+                  } else {
+                    setValue(key, parseInt(value, 10), {
+                      shouldValidate: true,
+                    });
+                  }
+                }}
               />
             </FormGroup>
           </Tooltip>
