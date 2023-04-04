@@ -96,7 +96,7 @@ const ClusterDetails: React.FC = () => {
   }
   const {
     name,
-    user_name,
+    owner_name,
     status,
     region_name,
     product_name,
@@ -112,7 +112,7 @@ const ClusterDetails: React.FC = () => {
   const isDeleted =
     cluster &&
     !name &&
-    !user_name &&
+    !owner_name &&
     !status &&
     !region_name &&
     !product_name &&
@@ -186,7 +186,7 @@ const ClusterDetails: React.FC = () => {
             <>
               <GridItem span={5} className="ql-card-layout">
                 <OverView
-                  owner={user_name}
+                  owner={owner_name}
                   status={status}
                   region={region_name}
                   template={`${product_name}`}

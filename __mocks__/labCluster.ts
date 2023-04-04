@@ -49,8 +49,8 @@ export const clusterExample: ClusterData = {
   reservation_expiration: '2022-02-08T13:02:18.851Z',
   shared: true,
   status: 'Active',
-  user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  user_name: 'John Doe',
+  owner_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+  owner_name: 'John Doe',
 };
 
 export const loadedCluster: Cluster = {
@@ -90,7 +90,7 @@ export const loadedCluster: Cluster = {
   reservation_expiration: new Date('2022-02-08T13:02:18.851Z'),
   shared: true,
   status: 'Active',
-  user_name: 'John Doe',
+  owner_name: 'John Doe',
 };
 
 export const clusterHosts: ClusterHost[] = [

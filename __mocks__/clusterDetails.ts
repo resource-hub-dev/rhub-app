@@ -45,7 +45,7 @@ export const deletedClusterState: ClusterState = {
     [loadedCluster.id]: {
       ...loadedCluster,
       name: '',
-      user_name: '',
+      owner_name: '',
       status: '',
       region_name: '',
       product_name: '',
