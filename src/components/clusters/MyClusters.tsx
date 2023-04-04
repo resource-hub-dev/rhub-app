@@ -18,7 +18,7 @@ const MyClusters: React.FC = () => {
   const userId = useSelector((state: AppState) => state.user.current.id);
 
   useEffect(() => {
-    if (userId) dispatch(loadClusters('all', { 'filter[user_id]': userId }));
+    if (userId) dispatch(loadClusters('all', { 'filter[owner_id]': userId }));
   }, [dispatch, userId, token]);
 
   return (

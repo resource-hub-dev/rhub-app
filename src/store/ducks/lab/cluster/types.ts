@@ -31,7 +31,7 @@ export enum ClusterTypes {
 // Data Tyoes
 export interface ClusterData {
   id: number;
-  user_id: string;
+  owner_id: string;
   created: string;
   product_id: string | number;
   region_id: number;
@@ -45,7 +45,7 @@ export interface ClusterData {
   lifespan_expiration: string | null;
   group_name: string | null;
   region_name: string;
-  user_name: string;
+  owner_name: string;
   product_name: string;
   product_params: Record<string, any>;
   quota_usage: Quota;
@@ -89,7 +89,7 @@ export interface Cluster {
   lifespan_expiration: Date | null;
   group_name: string | null;
   region_name: string;
-  user_name: string;
+  owner_name: string;
   product_name: string;
   product_params: Record<string, any>;
   quota_usage: Quota;

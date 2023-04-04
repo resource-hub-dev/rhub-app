@@ -30,7 +30,7 @@ const clusterDataToState = (data = {}, item: ClusterData) => ({
     product_params: item.product_params,
     quota_usage: item.quota_usage,
     shared: item.shared,
-    user_name: item.user_name,
+    owner_name: item.owner_name,
     hosts: item.hosts ? item.hosts : [],
     quota: item.quota,
     status: item.status,

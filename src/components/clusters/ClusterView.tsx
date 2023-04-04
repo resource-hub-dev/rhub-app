@@ -130,7 +130,7 @@ const ClusterView: React.FC<Props> = ({ clusterViewType }: Props) => {
         >
           {item.name}
         </Link>,
-        item.user_name,
+        item.owner_name,
         item.product_name,
         item.group_name || '',
         item.region_name,

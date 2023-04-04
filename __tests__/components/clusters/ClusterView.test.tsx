@@ -118,7 +118,7 @@ describe('<ClusterView />', () => {
 
     // All the cluster data is shown
     expect(
-      result.queryByText(`${mocks.cluster.user_name}`)
+      result.queryByText(`${mocks.cluster.owner_name}`)
     ).toBeInTheDocument();
     expect(
       result.queryByText(`${mocks.cluster.product_name}`)
@@ -174,7 +174,7 @@ describe('<ClusterView />', () => {
 
     // Cluster data
     expect(
-      result.queryByText(`${mocks.cluster.user_name}`)
+      result.queryByText(`${mocks.cluster.owner_name}`)
     ).toBeInTheDocument();
     expect(
       result.queryByText(`${mocks.cluster.product_name}`)
@@ -233,7 +233,7 @@ describe('<ClusterView />', () => {
 
     // Cluster Data
     expect(
-      result.queryByText(`${mocks.cluster.user_name}`)
+      result.queryByText(`${mocks.cluster.owner_name}`)
     ).toBeInTheDocument();
     expect(
       result.queryByText(`${mocks.cluster.product_name}`)
