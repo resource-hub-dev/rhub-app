@@ -11,6 +11,7 @@ import {
 } from '@patternfly/react-core';
 
 import './QuickClusterWizard.css';
+import { productsWithStaticNodes } from '@services/common';
 
 export type WizardValues = { [key: string]: string | number | boolean };
 
@@ -95,13 +96,22 @@ export const genTotalUsage = (
   flavors: { [key: string]: Quota },
   values: WizardValues,
   nodeCountMap?: { [key: string]: number }, // this argument is for used when a node count changes
-  selectedFlavor?: string
+  selectedFlavor?: string,
+  prodName?: string
 ) => {
   const nodeParams = parameters.filter(
     (param) =>
       param.variable.indexOf('_nodes') !== -1 &&
       param.variable.indexOf('num') !== -1
   );
+  const prodsWithStatic = Object.keys(productsWithStaticNodes);
+  if (prodName && prodsWithStatic.includes(prodName)) {
+    productsWithStaticNodes[prodName].parameters.forEach((param: any) =>
+      nodeParams.push(param)
+    );
+    // eslint-disable-next-line no-param-reassign
+    flavors = { ...flavors, ...productsWithStaticNodes[prodName].flavor };
+  }
 
   // Special case for Generic clusters, which doesn't have specific types of nodes
   // and instead allows the user to select the flavor
