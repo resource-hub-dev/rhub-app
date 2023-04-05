@@ -21,3 +21,42 @@ export const stringStore = {
   releaseLink:
     'https://source.redhat.com/groups/public/resource_hub/release_history',
 };
+
+export const productsWithStaticNodes: Record<string, any> = {
+  openshift4upi: {
+    parameters: [
+      {
+        variable: 'num_bootstrap_nodes',
+        default: 1,
+      },
+      {
+        variable: 'num_upi_nodes',
+        default: 1,
+      },
+    ],
+    flavor: {
+      bootstrap_nodes: {
+        num_vcpus: 4,
+        num_volumes: 1,
+        ram_mb: 16384,
+        volumes_gb: 30,
+      },
+    },
+  },
+  ceph: {
+    parameters: [
+      {
+        variable: 'num_mgmt_nodes',
+        default: 1,
+      },
+    ],
+    flavor: {
+      mgmt_nodes: {
+        num_vcpus: 2,
+        num_volumes: 1,
+        ram_mb: 4096,
+        volumes_gb: 40,
+      },
+    },
+  },
+};

@@ -60,9 +60,8 @@ const ClusterConfiguration: React.FC<Props> = ({
   const product = useSelector(
     (state: AppState) => state.labProduct.data[productId]
   );
-  const parameters = product.parameters.filter((param) => !param.advanced);
-  const { flavors } = product;
-
+  const { flavors, name: prodName } = product;
+  const formattedProdName = prodName.trim().replace(/\s/g, '').toLowerCase();
   useEffect(() => {
     dispatch(loadUsageRequest(regionId));
   }, [dispatch, regionId]);
@@ -73,7 +72,10 @@ const ClusterConfiguration: React.FC<Props> = ({
         parameters,
         regionUsage,
         flavors,
-        values
+        values,
+        undefined,
+        undefined,
+        formattedProdName
       );
       setTotalUsage(defaultUsage);
     }
@@ -106,7 +108,8 @@ const ClusterConfiguration: React.FC<Props> = ({
           flavors,
           values,
           nodeCountMap,
-          selectedFlavor
+          selectedFlavor,
+          formattedProdName
         )
       );
     }
