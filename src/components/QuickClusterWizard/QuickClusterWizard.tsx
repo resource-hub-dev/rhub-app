@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Alert,
@@ -73,40 +73,40 @@ const QuickClusterWizard: React.FC = () => {
     addWizardValues(values, newValues, setValues);
   };
 
-  const addErrors = (
-    errorMsg: string | ReactNode,
-    isValidationErr?: boolean
-  ) => {
-    if (typeof errorMsg === 'string') {
-      setErrors((errors) => [
-        ...errors,
-        <Alert
-          key={errorMsg}
-          variant="danger"
-          title={errorMsg}
-          aria-live="polite"
-          isInline
-          timeout={15000}
-        />,
-      ]);
-    } else {
-      setErrors((errors) => [
-        ...errors,
-        <Alert
-          key="errorMsg"
-          variant="danger"
-          title="Error"
-          aria-live="polite"
-          isInline
-          timeout={15000}
-        >
-          {errorMsg}
-        </Alert>,
-      ]);
-    }
-    if (!isValidationErr)
-      addWizardErrors(wizardErrors, setWizardErrors, 'step-3-quota');
-  };
+  const addErrors = useCallback(
+    (errorMsg: string | ReactNode, isValidationErr?: boolean) => {
+      if (typeof errorMsg === 'string') {
+        setErrors((errors) => [
+          ...errors,
+          <Alert
+            key={errorMsg}
+            variant="danger"
+            title={errorMsg}
+            aria-live="polite"
+            isInline
+            timeout={15000}
+          />,
+        ]);
+      } else {
+        setErrors((errors) => [
+          ...errors,
+          <Alert
+            key="errorMsg"
+            variant="danger"
+            title="Error"
+            aria-live="polite"
+            isInline
+            timeout={15000}
+          >
+            {errorMsg}
+          </Alert>,
+        ]);
+      }
+      if (!isValidationErr)
+        addWizardErrors(wizardErrors, setWizardErrors, 'step-3-quota');
+    },
+    [wizardErrors]
+  );
 
   const onSubmit = (data: WizardValues) => {
     if (values.product_id) {
