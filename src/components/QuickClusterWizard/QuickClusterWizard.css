@@ -8,17 +8,17 @@
 }
 
 .summary-charts-container {
-    padding-top: 20px;
+    position: sticky;
+    flex-shrink: 10;
+    font-size: 12px;
 }
 
 .wizard-charts-card-body {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-evenly;
-}
-.resource-summary-container {
-    padding-left: 20px;
+    align-items: center;
 }
 
 .resource-summary-table {
@@ -32,7 +32,7 @@
 
 .configuration-step-border {
     padding-bottom: 25px;
-    border-bottom: 2px solid #8A8D90;
+    padding-right: 16px;
 }
 
 .prod-img {

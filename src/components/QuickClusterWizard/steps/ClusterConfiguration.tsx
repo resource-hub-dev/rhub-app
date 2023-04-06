@@ -136,20 +136,23 @@ const ClusterConfiguration: React.FC<Props> = ({
   // Step 3 includes parameters that are not in advanced step
   return (
     <>
-      <StepHeader text="Cluster Configuration" />
-      <p>Please enter basic configuration for your QuickCluster</p>
-      <>
-        <AlertGroup isToast isLiveRegion>
-          {errors}
-        </AlertGroup>
-        <div className="configuration-step-border">
-          <Questionnaire
-            updateUsage={updateUsage}
-            parameters={parameters}
-            onSubmit={onSubmit}
-            stepId={3}
-          />
+      <AlertGroup isToast isLiveRegion>
+        {errors}
+      </AlertGroup>
+      <div style={{ display: 'flex' }}>
+        <div>
+          <StepHeader text="Cluster Configuration" />
+          <p>Please enter basic configuration for your QuickCluster</p>
+          <div className="configuration-step-border">
+            <Questionnaire
+              updateUsage={updateUsage}
+              parameters={parameters}
+              onSubmit={onSubmit}
+              stepId={3}
+            />
+          </div>
         </div>
+
         {regionUsage && flavors && quota && (
           <GraphsUtilization
             regionId={regionId}
@@ -161,7 +164,7 @@ const ClusterConfiguration: React.FC<Props> = ({
             volumesGbQuota={quota.volumes_gb}
           />
         )}
-      </>
+      </div>
     </>
   );
 };
