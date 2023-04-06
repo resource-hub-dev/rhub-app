@@ -68,52 +68,58 @@ const Review: React.FC<Props> = ({ totalUsage, errors }: Props) => {
         {errors}
       </AlertGroup>
       <StepHeader text="Summary" />
-      <Card>
-        <CardTitle>Details</CardTitle>
-        <CardBody>
-          <DescriptionList
-            columnModifier={{
-              default: '2Col',
-            }}
-          >
-            <DescriptionListGroup>
-              <DescriptionListTerm>Product</DescriptionListTerm>
-              <DescriptionListDescription>
-                {product.name}
-              </DescriptionListDescription>
-            </DescriptionListGroup>
-            {region && (
+      <div style={{ display: 'flex' }}>
+        <Card>
+          <CardTitle>Details</CardTitle>
+          <CardBody>
+            <DescriptionList
+              columnModifier={{
+                default: '2Col',
+              }}
+            >
               <DescriptionListGroup>
-                <DescriptionListTerm>Region</DescriptionListTerm>
+                <DescriptionListTerm>Product</DescriptionListTerm>
                 <DescriptionListDescription>
-                  {region.name}
+                  {product.name}
                 </DescriptionListDescription>
               </DescriptionListGroup>
-            )}
-            <DescriptionListGroup>
-              <DescriptionListTerm>Reservation Expires in</DescriptionListTerm>
-              <DescriptionListDescription>
-                {`${values.reservation_expiration} days`}
-              </DescriptionListDescription>
-            </DescriptionListGroup>
-            {rows}
-          </DescriptionList>
-        </CardBody>
-      </Card>
-      <br />
-      {quota && (
-        <Card className="resource-summary-container">
-          <GraphsUtilization
-            regionId={regionId}
-            vCPUCoreUsed={totalUsage?.num_vcpus}
-            ramMbUsed={totalUsage?.ram_mb}
-            volumesGbUsed={totalUsage?.volumes_gb}
-            vCPUCoreQuota={quota.num_vcpus}
-            ramMbQuota={quota.ram_mb}
-            volumesGbQuota={quota.volumes_gb}
-          />
+              {region && (
+                <DescriptionListGroup>
+                  <DescriptionListTerm>Region</DescriptionListTerm>
+                  <DescriptionListDescription>
+                    {region.name}
+                  </DescriptionListDescription>
+                </DescriptionListGroup>
+              )}
+              <DescriptionListGroup>
+                <DescriptionListTerm>
+                  Reservation Expires in
+                </DescriptionListTerm>
+                <DescriptionListDescription>
+                  {`${values.reservation_expiration} days`}
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+              {rows}
+            </DescriptionList>
+          </CardBody>
         </Card>
-      )}
+        {quota && (
+          <div
+            style={{ padding: '16px' }}
+            className="resource-summary-container"
+          >
+            <GraphsUtilization
+              regionId={regionId}
+              vCPUCoreUsed={totalUsage?.num_vcpus}
+              ramMbUsed={totalUsage?.ram_mb}
+              volumesGbUsed={totalUsage?.volumes_gb}
+              vCPUCoreQuota={quota.num_vcpus}
+              ramMbQuota={quota.ram_mb}
+              volumesGbQuota={quota.volumes_gb}
+            />
+          </div>
+        )}
+      </div>
     </>
   );
 };

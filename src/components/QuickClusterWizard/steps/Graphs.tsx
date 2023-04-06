@@ -1,7 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import UtilizationChart from '@components/charts/UtilizationChart';
-import { Title } from '@patternfly/react-core';
+import { Title, Tooltip } from '@patternfly/react-core';
+import { InfoCircleIcon } from '@patternfly/react-icons';
+
 import { AppState } from '@store';
 import { round } from '@services/common';
 
@@ -42,11 +44,32 @@ const GraphsUtilization: React.FC<Props> = ({
     <div className="summary-charts-container">
       <Title headingLevel="h5">Resource Consumption</Title>
       <p>
-        These charts estimates your total resource consumption in the region
-        <i> after </i> this QuickCluster is created. See the cost table for the
-        total size of this cluster. These calculations are a result of your
-        selections.
+        Estimates your resource consumption in the <i>selected</i> region
+        including this new cluster.
       </p>
+      <Tooltip
+        content={
+          <p>
+            When dragging your mouse over a chart
+            <ul>
+              <li>
+                &#x2022; The top number in these charts estimate the
+                <i>total</i> resource consumption <i> including </i> this new
+                cluster
+              </li>
+              <li>
+                &#x2022; The bottom number indicates the quota amount in the
+                selected region
+              </li>
+            </ul>
+          </p>
+        }
+      >
+        <b>
+          How to read the charts?
+          <InfoCircleIcon className="activity-title-info-icon" />
+        </b>
+      </Tooltip>
       <div className="wizard-charts-card-body">
         {userQuotaUsage && (
           <>
@@ -79,7 +102,7 @@ const GraphsUtilization: React.FC<Props> = ({
             />
 
             <ResourceSummaryTable
-              total={{
+              clusterUsage={{
                 num_vcpus: vCPUCoreUsed - userQuotaUsage?.num_vcpus,
                 ram_mb: ramMbUsed - userQuotaUsage?.ram_mb,
                 volumes_gb: volumesGbUsed - userQuotaUsage?.volumes_gb,
