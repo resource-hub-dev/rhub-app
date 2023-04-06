@@ -1,6 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+
 import { loadUsageRequest } from '@ducks/lab/region/actions';
+import { LabProductData } from '@ducks/lab/product/types';
 
 import { AppState } from '@store';
 import { Quota } from '@ducks/lab/types';
@@ -35,6 +38,15 @@ interface Props {
   ) => void;
 }
 
+const selectProducts = (state: any): { [key: number]: LabProductData } =>
+  state.labProduct.data;
+
+const selectProdParam = createSelector(
+  [selectProducts, (prods, productId) => productId],
+  (products, productId) =>
+    products[productId].parameters.filter((param) => !param.advanced)
+);
+
 const ClusterConfiguration: React.FC<Props> = ({
   onSubmit,
   totalUsage,
@@ -57,6 +69,7 @@ const ClusterConfiguration: React.FC<Props> = ({
   const regionUsage = useSelector(
     (state: AppState) => state.labRegion.usage?.[regionId]?.user_quota_usage
   );
+  const parameters = useSelector((state) => selectProdParam(state, productId));
   const product = useSelector(
     (state: AppState) => state.labProduct.data[productId]
   );
@@ -79,8 +92,14 @@ const ClusterConfiguration: React.FC<Props> = ({
       );
       setTotalUsage(defaultUsage);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [parameters.length, regionUsage, product.name, quota]);
+  }, [
+    regionUsage,
+    parameters,
+    flavors,
+    values,
+    formattedProdName,
+    setTotalUsage,
+  ]);
 
   useEffect(() => {
     if (totalUsage && quota) {
@@ -92,8 +111,7 @@ const ClusterConfiguration: React.FC<Props> = ({
         removeWizardErrors(wizardErrors, setWizardErrors, 'step-3-quota');
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quota, totalUsage]);
+  }, [addErrors, quota, setErrors, setWizardErrors, totalUsage, wizardErrors]);
 
   // updateUsage takes future resources consumption from user inputs in the form and update usage state
   const updateUsage = (

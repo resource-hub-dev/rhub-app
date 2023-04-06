@@ -85,8 +85,7 @@ const Questionnaire: React.FC<Props> = ({
     } else {
       removeWizardErrors(wizardErrors, setWizardErrors, `step-${stepId}-valid`);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isValid, isDirty, setWizardErrors]);
+  }, [isValid, isDirty, setWizardErrors, wizardErrors, stepId]);
 
   useEffect(() => {
     if (clusterExists !== undefined) {
@@ -105,8 +104,7 @@ const Questionnaire: React.FC<Props> = ({
           `step-${stepId}-name`
         );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clusterExists, isValid, setError, setWizardErrors]);
+  }, [clusterExists, isValid, setError, setWizardErrors, stepId, wizardErrors]);
 
   if (parameters) {
     const nodeParams = parameters.filter(
