@@ -107,6 +107,12 @@ const GraphsUtilization: React.FC<Props> = ({
                 ram_mb: ramMbUsed - userQuotaUsage?.ram_mb,
                 volumes_gb: volumesGbUsed - userQuotaUsage?.volumes_gb,
               }}
+              currentUsage={userQuotaUsage}
+              total={{
+                num_vcpus: vCPUCoreUsed,
+                ram_mb: ramMbUsed,
+                volumes_gb: volumesGbUsed,
+              }}
             />
           </>
         )}

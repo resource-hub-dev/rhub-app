@@ -19,9 +19,15 @@ import {
 interface Props {
   /** Total Resources Consumed by this QuickCluster */
   total: Partial<Quota>;
+  currentUsage: Partial<Quota>;
+  clusterUsage: Partial<Quota>;
 }
 
-const ResourceSummaryTable: React.FC<Props> = ({ total }: Props) => {
+const ResourceSummaryTable: React.FC<Props> = ({
+  total,
+  currentUsage,
+  clusterUsage,
+}: Props) => {
   return (
     <>
       <TableComposable
@@ -29,28 +35,43 @@ const ResourceSummaryTable: React.FC<Props> = ({ total }: Props) => {
         aria-label="Simple table"
         variant="compact"
       >
-        <Caption>Total Cost</Caption>
+        <Caption>Cost Summary</Caption>
         <Thead>
           <Tr>
-            <Th>vCPU</Th>
-            <Th>RAM</Th>
-            <Th>Storage</Th>
+            <Th />
+            <Th>
+              vCPU <CpuIcon />
+            </Th>
+            <Th>
+              RAM <MemoryIcon />
+            </Th>
+            <Th>
+              Storage <StorageDomainIcon />
+            </Th>
           </Tr>
         </Thead>
         <Tbody>
           <Tr key="utilization">
-            <Td dataLabel="vCPU">
-              <CpuIcon />
-              {` ${total.num_vcpus}`}
-            </Td>
+            <Td dataLabel="category">Existing</Td>
+            <Td dataLabel="vCPU">{` ${currentUsage.num_vcpus}`}</Td>
             <Td dataLabel="RAM">
-              <MemoryIcon />
-              {` ${Number(total.ram_mb) / 1024} GB`}
+              {` ${Number(currentUsage.ram_mb) / 1024} GB`}
             </Td>
-            <Td dataLabel="Storage">
-              <StorageDomainIcon />
-              {` ${total.volumes_gb} GB`}
+            <Td dataLabel="Storage">{` ${currentUsage.volumes_gb} GB`}</Td>
+          </Tr>
+          <Tr key="utilization">
+            <Td dataLabel="category">New</Td>
+            <Td dataLabel="vCPU">{` ${clusterUsage.num_vcpus}`}</Td>
+            <Td dataLabel="RAM">
+              {` ${Number(clusterUsage.ram_mb) / 1024} GB`}
             </Td>
+            <Td dataLabel="Storage">{` ${clusterUsage.volumes_gb} GB`}</Td>
+          </Tr>
+          <Tr key="utilization">
+            <Td dataLabel="category">Total</Td>
+            <Td dataLabel="vCPU">{` ${total.num_vcpus}`}</Td>
+            <Td dataLabel="RAM">{` ${Number(total.ram_mb) / 1024} GB`}</Td>
+            <Td dataLabel="Storage">{` ${total.volumes_gb} GB`}</Td>
           </Tr>
         </Tbody>
       </TableComposable>
