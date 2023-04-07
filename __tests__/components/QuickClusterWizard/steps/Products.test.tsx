@@ -40,7 +40,7 @@ describe('<Products />', () => {
     );
 
     expect(result.queryByText(/Select a Product/)).toBeInTheDocument();
-    expect(result.queryByText(/OpenShift/)).toBeInTheDocument();
+    expect(result.queryByText(/OpenShift4 UPI/)).toBeInTheDocument();
   });
 
   test('Renders with png image', async () => {
@@ -57,9 +57,9 @@ describe('<Products />', () => {
     );
 
     expect(result.queryByText(/Select a Product/)).toBeInTheDocument();
-    expect(result.queryByAltText(/OpenShift/)).toHaveAttribute(
+    expect(result.queryByAltText(/OpenShift4 UPI/)).toHaveAttribute(
       'src',
-      'assets/images/openshift.png'
+      'assets/images/openshift4upi.png'
     );
   });
 

@@ -15,11 +15,21 @@ describe('<ResourceSummaryTable />', () => {
           ram_mb: 9 * 1024,
           volumes_gb: 73,
         }}
+        currentUsage={{
+          num_vcpus: 1,
+          ram_mb: 1 * 1024,
+          volumes_gb: 70,
+        }}
+        clusterUsage={{
+          num_vcpus: 4,
+          ram_mb: 8 * 1024,
+          volumes_gb: 3,
+        }}
       />,
       mocks.loadedState
     );
 
-    expect(result.queryByText(/Total Cost/)).toBeInTheDocument();
+    expect(result.queryByText(/Cost Summary/)).toBeInTheDocument();
 
     expect(result.queryByText(/vCPU/)).toBeInTheDocument();
     expect(result.queryByText(/5/)).toBeInTheDocument();

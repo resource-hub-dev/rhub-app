@@ -166,6 +166,7 @@ export const labProductState: LabProductState = {
   data: {
     [labProductExample.id]: {
       ...labProductExample,
+      name: 'OpenShift4 UPI',
       parameters: labProductParams,
     },
   },
