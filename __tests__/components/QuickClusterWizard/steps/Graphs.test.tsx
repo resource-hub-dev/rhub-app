@@ -24,15 +24,11 @@ describe('<GraphsUtilization />', () => {
 
     expect(result.queryByText(/Resource Consumption/)).toBeInTheDocument();
     expect(
-      result.queryByText(
-        /These charts estimates your total resource consumption in the region/
-      )
+      result.queryByText(/Estimates your resource consumption in the/)
     ).toBeInTheDocument();
-    expect(result.queryByText(/after/)).toBeInTheDocument();
+    expect(result.queryByText(/selected/)).toBeInTheDocument();
     expect(
-      result.queryByText(
-        /this QuickCluster is created. See the cost table for the total size of this cluster. These calculations are a result of your selections./
-      )
+      result.queryByText(/including this new cluster./)
     ).toBeInTheDocument();
     expect(result.queryByText(/Utilization-CPU/)).toBeInTheDocument();
     expect(result.queryByText(/^7$/)).toBeInTheDocument();
@@ -48,7 +44,7 @@ describe('<GraphsUtilization />', () => {
     expect(result.queryByText(/^39 GB$/)).toBeInTheDocument();
     expect(result.queryByText(/of 128 GBs/)).toBeInTheDocument();
 
-    expect(result.queryByText(/Total Cost/)).toBeInTheDocument();
+    expect(result.queryByText(/Cost Summary/)).toBeInTheDocument();
   });
 
   test('Renders without usage', async () => {

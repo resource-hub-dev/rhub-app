@@ -20,12 +20,12 @@ describe('<Review />', () => {
       )
     );
 
-    expect(result.queryByText(/Summary/)).toBeInTheDocument();
+    expect(result.queryByText(/Cost Summary/)).toBeInTheDocument();
 
     expect(result.queryByText(/Details/)).toBeInTheDocument();
 
     expect(result.queryByText(/Product/)).toBeInTheDocument();
-    expect(result.queryByText(/OpenShift/)).toBeInTheDocument();
+    expect(result.queryByText(/OpenShift4 UPI/)).toBeInTheDocument();
 
     expect(result.queryByText(/Region/)).toBeInTheDocument();
     expect(result.queryByText(/rdu2-a/)).toBeInTheDocument();
@@ -73,7 +73,7 @@ describe('<Review />', () => {
       )
     );
 
-    expect(result.queryByText(/Summary/)).toBeInTheDocument();
+    expect(result.queryByText(/Cost Summary/)).toBeInTheDocument();
     expect(result.queryByText(/Details/)).toBeInTheDocument();
   });
 
