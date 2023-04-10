@@ -172,8 +172,7 @@ const Questionnaire: React.FC<Props> = ({
                   },
                 })}
                 name={key}
-                onBlur={(e) => {
-                  const { value } = e.target;
+                onChange={(value) => {
                   if (
                     value.length >= minLength &&
                     value.length <= maxLength &&
@@ -189,7 +188,6 @@ const Questionnaire: React.FC<Props> = ({
                 validated={errors[key] ? 'error' : 'default'}
                 isRequired={question.required}
                 aria-label={key}
-                onChange={() => undefined}
               />
             </FormGroup>
           </Tooltip>
