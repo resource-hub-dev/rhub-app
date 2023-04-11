@@ -25,7 +25,7 @@ const getExpDates = (days: number) => {
   const today = new Date();
   today.setTime(today.getTime() + 86400000);
   today.setUTCHours(0, 0, 0, 0);
-  return new Date(today.getTime() + days * 86400000).toLocaleString();
+  return new Date(today.getTime() + days * 86400000).toISOString();
 };
 
 const ClusterExtendReservation: React.FC<Props> = ({
@@ -35,9 +35,7 @@ const ClusterExtendReservation: React.FC<Props> = ({
 }: Props) => {
   const dispatch = useDispatch();
   const [extendAmount, setExtendAmount] = useState(1);
-  const [expDate, setExpDate] = useState(
-    new Date(getExpDates(Number(1))).toISOString()
-  );
+  const [expDate, setExpDate] = useState(getExpDates(1));
 
   const admin = AuthorizedFunction(['rhub-admin', 'lab-owner']);
 
@@ -47,22 +45,22 @@ const ClusterExtendReservation: React.FC<Props> = ({
   }
 
   const handleExtendAmount = (value: string) => {
-    setExpDate(new Date(getExpDates(Number(value))).toISOString());
+    setExpDate(getExpDates(Number(value)));
     setExtendAmount(Number(value));
   };
 
   const options = [
     {
       value: 1,
-      label: `1 - Will expire on: ${getExpDates(1)}`,
+      label: `1 - Will expire on: ${new Date(getExpDates(1)).toLocaleString()}`,
     },
     {
       value: 3,
-      label: `3 - Will expire on: ${getExpDates(3)}`,
+      label: `3 - Will expire on: ${new Date(getExpDates(3)).toLocaleString()}`,
     },
     {
       value: 7,
-      label: `7 - Will expire on: ${getExpDates(7)}`,
+      label: `7 - Will expire on: ${new Date(getExpDates(7)).toLocaleString()}`,
     },
   ];
 
