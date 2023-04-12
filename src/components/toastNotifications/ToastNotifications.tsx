@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSubscription } from 'react-stomp-hooks';
@@ -24,7 +25,7 @@ const ToastNotifications: React.FC = () => {
   const [alerts, setAlerts] = useState<
     {
       title: string;
-      variant: 'success' | 'danger';
+      variant: 'success' | 'danger' | 'info';
       key: number;
       clusterName: string;
       status: string;
@@ -39,7 +40,7 @@ const ToastNotifications: React.FC = () => {
 
   const addAlert = (
     title: string,
-    isSuccess: boolean,
+    variant: 'success' | 'danger' | 'info',
     key: number,
     clusterName: string,
     status: string
@@ -48,7 +49,7 @@ const ToastNotifications: React.FC = () => {
       ...currAlerts,
       {
         title,
-        variant: isSuccess ? 'success' : 'danger',
+        variant,
         key,
         clusterName,
         status,
@@ -65,7 +66,7 @@ const ToastNotifications: React.FC = () => {
       const alertId = getUniqueId();
       addAlert(
         (clusterErrMsg as ApiError).title,
-        false,
+        'danger',
         alertId,
         'none',
         (clusterErrMsg as ApiError).detail
@@ -77,34 +78,50 @@ const ToastNotifications: React.FC = () => {
     [
       '/exchange/messaging/lab.cluster.create',
       '/exchange/messaging/lab.cluster.delete',
+      '/exchange/messaging/lab.cluster.update',
     ],
     (message) => {
-      const notify = (message: Record<string, string>) => {
+      const notify = (message: Record<string, any>) => {
         // check if user owns this cluster
         const ownerId = Number(message.owner_id);
         if (ownerId && username && ownerId === Number(username)) {
           // if clusterId is set then only update statuses of one cluster
-          const isSuccess = message.job_status === 'successful';
+          const variant =
+            message.job_status === 'successful'
+              ? 'success'
+              : message.job_status === 'failed'
+              ? 'danger'
+              : 'info';
           const alertId = getUniqueId();
-          const titleName = isSuccess ? 'Success' : 'Failed';
+          let titleName = variant === 'danger' ? 'failure' : variant;
+          titleName = titleName.charAt(0).toUpperCase() + titleName.slice(1);
+          const status =
+            // eslint-disable-next-line no-prototype-builtins
+            message.update_data && message.update_data.hasOwnProperty('status')
+              ? `to ${message.update_data.status}`
+              : '';
+          const fullMsg = `${message.msg.slice(
+            0,
+            message.msg.length - 1
+          )} ${status}`;
           if (id) {
             if (id === Number(message.cluster_id)) {
               addAlert(
                 titleName,
-                isSuccess,
+                variant,
                 alertId,
                 message.cluster_name,
-                message.msg
+                fullMsg
               );
               dispatch(clusterloadRequest(id));
             }
           } else {
             addAlert(
               titleName,
-              isSuccess,
+              variant,
               alertId,
               message.cluster_name,
-              message.msg
+              fullMsg
             );
             dispatch(clusterloadRequest('all'));
           }

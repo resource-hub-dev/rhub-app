@@ -22,7 +22,6 @@ import {
   rebootHostRequest,
 } from '@ducks/lab/cluster/actions';
 import { ClusterHost } from '@ducks/lab/cluster/types';
-import ToastNotifications from '@components/toastNotifications/ToastNotifications';
 
 import ClusterLifespan from './cards/ClusterLifespan';
 import OverView from './cards/OverView';
@@ -109,14 +108,7 @@ const ClusterDetails: React.FC = () => {
   } = cluster;
 
   // only shows all information if a cluster is not deleted
-  const isDeleted =
-    cluster &&
-    !name &&
-    !owner_name &&
-    !status &&
-    !region_name &&
-    !product_name &&
-    !description;
+  const isDeleted = cluster.status === 'Deleted';
   // Only limit 'New Bundle' and 'Delete' to 3 groups:
   // cluster owner, admin and group members
 
