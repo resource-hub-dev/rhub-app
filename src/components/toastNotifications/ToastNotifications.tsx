@@ -64,8 +64,11 @@ const ToastNotifications: React.FC = () => {
   useEffect(() => {
     if (error && clusterErrMsg && Object.keys(clusterErrMsg).length) {
       const alertId = getUniqueId();
+      const codeString = !Number.isNaN((clusterErrMsg as ApiError).status)
+        ? `(Error code: ${(clusterErrMsg as ApiError).status})`
+        : '';
       addAlert(
-        (clusterErrMsg as ApiError).title,
+        `${(clusterErrMsg as ApiError).title} ${codeString}`,
         'danger',
         alertId,
         'none',

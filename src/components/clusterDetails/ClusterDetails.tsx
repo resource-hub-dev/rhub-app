@@ -23,6 +23,7 @@ import {
 } from '@ducks/lab/cluster/actions';
 import { ClusterHost } from '@ducks/lab/cluster/types';
 
+import PageNotFound from '@components/pageNotFound/PageNotFound';
 import ClusterLifespan from './cards/ClusterLifespan';
 import OverView from './cards/OverView';
 import ClusterInfo from './cards/ClusterInfo';
@@ -85,7 +86,10 @@ const ClusterDetails: React.FC = () => {
     if (nodeToBeRebooted)
       dispatch(rebootHostRequest([nodeToBeRebooted], Number(clusterId)));
   };
-  if (isLoading || !cluster || !events) {
+  if (!cluster) {
+    return <PageNotFound />;
+  }
+  if (isLoading || !events) {
     return (
       <div>
         <h3>Loading...</h3>
