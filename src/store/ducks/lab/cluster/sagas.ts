@@ -20,7 +20,8 @@ function* load(action: AnyAction): any {
     } else
       yield put(actions.loadSuccess(clusterId, response.data.data, nameCheck));
   } catch (err) {
-    yield put(actions.loadFailure(err as any));
+    console.log(err);
+    yield put(actions.loadFailure((err as any).response.data));
   }
 }
 
@@ -30,7 +31,7 @@ function* loadHost(action: AnyAction): any {
     const response = yield call(api.get, `lab/cluster/${clusterId}/hosts`);
     yield put(actions.loadHostSuccess(clusterId, response.data));
   } catch (err) {
-    yield put(actions.loadHostFailure(err as any));
+    yield put(actions.loadHostFailure((err as any).response.data));
   }
 }
 
@@ -40,7 +41,7 @@ function* loadStdout(action: AnyAction): any {
     const response = yield call(api.get, `lab/cluster_event/${eventId}/stdout`);
     yield put(actions.loadStdoutSuccess(response.data));
   } catch (err) {
-    yield put(actions.loadStdoutFailure(err as any));
+    yield put(actions.loadStdoutFailure((err as any).response.data));
   }
 }
 
@@ -52,7 +53,7 @@ function* loadClusterEvents(action: AnyAction): any {
     });
     yield put(actions.loadEventSuccess(response.data));
   } catch (err) {
-    yield put(actions.loadEventFailure(err as any));
+    yield put(actions.loadEventFailure((err as any).response.data));
   }
 }
 
@@ -67,7 +68,7 @@ function* update(action: AnyAction) {
     );
     yield put(actions.updateSuccess(response.data));
   } catch (err) {
-    yield put(actions.updateFailure(err as any));
+    yield put(actions.updateFailure((err as any).response.data));
   }
 }
 
@@ -112,7 +113,7 @@ function* rebootHost(action: AnyAction): any {
     );
     yield put(actions.rebootHostSuccess(clusterId, response.data));
   } catch (err) {
-    yield put(actions.rebootHostFailure(err as any));
+    yield put(actions.rebootHostFailure((err as any).response.data));
   }
 }
 

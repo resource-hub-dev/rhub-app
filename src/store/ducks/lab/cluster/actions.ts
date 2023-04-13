@@ -43,11 +43,8 @@ export const loadSuccess = (
   nameCheck?: boolean
 ) => action(ClusterTypes.LOAD_SUCCESS, { clusterId, data, nameCheck });
 
-export const loadFailure = (err: Error | { [key: string]: any }) => {
-  if (isAnError(err)) {
-    return action(ClusterTypes.LOAD_FAILURE, err);
-  }
-  return action(ClusterTypes.LOAD_FAILURE, err.response.data);
+export const loadFailure = (err: { [key: string]: any }) => {
+  return action(ClusterTypes.LOAD_FAILURE, err);
 };
 
 export const updateRequest = (clusterId: number, data: ClusterUpdateData) =>
@@ -59,11 +56,8 @@ export const updateRequest = (clusterId: number, data: ClusterUpdateData) =>
 export const updateSuccess = (cluster: ClusterData) =>
   action(ClusterTypes.UPDATE_SUCCESS, cluster);
 
-export const updateFailure = (err: Error | { [key: string]: any }) => {
-  if (isAnError(err)) {
-    return action(ClusterTypes.UPDATE_FAILURE, err);
-  }
-  return action(ClusterTypes.UPDATE_FAILURE, err.response.data);
+export const updateFailure = (err: { [key: string]: any }) => {
+  return action(ClusterTypes.UPDATE_FAILURE, err);
 };
 
 export const createClusterRequest = (
@@ -79,7 +73,7 @@ export const createClusterRequest = (
 
 export const createClusterSuccess = () => action(ClusterTypes.CREATE_SUCCESS);
 
-export const createClusterFailure = (err: Error | { [key: string]: any }) => {
+export const createClusterFailure = (err: { [key: string]: any }) => {
   return action(ClusterTypes.CREATE_FAILURE, err);
 };
 
@@ -89,11 +83,8 @@ export const loadHostRequest = (clusterId: number) =>
 export const loadHostSuccess = (clusterId: number, hosts: ClusterHost[]) =>
   action(ClusterTypes.LOAD_HOST_SUCCESS, { clusterId, hosts });
 
-export const loadHostFailure = (err: Error | { [key: string]: any }) => {
-  if (isAnError(err)) {
-    return action(ClusterTypes.LOAD_HOST_FAILURE, err);
-  }
-  return action(ClusterTypes.LOAD_HOST_FAILURE, err.response.data);
+export const loadHostFailure = (err: { [key: string]: any }) => {
+  return action(ClusterTypes.LOAD_HOST_FAILURE, err);
 };
 
 export const loadStdoutRequest = (eventId: number) =>
@@ -102,11 +93,8 @@ export const loadStdoutRequest = (eventId: number) =>
 export const loadStdoutSuccess = (payload: string) =>
   action(ClusterTypes.LOAD_STDOUT_SUCCESS, payload);
 
-export const loadStdoutFailure = (err: Error | { [key: string]: any }) => {
-  if (isAnError(err)) {
-    return action(ClusterTypes.LOAD_STDOUT_FAILURE, err);
-  }
-  return action(ClusterTypes.LOAD_STDOUT_FAILURE, err.response.data);
+export const loadStdoutFailure = (err: { [key: string]: any }) => {
+  return action(ClusterTypes.LOAD_STDOUT_FAILURE, err);
 };
 
 export const loadEventRequest = (
@@ -123,11 +111,8 @@ export const loadEventRequest = (
 export const loadEventSuccess = (payload: ClusterEventData[]) =>
   action(ClusterTypes.LOAD_EVENTS_SUCCESS, payload);
 
-export const loadEventFailure = (err: Error | { [key: string]: any }) => {
-  if (isAnError(err)) {
-    return action(ClusterTypes.LOAD_EVENTS_FAILURE, err);
-  }
-  return action(ClusterTypes.LOAD_EVENTS_FAILURE, err.response.data);
+export const loadEventFailure = (err: { [key: string]: any }) => {
+  return action(ClusterTypes.LOAD_EVENTS_FAILURE, err);
 };
 
 export const rebootHostRequest = (
@@ -140,9 +125,6 @@ export const rebootHostSuccess = (
   hosts: Partial<ClusterHost>[]
 ) => action(ClusterTypes.REBOOT_HOST_SUCCESS, { clusterId, hosts });
 
-export const rebootHostFailure = (err: Error | { [key: string]: any }) => {
-  if (isAnError(err)) {
-    return action(ClusterTypes.REBOOT_HOST_FAILURE, err);
-  }
-  return action(ClusterTypes.REBOOT_HOST_FAILURE, err.response.data);
+export const rebootHostFailure = (err: { [key: string]: any }) => {
+  return action(ClusterTypes.REBOOT_HOST_FAILURE, err);
 };
