@@ -185,7 +185,6 @@ const reducer: Reducer<ClusterState> = (state = INITIAL_STATE, action) => {
     case ClusterTypes.LOAD_HOST_FAILURE:
     case ClusterTypes.LOAD_EVENTS_FAILURE:
     case ClusterTypes.REBOOT_HOST_FAILURE:
-      return { ...state, loading: false, error: true, errMsg: action.payload };
     case ClusterTypes.CREATE_FAILURE:
     case ClusterTypes.DELETE_FAILURE: {
       return {
