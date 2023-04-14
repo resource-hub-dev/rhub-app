@@ -75,28 +75,29 @@ const QuickClusterWizard: React.FC = () => {
 
   const addErrors = useCallback(
     (errorMsg: string | ReactNode, isValidationErr?: boolean) => {
+      const id = `wizard-alert-${new Date().getTime()}`;
       if (typeof errorMsg === 'string') {
         setErrors((errors) => [
           ...errors,
           <Alert
-            key={errorMsg}
+            key={id}
             variant="danger"
             title={errorMsg}
             aria-live="polite"
             isInline
-            timeout={15000}
+            timeout={10000}
           />,
         ]);
       } else {
         setErrors((errors) => [
           ...errors,
           <Alert
-            key="errorMsg"
+            key={id}
             variant="danger"
             title="Error"
             aria-live="polite"
             isInline
-            timeout={15000}
+            timeout={10000}
           >
             {errorMsg}
           </Alert>,
@@ -108,6 +109,8 @@ const QuickClusterWizard: React.FC = () => {
     [wizardErrors]
   );
 
+  const removeInvalidCondition = () =>
+    removeWizardErrors(wizardErrors, setWizardErrors, 'invalid-conditions');
   const onSubmit = (data: WizardValues) => {
     if (values.product_id) {
       const product = products[values.product_id as number];
@@ -127,22 +130,20 @@ const QuickClusterWizard: React.FC = () => {
               addWizardErrors(
                 wizardErrors,
                 setWizardErrors,
-                'invalid-conditions'
+                `invalid-conditions`
               );
               addErrors(
                 <div>
+                  <p>
+                    Invalid parameter input detected in the previous step(s)
+                  </p>
                   {param.condition?.msg.split('\n').map((str) => (
                     <p>{str}</p>
                   ))}
                 </div>,
                 true
               );
-            } else
-              removeWizardErrors(
-                wizardErrors,
-                setWizardErrors,
-                'invalid-conditions'
-              );
+            } else removeInvalidCondition();
           }
         });
     }
@@ -183,8 +184,9 @@ const QuickClusterWizard: React.FC = () => {
     <WizardFooter>
       <WizardContextConsumer>
         {({ activeStep, onNext, onBack }) => {
-          const matches = wizardErrors.filter((e) =>
-            e.includes(String(activeStep.id))
+          const matches = wizardErrors.filter(
+            (e) =>
+              e.includes(String(activeStep.id)) || e === 'invalid-conditions'
           );
           let stepIsValid = matches.length === 0;
           if (activeStep.id !== 5) {
@@ -221,6 +223,7 @@ const QuickClusterWizard: React.FC = () => {
                   variant="secondary"
                   onClick={() => {
                     setStepIdReached(stepIdReached - 1);
+                    removeInvalidCondition();
                     return onBack();
                   }}
                   isDisabled={activeStep.name === 'Product'}
