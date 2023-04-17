@@ -20,7 +20,6 @@ function* load(action: AnyAction): any {
     } else
       yield put(actions.loadSuccess(clusterId, response.data.data, nameCheck));
   } catch (err) {
-    console.log(err);
     yield put(actions.loadFailure((err as any).response.data));
   }
 }
@@ -77,7 +76,6 @@ function* remove(action: AnyAction) {
     const { clusterId, parameters } = action.payload;
     yield call(api.delete, `lab/cluster/${clusterId}`);
     yield put(actions.deleteSuccess(clusterId));
-    yield put(actions.loadRequest('all', parameters));
   } catch (err) {
     yield put(actions.deleteFailure((err as any).response.data));
   }
