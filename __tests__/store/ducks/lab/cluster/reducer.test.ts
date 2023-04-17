@@ -217,7 +217,10 @@ describe('cluster reducer', () => {
       errMsg: error.response.data,
     };
     expect(
-      reducer({ ...INITIAL_STATE, loading: true }, actions.loadFailure(error))
+      reducer(
+        { ...INITIAL_STATE, loading: true },
+        actions.loadFailure(error.response.data)
+      )
     ).toEqual(errState);
     expect(
       reducer(
@@ -239,22 +242,25 @@ describe('cluster reducer', () => {
     expect(
       reducer(
         { ...INITIAL_STATE, loading: true },
-        actions.loadHostFailure(error)
+        actions.loadHostFailure(error.response.data)
       )
     ).toEqual(errState);
     expect(
       reducer(
         { ...INITIAL_STATE, loading: true },
-        actions.loadEventFailure(error)
+        actions.loadEventFailure(error.response.data)
       )
-    ).toEqual(errState);
-    expect(
-      reducer({ ...INITIAL_STATE, loading: true }, actions.updateFailure(error))
     ).toEqual(errState);
     expect(
       reducer(
         { ...INITIAL_STATE, loading: true },
-        actions.rebootHostFailure(error)
+        actions.updateFailure(error.response.data)
+      )
+    ).toEqual(errState);
+    expect(
+      reducer(
+        { ...INITIAL_STATE, loading: true },
+        actions.rebootHostFailure(error.response.data)
       )
     ).toEqual(errState);
   });

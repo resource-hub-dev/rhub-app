@@ -88,12 +88,9 @@ describe('cluster saga', () => {
       .silentRun();
   });
   test('removes a cluster', () => {
-    const apiResponse = {
-      data: mocks.clusterExample,
-    };
     return expectSaga(rootSaga)
       .dispatch(actions.deleteRequest(1))
-      .provide([[matchers.call.fn(api.delete), apiResponse]])
+      .provide([[matchers.call.fn(api.delete), {}]])
       .put(actions.deleteSuccess(1))
       .silentRun();
   });
@@ -124,35 +121,35 @@ describe('cluster saga', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.loadRequest(1))
       .provide([[matchers.call.fn(api.get), throwError(error)]])
-      .put(actions.loadFailure(error))
+      .put(actions.loadFailure(error.response.data))
       .silentRun();
   });
   test('sets errors to the store on event load ', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.loadEventRequest(1))
       .provide([[matchers.call.fn(api.get), throwError(error)]])
-      .put(actions.loadEventFailure(error))
+      .put(actions.loadEventFailure(error.response.data))
       .silentRun();
   });
   test('sets errors to the store on host load ', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.loadHostRequest(1))
       .provide([[matchers.call.fn(api.get), throwError(error)]])
-      .put(actions.loadHostFailure(error))
+      .put(actions.loadHostFailure(error.response.data))
       .silentRun();
   });
   test('sets errors to the store on tower stdout load ', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.loadStdoutRequest(1))
       .provide([[matchers.call.fn(api.get), throwError(error)]])
-      .put(actions.loadStdoutFailure(error))
+      .put(actions.loadStdoutFailure(error.response.data))
       .silentRun();
   });
   test('sets errors to the store on cluster update ', () => {
     return expectSaga(rootSaga)
       .dispatch(actions.updateRequest(1, {}))
       .provide([[matchers.call.fn(api.patch), throwError(error)]])
-      .put(actions.updateFailure(error))
+      .put(actions.updateFailure(error.response.data))
       .silentRun();
   });
   test('sets errors to the store on cluster create ', () => {

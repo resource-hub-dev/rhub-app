@@ -59,7 +59,7 @@ describe('<ClusterDetails />', () => {
     );
 
     // Renders the loading text
-    expect(result.queryByText(/^Loading...$/)).toBeInTheDocument();
+    expect(result.queryByText(/^Not Found$/)).toBeInTheDocument();
 
     // Nothing else should be rendered
     expect(result.queryByText(/Cluster Name:/)).not.toBeInTheDocument();
