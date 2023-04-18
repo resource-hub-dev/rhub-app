@@ -7,7 +7,6 @@ import { LabProductData } from '@ducks/lab/product/types';
 
 import { AppState } from '@store';
 import { Quota } from '@ducks/lab/types';
-import { AlertGroup } from '@patternfly/react-core';
 
 import Questionnaire from './Questionnaire';
 import GraphsUtilization from './Graphs';
@@ -27,8 +26,6 @@ interface Props {
   totalUsage: Quota;
   /** Update parent's totalUsage state */
   setTotalUsage: React.Dispatch<React.SetStateAction<Quota>>;
-  /** Array of Error Components */
-  errors: React.ReactNode[];
   /** Set Errors */
   setErrors: React.Dispatch<React.SetStateAction<React.ReactNode[]>>;
   /** Append to Errors */
@@ -51,7 +48,6 @@ const ClusterConfiguration: React.FC<Props> = ({
   onSubmit,
   totalUsage,
   setTotalUsage,
-  errors,
   setErrors,
   addErrors,
 }: Props) => {
@@ -107,7 +103,6 @@ const ClusterConfiguration: React.FC<Props> = ({
       if (errorMsg) {
         addErrors(errorMsg);
       } else {
-        setErrors([]);
         removeWizardErrors(wizardErrors, setWizardErrors, 'step-3-quota');
       }
     }
@@ -136,9 +131,6 @@ const ClusterConfiguration: React.FC<Props> = ({
   // Step 3 includes parameters that are not in advanced step
   return (
     <>
-      <AlertGroup isToast isLiveRegion>
-        {errors}
-      </AlertGroup>
       <div style={{ display: 'flex' }}>
         <div>
           <StepHeader text="Cluster Configuration" />

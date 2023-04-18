@@ -12,14 +12,9 @@ import '../QuickClusterWizard.css';
 interface Props {
   /** Function to handle submit */
   onSubmit: (data: WizardValues) => void;
-  /** Array of Error Components */
-  errors: React.ReactNode[];
 }
 
-const AdvancedConfiguration: React.FC<Props> = ({
-  onSubmit,
-  errors,
-}: Props) => {
+const AdvancedConfiguration: React.FC<Props> = ({ onSubmit }: Props) => {
   const [, , values] = useContext(wizardContext);
   const productId = Number(values?.product_id);
   const product = useSelector(
@@ -30,9 +25,6 @@ const AdvancedConfiguration: React.FC<Props> = ({
   return (
     <>
       <StepHeader text="Advanced Configuration" />
-      <AlertGroup isToast isLiveRegion>
-        {errors}
-      </AlertGroup>
       <Alert
         className="advanced-step-warning"
         variant="warning"
