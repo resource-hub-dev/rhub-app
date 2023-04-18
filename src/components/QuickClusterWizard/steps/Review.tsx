@@ -21,11 +21,9 @@ import { StepHeader } from '../helpers';
 interface Props {
   /** Total Quota Usage after QuickCluster is Created */
   totalUsage: Quota;
-  /** Array of Error Components */
-  errors: React.ReactNode[];
 }
 
-const Review: React.FC<Props> = ({ totalUsage, errors }: Props) => {
+const Review: React.FC<Props> = ({ totalUsage }: Props) => {
   const [, , values] = useContext(wizardContext);
   const productId = Number(values?.product_id);
   const regionId = Number(values.region_id);
@@ -64,9 +62,6 @@ const Review: React.FC<Props> = ({ totalUsage, errors }: Props) => {
   });
   return (
     <>
-      <AlertGroup isToast isLiveRegion>
-        {errors}
-      </AlertGroup>
       <StepHeader text="Summary" />
       <div style={{ display: 'flex' }}>
         <Card>

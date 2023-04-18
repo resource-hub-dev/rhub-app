@@ -2,6 +2,7 @@ import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Alert,
+  AlertGroup,
   Button,
   Spinner,
   Wizard,
@@ -246,6 +247,7 @@ const QuickClusterWizard: React.FC = () => {
                 variant="secondary"
                 onClick={() => {
                   setStepIdReached(stepIdReached - 1);
+                  removeInvalidCondition();
                   return onBack();
                 }}
               >
@@ -291,7 +293,6 @@ const QuickClusterWizard: React.FC = () => {
           onSubmit={onSubmit}
           totalUsage={totalUsage}
           setTotalUsage={setTotalUsage}
-          errors={errors}
           setErrors={setErrors}
           addErrors={addErrors}
         />
@@ -301,13 +302,13 @@ const QuickClusterWizard: React.FC = () => {
     {
       id: 4,
       name: 'Advanced Option',
-      component: <AdvancedConfiguration onSubmit={onSubmit} errors={errors} />,
+      component: <AdvancedConfiguration onSubmit={onSubmit} />,
       canJumpTo: stepIdReached >= 4,
     },
     {
       id: 5,
       name: 'Review',
-      component: <Review totalUsage={totalUsage} errors={errors} />,
+      component: <Review totalUsage={totalUsage} />,
       nextButtonText: 'Finish',
       canJumpTo: stepIdReached >= 5,
     },
@@ -325,6 +326,9 @@ const QuickClusterWizard: React.FC = () => {
   }
   return (
     <wizardContext.Provider value={[wizardErrors, setWizardErrors, values]}>
+      <AlertGroup isToast isLiveRegion>
+        {errors}
+      </AlertGroup>
       <Wizard
         navAriaLabel={`${title} steps`}
         mainAriaLabel={`${title} content`}
