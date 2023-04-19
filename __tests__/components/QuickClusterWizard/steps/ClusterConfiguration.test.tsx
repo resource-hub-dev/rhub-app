@@ -24,16 +24,6 @@ describe('<ClusterConfiguration />', () => {
       <ClusterConfiguration
         onSubmit={onSubmitMock}
         setTotalUsage={setTotalUsageMock}
-        errors={[
-          <Alert
-            key="unique-key"
-            variant="danger"
-            title="dangerous"
-            aria-live="polite"
-            isInline
-            timeout={15000}
-          />,
-        ]}
         setErrors={setErrorMock}
         totalUsage={totalUsage}
         addErrors={addErrorMock}
@@ -122,13 +112,5 @@ describe('<ClusterConfiguration />', () => {
         /Please enter basic configuration for your QuickCluster/
       )
     ).toBeInTheDocument();
-  });
-
-  test('Displays error', async () => {
-    const { result } = renderClusterConfiguration(
-      mocks.loadedState,
-      mocks.errorQuota
-    );
-    expect(result.queryByText(/Danger alert:/)).toBeInTheDocument();
   });
 });

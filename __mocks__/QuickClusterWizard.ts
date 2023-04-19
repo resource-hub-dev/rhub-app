@@ -256,6 +256,14 @@ export const loadingState: exampleState = {
   },
 };
 
+export const errorState: exampleState = {
+  ...loadingState,
+  labProduct: {
+    ...labProductState,
+    error: true,
+  },
+};
+
 export const noProductRegionsState: exampleState = {
   ...loadedState,
   labRegion: {

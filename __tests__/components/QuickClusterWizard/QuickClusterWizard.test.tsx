@@ -37,6 +37,15 @@ describe('<QuickClusterWizard />', () => {
     expect(result.queryByText(/Loading/)).toBeInTheDocument();
   });
 
+  test('Renders the error screen', async () => {
+    const { result } = connectedRender(
+      <QuickClusterWizard />,
+      mocks.errorState
+    );
+
+    expect(result.queryByText(/error/)).toBeInTheDocument();
+  });
+
   test('Renders the inital wizard menu', async () => {
     const { result } = connectedRender(
       <QuickClusterWizard />,
@@ -57,9 +66,73 @@ describe('<QuickClusterWizard />', () => {
     expect(result.queryByText(/^Next$/)).toBeInTheDocument();
     expect(result.queryByText(/^Back$/)).toBeInTheDocument();
     expect(result.queryByText(/^Cancel$/)).toBeInTheDocument();
-    expect(result.queryByText(/^Finishi$/)).not.toBeInTheDocument();
+    expect(result.queryByText(/^Finish$/)).not.toBeInTheDocument();
   });
 
+  test('Render error', async () => {
+    const { store, history, result } = connectedRender(
+      <QuickClusterWizard />,
+      mocks.loadedState
+    );
+    const nextBtn = result.getByText(/^Next$/);
+    const backBtn = result.getByText(/^Back$/);
+
+    // Product
+    fireEvent.click(result.getByLabelText(/^1$/));
+    fireEvent.click(nextBtn);
+
+    // Region
+    fireEvent.click(result.getByLabelText(/^rdu2-a$/));
+    fireEvent.click(nextBtn);
+    // Cluster Configuration
+    await waitFor(() => {
+      // Enter Cluster ID
+      const clusterIDInput = result.getByLabelText(/name/);
+
+      fireEvent.change(clusterIDInput, {
+        target: {
+          value: 'cluster1',
+        },
+      });
+
+      fireEvent.blur(clusterIDInput);
+    });
+
+    await waitFor(() => {
+      // Enter Cluster ID
+      const masterInput = result.getByLabelText(/num_master_nodes/);
+
+      fireEvent.change(masterInput, {
+        target: {
+          value: 2,
+        },
+      });
+
+      fireEvent.blur(masterInput);
+    });
+    await waitFor(() => {
+      fireEvent.click(nextBtn);
+    });
+    expect(result.queryByText(/^Error$/)).toBeInTheDocument();
+    await waitFor(() => {
+      fireEvent.click(backBtn);
+    });
+    await waitFor(() => {
+      // Change Cluster ID
+      const clusterIDInput = result.getByLabelText(/name/);
+
+      fireEvent.change(clusterIDInput, {
+        target: {
+          value: 'testcluster1',
+        },
+      });
+
+      fireEvent.blur(clusterIDInput);
+    });
+    await waitFor(() => {
+      fireEvent.click(nextBtn);
+    });
+  });
   test('Dispatches a create cluster request', async () => {
     const { store, history, result } = connectedRender(
       <QuickClusterWizard />,

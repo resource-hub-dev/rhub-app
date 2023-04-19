@@ -17,7 +17,7 @@ describe('<AdvancedConfiguration />', () => {
   test('Renders advanced configuration', async () => {
     const { result } = await waitFor(() =>
       connectedRenderWithContext(
-        <AdvancedConfiguration errors={[]} onSubmit={onSubmitMock} />,
+        <AdvancedConfiguration onSubmit={onSubmitMock} />,
         wizardContext,
         mocks.loadedState,
         mocks.wizzardContextDefaultValue
