@@ -44,3 +44,11 @@
     justify-content: center;
     align-items: center;
 }
+
+.select-card:hover {
+    border-bottom: solid 2px var(--pf-global--palette--blue-400);
+} 
+
+.selected-card {
+    box-shadow: 0 0 5px var(--pf-c-card__input--focus--BorderColor);
+}
