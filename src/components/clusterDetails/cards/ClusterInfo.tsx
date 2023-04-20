@@ -91,7 +91,7 @@ const ClusterInfo: React.FC<Props> = ({
     <Card>
       <CardTitle>Cluster Information</CardTitle>
       <CardBody>
-        {rowPairs.length && (
+        {rowPairs && rowPairs.length > 0 && (
           <>
             <Title headingLevel="h4">Nodes</Title>
             <DataTable
