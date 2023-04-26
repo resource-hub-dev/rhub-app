@@ -5,8 +5,8 @@ COPY . .
 RUN npm install
 RUN npm run build
 
-# https://catalog.redhat.com/software/containers/ubi8/nginx-118/5f521a6f9dd2d5ca7158e5dc
-FROM registry.access.redhat.com/ubi8/nginx-118
+# https://catalog.redhat.com/software/containers/ubi8/nginx-120/6156abfac739c0a4123a86fd
+FROM registry.access.redhat.com/ubi8/nginx-120
 COPY --from=build /opt/app-root/src/dist .
 COPY ./containers/nginx.conf /opt/app-root/etc/nginx.default.d/nginx.conf
 COPY ./containers/nginx-entrypoint /opt/app-root/entrypoint
