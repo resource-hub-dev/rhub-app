@@ -214,6 +214,11 @@ const QuickClusterWizard: React.FC = () => {
                         );
                     }
                     setStepIdReached(stepIdReached + 1);
+                    // Clear region_id after hitting next on Product page, so that the form would prohibit
+                    // selecting a region that is enabled in one product but disabled in another
+                    if (activeStep.id === 1) {
+                      addWizardValuesWrapper({ region_id: 0 });
+                    }
                     return onNext();
                   }}
                   isDisabled={!stepIsValid}

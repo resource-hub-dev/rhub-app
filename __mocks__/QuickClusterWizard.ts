@@ -204,6 +204,11 @@ export const labRegionState: LabRegionState = {
         ...regionExample,
         id: regionExample.id + 1,
         name: 'rdu2-b',
+        location: {
+          description: 'PNQ',
+          id: 1,
+          name: 'PNQ',
+        },
       },
     },
   ],

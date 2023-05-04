@@ -31,12 +31,15 @@ const Products: React.FC<Props> = ({ products, addWizardValues }: Props) => {
     return Object.values(products);
   }, [products]);
 
-  const onSelect = (checked: boolean, e: FormEvent<HTMLInputElement>) => {
-    const { value } = e.currentTarget;
+  const update = (value: string) => {
     setSelected(value);
     addWizardValues({ product_id: Number(value) });
   };
 
+  const onSelect = (checked: boolean, e: FormEvent<HTMLInputElement>) => {
+    const { value } = e.currentTarget;
+    update(value);
+  };
   return (
     <>
       <StepHeader text="Select a Product" />
@@ -49,7 +52,18 @@ const Products: React.FC<Props> = ({ products, addWizardValues }: Props) => {
           if (prod.enabled) {
             const selection = selected || prevSelection;
             return (
-              <Card key={prod.id} className="center">
+              <Card
+                id={String(prod.id)}
+                className={`center select-card ${
+                  Number(selection) === prod.id ? ' selected-card' : ''
+                }`}
+                onClick={(e) => {
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  update(e.currentTarget.getAttribute('id')!);
+                }}
+                value={prod.id}
+                key={`product-${prod.id}`}
+              >
                 <CardTitle>
                   <img
                     src={filePath}

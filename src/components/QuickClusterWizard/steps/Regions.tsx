@@ -1,10 +1,4 @@
-import React, {
-  ReactNode,
-  useEffect,
-  useState,
-  useContext,
-  FormEvent,
-} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Card,
   CardBody,
@@ -65,57 +59,49 @@ const Region: React.FC<Props> = ({ productId, addWizardValues }: Props) => {
     );
   }
 
-  const onSelect = (checked: boolean, e: FormEvent<HTMLInputElement>) => {
-    const { value } = e.currentTarget;
+  const onSelect = (value: string) => {
     setSelected(Number(value));
     addWizardValues({ region_id: Number(value) });
   };
-
-  // Group RHUB Regions based on their locations
-  const regionsByLocation: Record<number | string, ReactNode[]> = {};
-  productRegions.forEach((productRegion) => {
-    const { region, enabled } = productRegion;
-    const { location } = region;
-    const prevSelection = values.region_id;
-    const selection = selected || prevSelection;
-    const regionRadio = (
-      <div key={region.id}>
-        <Tooltip content={region.description}>
-          <Radio
-            isChecked={Number(selection) === region.id}
-            isDisabled={!enabled}
-            name={region.name}
-            onChange={onSelect}
-            label={region.name}
-            id={`radio-controlled-${region.id}`}
-            value={region.id}
-          />
-        </Tooltip>
-      </div>
-    );
-    if (location !== null) {
-      if (!regionsByLocation[location.name]) {
-        // Initiate if non-exist
-        regionsByLocation[location.name] = [regionRadio];
-      } else {
-        regionsByLocation[location.name] = [
-          ...regionsByLocation[location.name],
-          regionRadio,
-        ];
-      }
-    }
-  });
-
-  const locations = Object.keys(regionsByLocation);
   return (
     <>
       <StepHeader text="Select a Region" />
       <Grid hasGutter md={6} lg={3}>
-        {locations.map((location: string) => {
+        {productRegions.map((productRegion) => {
+          const { region, enabled } = productRegion;
+          const locationName =
+            region.location !== null ? region.location.name : '';
+          const prevSelection = values.region_id;
+          const selection = selected || prevSelection;
           return (
-            <Card key={location}>
-              <CardTitle>{location}</CardTitle>
-              <CardBody>{regionsByLocation[location]}</CardBody>
+            <Card
+              id={String(region.id)}
+              key={locationName}
+              className={`center${enabled ? ' select-card' : ''}${
+                Number(selection) === region.id && enabled
+                  ? ' selected-card'
+                  : ''
+              }`}
+              onClick={(e) => {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                if (enabled) onSelect(e.currentTarget.getAttribute('id')!);
+              }}
+            >
+              <CardTitle>{locationName}</CardTitle>
+              <CardBody>
+                <div key={region.id}>
+                  <Tooltip content={region.description}>
+                    <Radio
+                      isChecked={Number(selection) === region.id}
+                      isDisabled={!enabled}
+                      name={region.name}
+                      label={region.name}
+                      id={`radio-controlled-${region.id}`}
+                      value={region.id}
+                    />
+                  </Tooltip>
+                </div>
+              </CardBody>
             </Card>
           );
         })}
