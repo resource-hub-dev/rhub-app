@@ -159,10 +159,11 @@ const ClusterDetails: React.FC = () => {
     num_volumes += host.num_volumes;
     volumes_gb += host.volumes_gb;
   });
+  const isShared = group_name === 'sharedclusters';
   return (
     <>
       <PageSection variant={PageSectionVariants.light}>
-        {!isDeleted ? (
+        {!isDeleted && !isShared ? (
           <Title headingLevel="h2">
             Cluster Name: {name}
             <Button
@@ -199,6 +200,7 @@ const ClusterDetails: React.FC = () => {
                     reservation_expiration !== null && clusterAccess
                   }
                   showLifespanBtn={authorized}
+                  isShared={isShared}
                 />
               </GridItem>
               <GridItem span={3} rowSpan={8} className="ql-card-layout">

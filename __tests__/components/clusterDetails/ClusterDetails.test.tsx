@@ -104,6 +104,21 @@ describe('<ClusterDetails />', () => {
     expect(result.queryByText(/^Lifespan Extended$/)).toBeInTheDocument();
   });
 
+  test('Renders the page for a shared cluster', async () => {
+    const { result } = clusterDetailsRenderer(
+      {
+        ...mocks.initialExampleState,
+        cluster: mocks.sharedClusterState,
+      },
+      '/resources/quickcluster/clusters/1'
+    );
+
+    expect(result.queryByText(/^Delete$/)).not.toBeInTheDocument();
+
+    // Expiration should be N/A
+    expect(result.queryAllByText(/^N\/A$/)).toHaveLength(2);
+  });
+
   test('Renders the page for a cluster with no events', async () => {
     const { result } = clusterDetailsRenderer(
       {

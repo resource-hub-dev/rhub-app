@@ -19,6 +19,7 @@ export interface Props {
   lifespanExpiration: Date | null;
   showExpBtn: boolean;
   showLifespanBtn: boolean;
+  isShared: boolean;
 }
 
 const ClusterLifespan: React.FC<Props> = ({
@@ -27,6 +28,7 @@ const ClusterLifespan: React.FC<Props> = ({
   lifespanExpiration,
   showExpBtn,
   showLifespanBtn,
+  isShared,
 }: Props) => {
   const [modalOpen, setModalOpen] = useState('');
 
@@ -73,7 +75,7 @@ const ClusterLifespan: React.FC<Props> = ({
         <CardBody>
           <Title headingLevel="h6">Cluster Reservation Expiration:</Title>
           {!reservationExpiration || isLifespanExpired ? (
-            <div>{rsvpExpTxt}</div>
+            <div>{isShared ? 'N/A' : rsvpExpTxt}</div>
           ) : (
             <div className={rsvpExpClass}>
               {reservationExpiration.toLocaleString()}
@@ -97,7 +99,7 @@ const ClusterLifespan: React.FC<Props> = ({
               {lifespanExpiration.toLocaleString()}
             </div>
           ) : (
-            <div>No expiration, unlimited</div>
+            <div>{isShared ? 'N/A' : 'No expiration, unlimited'}</div>
           )}
           {showLifespanBtn ? (
             <Button
