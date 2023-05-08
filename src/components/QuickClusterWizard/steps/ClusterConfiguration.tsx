@@ -54,7 +54,7 @@ const ClusterConfiguration: React.FC<Props> = ({
   const dispatch = useDispatch();
   const [wizardErrors, setWizardErrors, values] = useContext(wizardContext);
   // Addditional errors in addition to validation errors on the fields
-  const productId = Number(values?.product_id);
+  const productId = Number(values.product_id);
   const regionId = Number(values.region_id);
   const quota = useSelector(
     (state: AppState) =>

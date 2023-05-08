@@ -44,21 +44,18 @@ describe('<LandingPage />', () => {
     const { result } = connectedRender(<LandingPage />, mocks.initialState);
 
     expect(result.getByText(/Getting Started/)).toBeVisible();
-    expect(result.getByText(/Quick Starts/)).toBeVisible();
     expect(result.getByText(/^Quick Cluster$/)).toBeVisible(); // Stricter regex to eliminate all other occurences
     expect(result.getByText(/Learning Resources/)).toBeVisible();
 
     fireEvent.click(result.getByText(/Getting Started/));
 
     expect(result.getByText(/Getting Started/)).toBeVisible();
-    expect(result.getByText(/Quick Starts/)).not.toBeVisible();
     expect(result.getByText(/^Quick Cluster$/)).not.toBeVisible();
     expect(result.getByText(/Learning Resources/)).not.toBeVisible();
 
     fireEvent.click(result.getByText(/Getting Started/));
 
     expect(result.getByText(/Getting Started/)).toBeVisible();
-    expect(result.getByText(/Quick Starts/)).toBeVisible();
     expect(result.getByText(/^Quick Cluster$/)).toBeVisible();
     expect(result.getByText(/Learning Resources/)).toBeVisible();
   });

@@ -73,12 +73,15 @@ const LandingPage: React.FC = () => {
           isExpanded={expanded}
         >
           <Grid>
-            <GridItem className="grid-card" span={4}>
-              <div className="info-title-box quick-start">
-                <TachometerAltIcon className="info-title-icon quick-start" />
-                Quick Starts
+            <GridItem className="grid-card" span={6}>
+              <div className="info-title-box learning-resources">
+                <CatalogIcon className="info-title-icon learning-resources" />
+                Learning Resources
               </div>
-              {/* TODO: Add links to Documentations in the future */}
+              <div>Getting started with documentation</div>
+              <CustomLink link={stringStore.guideLink}>
+                View All Documentation <ExternalLinkAltIcon />
+              </CustomLink>
               <CustomLink link={stringStore.releaseLink}>
                 See our release history <ExternalLinkAltIcon />
               </CustomLink>
@@ -89,14 +92,17 @@ const LandingPage: React.FC = () => {
                 Privacy Policy <ExternalLinkAltIcon />
               </CustomLink>
             </GridItem>
-            <GridItem className="grid-card" span={4}>
+            <GridItem className="grid-card last-card" span={6}>
               <div className="info-title-box quick-cluster">
                 <ClusterIcon className="info-title-icon quick-cluster" />
                 Quick Cluster
               </div>
               <div>
                 Quick Cluster provides quick, ready-to-use clusters with Red Hat
-                products preinstalled
+                products preinstalled. Shared clusters are open to all users of
+                Resource Hub, please refrain from altering them or making
+                changes that would break the cluster. In order to create a new
+                personal cluster, please visit the My Clusters page
               </div>
               <div>
                 <Button variant="link" className="info-link">
@@ -107,16 +113,6 @@ const LandingPage: React.FC = () => {
               </div>
               <CustomLink link="/resources/quickcluster/clusters">
                 My Clusters <ArrowRightIcon />
-              </CustomLink>
-            </GridItem>
-            <GridItem className="grid-card last-card" span={4}>
-              <div className="info-title-box learning-resources">
-                <CatalogIcon className="info-title-icon learning-resources" />
-                Learning Resources
-              </div>
-              <div>Getting started with documentation</div>
-              <CustomLink link={stringStore.guideLink}>
-                View All Documentation <ExternalLinkAltIcon />
               </CustomLink>
             </GridItem>
           </Grid>
