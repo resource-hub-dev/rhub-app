@@ -26,6 +26,7 @@ describe('<ClusterLifespan />', () => {
         lifespanExpiration={null}
         showExpBtn={false}
         showLifespanBtn={false}
+        isShared={false}
       />,
       mocks.initialExampleState
     );
@@ -56,6 +57,7 @@ describe('<ClusterLifespan />', () => {
         lifespanExpiration={dateLifespan}
         showExpBtn={false}
         showLifespanBtn={false}
+        isShared={false}
       />,
       mocks.initialExampleState
     );
@@ -91,6 +93,7 @@ describe('<ClusterLifespan />', () => {
         lifespanExpiration={dateLifespan}
         showExpBtn
         showLifespanBtn={false}
+        isShared={false}
       />,
       mocks.initialExampleState
     );
@@ -115,6 +118,7 @@ describe('<ClusterLifespan />', () => {
         lifespanExpiration={dateLifespan}
         showExpBtn
         showLifespanBtn={false}
+        isShared={false}
       />,
       mocks.initialExampleState
     );
@@ -135,6 +139,7 @@ describe('<ClusterLifespan />', () => {
         lifespanExpiration={date}
         showExpBtn
         showLifespanBtn
+        isShared={false}
       />,
       mocks.initialExampleState
     );
@@ -165,6 +170,7 @@ describe('<ClusterLifespan />', () => {
         lifespanExpiration={date}
         showExpBtn
         showLifespanBtn
+        isShared={false}
       />,
       mocks.initialExampleState
     );
