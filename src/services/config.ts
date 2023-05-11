@@ -4,6 +4,9 @@ interface AppConfig {
   keycloakRealm: string;
   keycloakClient: string;
   rhubSsoEndpoint: string;
+  rhubBrokerHost: string;
+  rhubBrokerUsername: string;
+  rhubBrokerPassword: string;
 }
 
 interface AppWindow extends Window {
@@ -19,6 +22,9 @@ window.appConfig = window.appConfig || {
   keycloakRealm: '',
   keycloakClient: '',
   rhubSsoEndpoint: '',
+  rhubBrokerHost: '',
+  rhubBrokerPassword: '',
+  rhubBrokerUsername: '',
 };
 
 export default window.appConfig;

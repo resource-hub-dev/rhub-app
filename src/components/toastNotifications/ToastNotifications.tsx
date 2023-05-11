@@ -11,6 +11,8 @@ import {
 import { AppState } from '@store';
 import { loadRequest as clusterloadRequest } from '@ducks/lab/cluster/actions';
 import { ApiError } from '@ducks/types';
+import config from '@services/config';
+
 import { useParams } from 'react-router';
 
 export interface UrlProps {
@@ -133,8 +135,8 @@ const ToastNotifications: React.FC = () => {
       notify(JSON.parse(message.body));
     },
     {
-      login: process.env.RHUB_BROKER_USERNAME || '',
-      passcode: process.env.RHUB_BROKER_PASSWORD || '',
+      login: config.rhubBrokerUsername || '',
+      passcode: config.rhubBrokerPassword || '',
       durable: 'false',
       'auto-delete': 'false',
     }
