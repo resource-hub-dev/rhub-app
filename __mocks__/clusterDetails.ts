@@ -89,6 +89,21 @@ export const initialExampleState: ExampleState = {
   cluster: loadedClusterState,
 };
 
+export const sharedClusterState: ClusterState = {
+  data: {
+    [loadedCluster.id]: {
+      ...loadedCluster,
+      group_name: 'sharedclusters',
+      reservation_expiration: null,
+      lifespan_expiration: null,
+    },
+  },
+  events: loadedEventsState,
+  stdOutput: null,
+  loading: false,
+  error: false,
+};
+
 export interface ExampleState {
   user: UserState;
   cluster: ClusterState;

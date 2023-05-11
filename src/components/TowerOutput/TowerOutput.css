@@ -1,4 +1,6 @@
 .towerstdout-content {
   white-space: pre;
   overflow-x: scroll;
+  font-family: Menlo, Consolas, Monaco, monospace;
+  font-size: smaller;
 }
