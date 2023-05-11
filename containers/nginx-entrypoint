@@ -7,6 +7,10 @@ envsubst ' \
 	$RHUB_KEYCLOAK_URL \
 	$KEYCLOAK_REALM \
 	$KEYCLOAK_CLIENT \
+	$RHUB_BROKER_HOST \
+	$RHUB_BROKER_PORT \
+	$RHUB_BROKER_USERNAME \
+	$RHUB_BROKER_PASSWORD \
 	' \
 	< /opt/app-root/src/index.template.html > /opt/app-root/src/index.html
 
