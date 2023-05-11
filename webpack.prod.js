@@ -19,6 +19,9 @@ module.exports = merge(common, {
       RHUB_SSO_ENDPOINT: '${RHUB_SSO_ENDPOINT}',
       KEYCLOAK_REALM: '${KEYCLOAK_REALM}',
       KEYCLOAK_CLIENT: '${KEYCLOAK_CLIENT}',
+      RHUB_BROKER_HOST: '${RHUB_BROKER_HOST}',
+      RHUB_BROKER_USERNAME: '${RHUB_BROKER_USERNAME}',
+      RHUB_BROKER_PASSWORD: '${RHUB_BROKER_PASSWORD}',
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',

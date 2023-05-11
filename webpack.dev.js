@@ -18,6 +18,9 @@ module.exports = merge(common, {
       RHUB_SSO_ENDPOINT: process.env.RHUB_SSO_ENDPOINT,
       KEYCLOAK_REALM: process.env.KEYCLOAK_REALM,
       KEYCLOAK_CLIENT: process.env.KEYCLOAK_CLIENT,
+      RHUB_BROKER_HOST: process.env.RHUB_BROKER_HOST,
+      RHUB_BROKER_USERNAME: process.env.RHUB_BROKER_USERNAME,
+      RHUB_BROKER_PASSWORD: process.env.RHUB_BROKER_PASSWORD,
     }),
   ],
   devServer: {
