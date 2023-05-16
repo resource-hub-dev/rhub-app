@@ -52,6 +52,12 @@ const MainScreen: React.FC = () => {
   const { keycloak, initialized } = useKeycloak();
 
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (keycloak.authenticated) {
+      dispatch(updateToken(keycloak.token));
+      dispatch(loadCurrentUserRequest());
+    }
+  }, [dispatch, keycloak.token, keycloak.authenticated, keycloak.tokenParsed]);
   keycloak.onTokenExpired = () => {
     keycloak
       .updateToken(5)
@@ -64,13 +70,6 @@ const MainScreen: React.FC = () => {
         keycloak.logout();
       });
   };
-  useEffect(() => {
-    if (keycloak.authenticated) {
-      dispatch(updateToken(keycloak.token));
-      dispatch(loadCurrentUserRequest());
-    }
-  }, [dispatch, keycloak.token, keycloak.authenticated, keycloak.tokenParsed]);
-
   const isAdmin = AuthorizedFunction(['rhub-admin']);
   const onSideNavToggle = (): void => setIsSideNavOpen(!isSideNavOpen);
   const onTopNavSelect = (selectedItem: {
